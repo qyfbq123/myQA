@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.myQA.dao.QuestionMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.myQA.pojo.Question" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="project" property="project" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="emailto" property="emailto" jdbcType="VARCHAR" />
+    <result column="startdate" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="promisedate" property="promisedate" jdbcType="TIMESTAMP" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="suggestion" property="suggestion" jdbcType="VARCHAR" />
+    <result column="feedback" property="feedback" jdbcType="VARCHAR" />
+    <result column="closed" property="closed" jdbcType="BIT" />
+    <result column="handle_status" property="handleStatus" jdbcType="INTEGER" />
+    <result column="handle_promisedate" property="handlePromisedate" jdbcType="TIMESTAMP" />
+    <result column="handle_result" property="handleResult" jdbcType="VARCHAR" />
+    <result column="to_top" property="toTop" jdbcType="INTEGER" />
+    
+    <result column="supplier" property="supplier" jdbcType="VARCHAR"/>
+    <result column="issue_date" property="issueDate" jdbcType="TIMESTAMP"/>
+    <result column="teammates" property="teammates" jdbcType="VARCHAR"/>
+    <result column="is_c_feedback" property="isCFeedback" jdbcType="BIT"/>
+    <result column="containment_plan_date" property="containmentPlanDate" jdbcType="TIMESTAMP"/>
+    <result column="action_plan_date" property="actionPlanDate" jdbcType="TIMESTAMP"/>
+    <result column="severity" property="severity" jdbcType="VARCHAR"/>
+    <result column="begin_storehouse" property="beginStorehouse" jdbcType="VARCHAR"/>
+    <result column="spc" property="spc" jdbcType="VARCHAR"/>
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+    <result column="hawb" property="hawb" jdbcType="VARCHAR"/>
+    <result column="part_information" property="partInformation" jdbcType="VARCHAR"/>
+    <result column="scheduled_time" property="scheduledTime" jdbcType="TIMESTAMP"/>
+    <result column="actual_time" property="actualTime" jdbcType="TIMESTAMP"/>
+    <result column="problem_statement" property="problemStatement" jdbcType="VARCHAR"/>
+    <result column="issue_description" property="issueDescription" jdbcType="VARCHAR"/>
+    <result column="recovery_description" property="recoveryDescription" jdbcType="VARCHAR"/>
+    <result column="root_cause" property="rootCause" jdbcType="VARCHAR"/>
+    <result column="corrective_action" property="correctiveAction" jdbcType="VARCHAR"/>
+    <result column="suggest" property="suggest" jdbcType="VARCHAR"/>
+    <result column="attachment_path" property="attachmentPath" jdbcType="VARCHAR"/>
+    
+    <association property="group" javaType="com.cn.myQA.pojo.Group" column="group_id" select="com.cn.myQA.dao.BaseMapper.fullGroup"></association>
+    <association property="city" javaType="com.cn.myQA.pojo.City" column="city_id" select="com.cn.myQA.dao.BaseMapper.fullCity"></association>
+    <association property="creator" javaType="com.cn.myQA.pojo.User" column="creator_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
+    <association property="modifier" javaType="com.cn.myQA.pojo.User" column="modifier_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
+    <association property="handler" javaType="com.cn.myQA.pojo.User" column="handler_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, created, modified, number, category, project, type, emailto, group_id, city_id, startdate, promisedate, 
+    description, suggestion, feedback, closed, creator_id, modifier_id, handler_id, handle_status, handle_promisedate, handle_result, to_top,
+    supplier, issue_date, teammates, is_c_feedback, containment_plan_date, action_plan_date, severity, begin_storehouse, spc, order_no, hawb,
+    part_information, scheduled_time, actual_time, problem_statement, issue_description, recovery_description, root_cause, corrective_action,
+    suggest, attachment_path
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByNumber" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where number = #{number,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from question
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.myQA.pojo.Question" useGeneratedKeys="true" keyProperty="id">
+    insert into question (number, category, project, 
+      type, emailto, group_id, 
+      city_id, startdate, promisedate, 
+      description, suggestion, feedback, creator_id, handler_id)
+    values (#{number,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{project,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{emailto,jdbcType=VARCHAR}, #{group.id,jdbcType=INTEGER}, 
+      #{city.id,jdbcType=INTEGER}, #{startdate,jdbcType=TIMESTAMP}, #{promisedate,jdbcType=TIMESTAMP}, 
+      #{description,jdbcType=VARCHAR}, #{suggestion,jdbcType=VARCHAR}, #{feedback,jdbcType=VARCHAR},
+      #{creator.id, jdbcType=INTEGER}, #{handler.id, jdbcType=INTEGER})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.cn.myQA.pojo.Question" >
+    update question
+    set category = #{category,jdbcType=VARCHAR},
+      project = #{project,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      emailto = #{emailto,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=INTEGER},
+      city_id = #{cityId,jdbcType=INTEGER},
+      startdate = #{startdate,jdbcType=TIMESTAMP},
+      promisedate = #{promisedate,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR},
+      suggestion = #{suggestion,jdbcType=VARCHAR},
+      feedback = #{feedback,jdbcType=VARCHAR},
+      closed = #{closed,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="countTodayQuestion" resultType="int">
+    select count(*) from question where category=#{category, jdbcType=VARCHAR} and DateDiff(dd,created,getdate())=0
+  </select>
+  
+  <select id="page" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from question
+    where 1=1
+    <!-- 16-6-20 事件与WMSTMS完全区分开来 -->
+    <choose>
+        <when test="search.category!=null and search.category!=''">
+            and category=#{search.category, jdbcType=VARCHAR}
+        </when>
+        <otherwise>
+            and category!='PM'
+        </otherwise>
+    </choose>
+    <if test="search.number!=null and search.number!=''">
+        and number=#{search.number, jdbcType=VARCHAR}
+    </if>
+    <if test="search.project!=null and search.project!=''">
+        and project=#{search.project, jdbcType=VARCHAR}
+    </if>
+    <if test="search.type!=null and search.type!=''">
+        and type=#{search.type, jdbcType=VARCHAR}
+    </if>
+    <if test="search.description!=null and search.description!=''">
+        and description like "%"#{search.description, jdbcType=VARCHAR}"%"
+    </if>
+    <if test="search.creatorId!=null and search.creatorId!=0">
+        and creator_id=#{search.creatorId, jdbcType=INTEGER}
+    </if>
+    <if test="search.closed!=null">
+        and closed=#{search.closed, jdbcType=BIT}
+    </if>
+    <if test="search.handlerId!=null and search.handlerId!=0">
+        and handler_id=#{search.handlerId, jdbcType=INTEGER}
+        and handle_status!=2
+    </if>
+    <if test="search.handlerId==0 and search.handleStatus==null">
+        and handle_status!=2
+    </if>
+    <if test="search.handleStatus!=null">
+        and handle_status=#{search.handleStatus, jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 16-6-20 首页的事件处理列表查询 -->
+  <select id="pmList" resultMap="BaseResultMap">
+    <bind name="pattern" value="'%&quot;' + associationId + '&quot;%'"/>
+    select
+        question.id, question.number, question.project, question.begin_storehouse, question.creator_id, question.created, question.issue_date,
+        question.type, question.closed, question.to_top
+    from question
+    inner join user on question.creator_id = user.id
+    where category='PM'
+    and closed=false
+    and (
+        creator_id=#{associationId, jdbcType=INTEGER}
+        or user.leader_id=#{associationId, jdbcType=INTEGER}
+        or teammates like #{pattern}
+        )
+    order by to_top desc, created desc
+  </select>
+  
+  <update id="close">
+    update question set closed=1, feedback=#{feedback, jdbcType=VARCHAR}, modifier_id=#{modifierId, jdbcType=INTEGER}
+    where id=#{id, jdbcType=INTEGER}
+  </update>
+  
+  <update id="handle">
+    update question set handle_status=#{handleStatus, jdbcType=INTEGER}, modifier_id=#{modifierId, jdbcType=INTEGER}
+    <if test="handlePromisedate!=null">
+        , handle_promisedate=#{handlePromisedate, jdbcType=TIMESTAMP}
+    </if>
+    <if test="handleResult!=null and handleResult!=''">
+        , handle_result=#{handleResult, jdbcType=VARCHAR}
+    </if>
+    where id=#{id, jdbcType=INTEGER}
+  </update>
+  
+  <update id="toggleTop">
+    update question
+    set to_top=case when to_top > 0 then 0 else
+        (select max_top from (select max(to_top) as max_top from question) as sub_question) + 1
+    end
+    where id=#{id, jdbcType=INTEGER}
+  </update>
+  
+  <insert id="insertSelective" parameterType="com.cn.myQA.pojo.Question" useGeneratedKeys="true" keyProperty="id">
+    insert into question
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="number != null" >number,</if>
+      <if test="category != null" >category,</if>
+      <if test="project != null" >project,</if>
+      <if test="type != null" >type,</if>
+      <if test="emailto != null" >emailto,</if>
+      <if test="group != null" >group_id,</if>
+      <if test="city != null" >city_id,</if>
+      <if test="startdate != null" >startdate,</if>
+      <if test="promisedate != null" >promisedate,</if>
+      <if test="description != null" >description,</if>
+      <if test="suggestion != null" >suggestion,</if>
+      <if test="feedback != null" >feedback,</if>
+      <if test="creator != null" >creator_id,</if>
+      <if test="modifier != null" >modifier_id,</if>
+      <if test="handler != null" >handler_id,</if>
+      <if test="handleStatus != null" >handle_status,</if>
+      <if test="handlePromisedate != null" >handle_promisedate,</if>
+      <if test="handleResult != null" >handle_result,</if>
+      <if test="supplier != null" >supplier,</if>
+      <if test="issueDate != null" >issue_date,</if>
+      <if test="teammates != null" >teammates,</if>
+      <if test="isCFeedback != null" >is_c_feedback,</if>
+      <if test="containmentPlanDate != null" >containment_plan_date,</if>
+      <if test="actionPlanDate != null" >action_plan_date,</if>
+      <if test="severity != null" >severity,</if>
+      <if test="beginStorehouse != null" >begin_storehouse,</if>
+      <if test="spc != null" >spc,</if>
+      <if test="orderNo != null" >order_no,</if>
+      <if test="hawb != null" >hawb,</if>
+      <if test="partInformation != null" >part_information,</if>
+      <if test="scheduledTime != null" >scheduled_time,</if>
+      <if test="actualTime != null" >actual_time,</if>
+      <if test="problemStatement != null" >problem_statement,</if>
+      <if test="issueDescription != null" >issue_description,</if>
+      <if test="recoveryDescription != null" >recovery_description,</if>
+      <if test="rootCause != null" >root_cause,</if>
+      <if test="correctiveAction != null" >corrective_action,</if>
+      <if test="attachmentPath != null" >attachment_path,</if>
+      <if test="closed!=null">closed</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="number != null" >#{number,jdbcType=VARCHAR},</if>
+      <if test="category != null" >#{category,jdbcType=VARCHAR},</if>
+      <if test="project != null" >#{project,jdbcType=VARCHAR},</if>
+      <if test="type != null" >#{type,jdbcType=VARCHAR},</if>
+      <if test="emailto != null" >#{emailto,jdbcType=VARCHAR},</if>
+      <if test="group != null" >#{group.id,jdbcType=INTEGER},</if>
+      <if test="city != null" >#{city.id,jdbcType=INTEGER},</if>
+      <if test="startdate != null" >#{startdate,jdbcType=TIMESTAMP},</if>
+      <if test="promisedate != null" >#{promisedate,jdbcType=TIMESTAMP},</if>
+      <if test="description != null" >#{description,jdbcType=VARCHAR},</if>
+      <if test="suggestion != null" >#{suggestion,jdbcType=VARCHAR},</if>
+      <if test="feedback != null" >#{feedback,jdbcType=VARCHAR},</if>
+      <if test="creator != null" >#{creator.id,jdbcType=INTEGER},</if>
+      <if test="modifier != null" >#{modifier.id,jdbcType=INTEGER},</if>
+      <if test="handler != null" >#{handler.id,jdbcType=INTEGER},</if>
+      <if test="handleStatus != null" >#{handleStatus,jdbcType=INTEGER},</if>
+      <if test="handlePromisedate != null" >#{handlePromisedate,jdbcType=TIMESTAMP},</if>
+      <if test="handleResult != null" >#{handleResult,jdbcType=VARCHAR},</if>
+      <if test="supplier != null" >#{supplier,jdbcType=VARCHAR},</if>
+      <if test="issueDate != null" >#{issueDate,jdbcType=TIMESTAMP},</if>
+      <if test="teammates != null" >#{teammates,jdbcType=VARCHAR},</if>
+      <if test="isCFeedback != null" >#{isCFeedback,jdbcType=BIT},</if>
+      <if test="containmentPlanDate != null" >#{containmentPlanDate,jdbcType=TIMESTAMP},</if>
+      <if test="actionPlanDate != null" >#{actionPlanDate,jdbcType=TIMESTAMP},</if>
+      <if test="severity != null" >#{severity,jdbcType=VARCHAR},</if>
+      <if test="beginStorehouse != null" >#{beginStorehouse,jdbcType=VARCHAR},</if>
+      <if test="spc != null" >#{spc,jdbcType=VARCHAR},</if>
+      <if test="orderNo != null" >#{orderNo,jdbcType=VARCHAR},</if>
+      <if test="hawb != null" >#{hawb,jdbcType=VARCHAR},</if>
+      <if test="partInformation != null" >#{partInformation,jdbcType=VARCHAR},</if>
+      <if test="scheduledTime != null" >#{scheduledTime,jdbcType=TIMESTAMP},</if>
+      <if test="actualTime != null" >#{actualTime,jdbcType=TIMESTAMP},</if>
+      <if test="problemStatement != null" >#{problemStatement,jdbcType=VARCHAR},</if>
+      <if test="issueDescription != null" >#{issueDescription,jdbcType=VARCHAR},</if>
+      <if test="recoveryDescription != null" >#{recoveryDescription,jdbcType=VARCHAR},</if>
+      <if test="rootCause != null" >#{rootCause,jdbcType=VARCHAR},</if>
+      <if test="correctiveAction != null" >#{correctiveAction,jdbcType=VARCHAR},</if>
+      <if test="attachmentPath != null" >#{attachmentPath,jdbcType=VARCHAR},</if>
+      <if test="closed != null" >#{closed,jdbcType=BIT},</if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.myQA.pojo.Question" >
+    update question
+    <set >
+      <if test="number != null" >number = #{number,jdbcType=VARCHAR},</if>
+      <if test="category != null" >category = #{category,jdbcType=VARCHAR},</if>
+      <if test="project != null" >project = #{project,jdbcType=VARCHAR},</if>
+      <if test="type != null" >type = #{type,jdbcType=VARCHAR},</if>
+      <if test="emailto != null" >emailto = #{emailto,jdbcType=VARCHAR},</if>
+      <if test="group != null" >group_id = #{group.id,jdbcType=INTEGER},</if>
+      <if test="city != null" >city_id = #{city.id,jdbcType=INTEGER},</if>
+      <if test="startdate != null" >startdate = #{startdate,jdbcType=TIMESTAMP},</if>
+      <if test="promisedate != null" >promisedate = #{promisedate,jdbcType=TIMESTAMP},</if>
+      <if test="description != null" >description = #{description,jdbcType=VARCHAR},</if>
+      <if test="suggestion != null" >suggestion = #{suggestion,jdbcType=VARCHAR},</if>
+      <if test="feedback != null" >feedback = #{feedback,jdbcType=VARCHAR},</if>
+      <if test="closed != null" >closed = #{closed,jdbcType=BIT},</if>
+      <if test="modifier != null" >modifier_id = #{modifier.id,jdbcType=INTEGER},</if>
+      <if test="handler != null" >handler_id = #{handler.id,jdbcType=INTEGER},</if>
+      <if test="handleStatus != null" >handle_status = #{handleStatus,jdbcType=INTEGER},</if>
+      <if test="handlePromisedate != null" >handle_promisedate = #{handlePromisedate,jdbcType=TIMESTAMP},</if>
+      <if test="handleResult != null" >handle_result = #{handleResult,jdbcType=VARCHAR},</if>
+      <if test="supplier != null" >supplier = #{supplier,jdbcType=VARCHAR},</if>
+      <if test="issueDate != null" >issue_date = #{issueDate,jdbcType=TIMESTAMP},</if>
+      <if test="teammates != null" >teammates = #{teammates,jdbcType=VARCHAR},</if>
+      <if test="isCFeedback != null" >is_c_feedback = #{isCFeedback,jdbcType=BIT},</if>
+      <if test="containmentPlanDate != null" >containment_plan_date = #{containmentPlanDate,jdbcType=TIMESTAMP},</if>
+      <if test="actionPlanDate != null" >action_plan_date = #{actionPlanDate,jdbcType=TIMESTAMP},</if>
+      <if test="severity != null" >severity = #{severity,jdbcType=VARCHAR},</if>
+      <if test="beginStorehouse != null" >begin_storehouse = #{beginStorehouse,jdbcType=VARCHAR},</if>
+      <if test="spc != null" >spc = #{spc,jdbcType=VARCHAR},</if>
+      <if test="orderNo != null" >order_no = #{orderNo,jdbcType=VARCHAR},</if>
+      <if test="hawb != null" >hawb = #{hawb,jdbcType=VARCHAR},</if>
+      <if test="partInformation != null" >part_information = part_information + #{partInformation,jdbcType=VARCHAR},</if>
+      <if test="scheduledTime != null" >scheduled_time = #{scheduledTime,jdbcType=TIMESTAMP},</if>
+      <if test="actualTime != null" >actual_time = #{actualTime,jdbcType=TIMESTAMP},</if>
+      <if test="problemStatement != null" >problem_statement = problem_statement + #{problemStatement,jdbcType=VARCHAR},</if>
+      <if test="issueDescription != null" >issue_description = issue_description + #{issueDescription,jdbcType=VARCHAR},</if>
+      <if test="recoveryDescription != null" >recovery_description = recovery_description + #{recoveryDescription,jdbcType=VARCHAR},</if>
+      <if test="rootCause != null" >root_cause = root_cause + #{rootCause,jdbcType=VARCHAR},</if>
+      <if test="correctiveAction != null" >corrective_action = corrective_action + #{correctiveAction,jdbcType=VARCHAR},</if>
+      <if test="suggest != null" >suggest = suggest + #{suggest,jdbcType=VARCHAR},</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 周报 -->
+  <select id="questionsThisWeek" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from question where DateAdd(day, -7, getdate()) &lt;= created or DateAdd(day, -7, getdate()) &lt;= modified;
+  </select>
+</mapper>

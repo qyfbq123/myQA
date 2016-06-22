@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.myQA.dao.BaseMapper">
+	<sql id="Base_User_Column_List">
+	    id, created, modified, locked, loginid, username, password, email,
+        leaderEmail,
+		city_id, leader_id
+	</sql>
+	
+	<sql id="Base_Role_Column_List">
+	    id, created, modified, locked, name
+	</sql>
+	
+    <sql id="Base_Group_Column_List">
+        id, created, modified, locked, name
+    </sql>
+    
+    <sql id="Base_Menu_Column_List" >
+	    id, name, url, [index]
+	</sql>
+	
+    <resultMap id="BaseUserResultMap" type="com.cn.myQA.pojo.User">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="created" property="created" jdbcType="TIMESTAMP" />
+        <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+        <result column="locked" property="locked" jdbcType="BIT" />
+        <result column="loginid" property="loginid" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="leaderEmail" property="leaderemail" jdbcType="VARCHAR" />
+    </resultMap>
+    
+	<resultMap id="RichUserResultMap" type="com.cn.myQA.pojo.User">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="created" property="created" jdbcType="TIMESTAMP" />
+		<result column="modified" property="modified" jdbcType="TIMESTAMP" />
+		<result column="locked" property="locked" jdbcType="BIT" />
+		<result column="loginid" property="loginid" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="leaderEmail" property="leaderemail" jdbcType="VARCHAR" />
+
+		<association property="city" javaType="com.cn.myQA.pojo.City"
+			column="city_id" select="fullCity"></association>
+	    <association property="leader" javaType="com.cn.myQA.pojo.User"
+	        column="leader_id" select="fullUser"></association>
+			
+	    <collection property="roleList" ofType="com.cn.myQA.pojo.Role" column="id" select="fullRoleList"></collection>
+		<collection property="groupList" ofType="com.cn.myQA.pojo.Group"
+			column="id" select="fullGroupList"></collection>
+	</resultMap>
+
+	<resultMap id="BaseCityResultMap" type="com.cn.myQA.pojo.City">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap type="com.cn.myQA.pojo.Role" id="BaseRoleResultMap">
+	    <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="created" property="created" jdbcType="TIMESTAMP" />
+        <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+        <result column="locked" property="locked" jdbcType="BIT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+	
+    <resultMap type="com.cn.myQA.pojo.Role" id="RichRoleResultMap">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="created" property="created" jdbcType="TIMESTAMP" />
+        <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+        <result column="locked" property="locked" jdbcType="BIT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        
+        <collection property="menuList" ofType="com.cn.myQA.pojo.SysMenu" column="id" select="fullMenuList"></collection>
+    </resultMap>
+
+	<resultMap id="BaseGroupResultMap" type="com.cn.myQA.pojo.Group">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="created" property="created" jdbcType="TIMESTAMP" />
+		<result column="modified" property="modified" jdbcType="TIMESTAMP" />
+		<result column="locked" property="locked" jdbcType="BIT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="RichGroupResultMap" type="com.cn.myQA.pojo.Group">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="created" property="created" jdbcType="TIMESTAMP" />
+		<result column="modified" property="modified" jdbcType="TIMESTAMP" />
+		<result column="locked" property="locked" jdbcType="BIT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		
+		<collection property="userList" ofType="com.cn.myQA.pojo.User" column="id" select="fullUserList"></collection>
+	</resultMap>
+	
+	<resultMap id="BaseMenuResultMap" type="com.cn.myQA.pojo.SysMenu" >
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="url" property="url" jdbcType="VARCHAR" />
+	    <result column="index" property="index" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="fullCity" resultMap="BaseCityResultMap">
+	    select id, name from city
+	    where id=#{city_id, jdbcType=INTEGER}
+	</select>
+	
+	<select id="fullRoleList" resultMap="BaseRoleResultMap">
+	   select
+	   role.id, role.created, role.modified, role.locked, role.name
+	   from role
+	   inner join user_has_role
+	   on role.id = user_has_role.role_id
+	   where user_has_role.user_id=#{id, jdbcType=INTEGER}
+	</select>
+
+	<select id="fullGroupList" resultMap="BaseGroupResultMap">
+        select
+        [group].id, [group].created, [group].modified, [group].locked, [group].name
+        from [group]
+        inner join user_has_group
+        on [group].id=user_has_group.group_id
+        where user_has_group.user_id=#{id, jdbcType=INTEGER}
+	</select>
+	
+	<select id="fullMenuList" resultMap="BaseMenuResultMap">
+	   select
+	       menu.id, menu.name, menu.url, menu.[index]
+	   from sys_menu menu
+	   inner join role_has_menu on menu.id=role_has_menu.menu_id
+	   where role_has_menu.role_id=#{id, jdbcType=INTEGER}
+	</select>
+	
+	<select id="fullUserList" resultMap="BaseUserResultMap">
+	   select
+	       [user].id, [user].created, [user].modified, [user].locked, [user].loginid, [user].password, [user].username, [user].email, [user].leaderEmail
+	   from user_has_group
+	   inner join [user] on user_has_group.user_id = [user].id
+	   where user_has_group.group_id=#{id, jdbcType=INTEGER}
+	</select>
+	
+	<select id="fullGroup" resultMap="BaseGroupResultMap">
+	    select
+	    <include refid="Base_Group_Column_List"></include>
+	    from [group]
+	    where id=#{id, jdbcType=INTEGER}
+	</select>
+  
+	<select id="fullUser" resultMap="BaseUserResultMap">
+		select
+		<include refid="Base_User_Column_List"></include>
+		from [user]
+		where id=#{id, jdbcType=INTEGER}
+	</select>
+	
+	<select id="fullRichUser" resultMap="RichUserResultMap">
+        select
+        <include refid="Base_User_Column_List"></include>
+        from [user]
+        where id=#{id, jdbcType=INTEGER}
+    </select>
+</mapper>

@@ -1,0 +1,41 @@
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">角色 / {{pageType}}</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+      <div class="panel-title pull-left">角色信息</div>
+      <div id="operates" class="btn-group pull-right">
+        <button type="button" data-action="save" class="btn btn-default btn-sm"><span aria-hidden="true" class="glyphicon glyphicon-save"></span>保存</button>
+        <button type="button" data-action="refresh" class="btn btn-default btn-sm"><span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>重置</button>
+        <button type="button" data-action="cancel" class="btn btn-default btn-sm"><span aria-hidden="true" class="glyphicon glyphicon-arrow-left"></span>取消</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <form role="form" class="form-horizontal">
+            <input type="hidden" name="id" can-value="id"/>
+            <div class="form-group">
+              <label for="name" class="col-sm-2 control-label">名称</label>
+              <div class="col-sm-10">
+                <input id="name" type="text" name="name" can-value="name" placeholder="角色名称" class="form-control"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6">
+          <form role="form" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">菜单列表</label>
+              <div id="menuList" class="col-sm-10"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">案例处理</h1>
+  </div>
+</div>
+<div class="row">
+  <div style="padding:0 0 10px; 0" class="col-lg-12 text-center">
+    <form id="searchForm" onSubmit="return false;" class="form-inline">
+      <input type="hidden" can-value="closed" name="closed"/>
+      <input type="hidden" can-value="handlerId" name="handlerId"/>
+      <div class="form-group">
+        <label for="category">种类:</label>
+        <select id="category" name="category" class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label for="number">编号:</label>
+        <input id="number" type="text" name="number" placeholder="编号" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label for="project">项目:</label>
+        <select id="project" name="project" class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label for="type">类型:</label>
+        <select id="type" name="type" class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label for="creatorId">发起人:</label>
+        <select id="creatorId" name="creatorId" class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label for="number">问题描述:</label>
+        <input id="description" type="text" name="description" placeholder="描述" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label for="handleStatus">处理状态:</label>
+        <select id="handleStatus" name="handleStatus" class="form-control"></select>
+      </div>
+      <button class="btn btn-primary">查询</button>
+    </form>
+  </div>
+</div>
+<div id="tempDialog" class="hide">
+  <div class="row">
+    <div class="col-md-12">
+      <form onSubmit="return false;" class="form-horizontal">
+        <div class="form-group">
+          <label for="" class="col-sm-4 control-label">处理状态</label>
+          <div class="col-sm-8">
+            <select name="handleStatus" class="form-control"></select>
+          </div>
+        </div>
+        <div class="form-group handlePromisedate hide">
+          <label for="" class="col-sm-4 control-label">处理预计完成时间</label>
+          <div class="col-sm-8">
+            <div class="input-group date">
+              <input type="text" name="handlePromisedate" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group handleResult hide">
+          <label for="" class="col-sm-4 control-label">处理结果</label>
+          <div class="col-sm-8">
+            <textarea name="handleResult" rows="3" placeholder="请输入处理结果..." class="form-control"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

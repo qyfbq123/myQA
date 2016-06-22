@@ -1,0 +1,43 @@
+
+<div id="wrapper">
+  <nav role="navigation" style="margin-bottom: 0" class="navbar navbar-default navbar-static-top">
+    <div class="navbar-header">
+      <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#!home"><img src="public/static/DHL.jpg" style="height:50px;"/></a>
+    </div>
+    <ul class="nav navbar-top-links navbar-right">
+      <li class="dropdown"><a data-toggle="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i></a>
+        <ul class="dropdown-menu dropdown-user">
+          <li><a id="loginBtn" href="javascript:void(0)" class="hide"><i class="fa fa-sign-in fa-fw"></i>Login</a></li>
+          <li><a id="logoutBtn" href="#!logout"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div role="navigation" class="navbar-default sidebar">
+      <div class="sidebar-nav navbar-collapse">
+        <ul id="side-menu" class="nav">
+          <li><a href="#!home/dashboardList"><i class="fa fa-dashboard fa-fw"></i>&nbsp;概览</a></li>
+          <li><a href="#!home/question/pmAdd"><i class="fa fa-edit fa-fw"></i>&nbsp;事件管理</a></li>
+          <li><a href="#!home/question/wmsAdd"><i class="fa fa-edit fa-fw"></i>&nbsp;WMS管理</a></li>
+          <li><a href="#!home/question/tmsAdd"><i class="fa fa-edit fa-fw"></i>&nbsp;TMS管理</a></li>
+          <li><a href="#!home/question/handle"><i class="fa fa-table fa-fw"></i>&nbsp;案例处理</a></li>
+          <li><a href="#!home/question/pmClose"><i class="fa fa-table fa-fw"></i>&nbsp;事件关闭</a></li>
+          <li><a href="#!home/question/wmsClose"><i class="fa fa-table fa-fw"></i>&nbsp;WMS关闭</a></li>
+          <li><a href="#!home/question/tmsClose"><i class="fa fa-table fa-fw"></i>&nbsp;TMS关闭</a></li>
+          <li><a href="#!home/question/pmView"><i class="fa fa-table fa-fw"></i>&nbsp;事件历史解决查询</a></li>
+          <li><a href="#!home/question/wmsView"><i class="fa fa-table fa-fw"></i>&nbsp;WMS历史解决查询</a></li>
+          <li><a href="#!home/question/tmsView"><i class="fa fa-table fa-fw"></i>&nbsp;TMS历史解决查询</a></li>
+          <li><a href="#"><i class="fa fa-wrench fa-fw"></i>&nbsp;系统管理员<span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+              <li><a href="#!home/system/userView">用户</a></li>
+              <li><a href="#!home/system/roleView">角色</a></li>
+              <li><a href="#!home/system/groupView">组</a></li>
+              <li><a href="#!home/system/dictSetting">系统字典</a></li>
+              <li><a href="#!home/system/batchImport">批量导入</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div id="page-wrapper"></div>
+</div>

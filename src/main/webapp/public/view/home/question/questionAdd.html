@@ -1,0 +1,89 @@
+
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+      <div class="panel-title pull-left">{{title}}</div>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <form role="form" class="form-horizontal">
+            <input type="hidden" can-value="category"/>
+            <div class="form-group">
+              <label for="project" class="col-sm-3 control-label">项目</label>
+              <div class="col-sm-8">
+                <select id="project" name="project" placeholder="项目" class="form-control"></select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="type" class="col-sm-3 control-label">问题类型</label>
+              <div class="col-sm-8">
+                <select id="type" name="type" placeholder="类型" class="form-control"></select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="emailTo" class="col-sm-3 control-label">邮件人</label>
+              <div class="col-sm-8">
+                <input id="emailTo" type="email" can-value="emailto" name="emailto" placeholder="Email" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="group" class="col-sm-3 control-label">邮件组</label>
+              <div class="col-sm-8">
+                <select id="group" name="group" placeholder="邮件组" class="form-control"></select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="handler" class="col-sm-3 control-label">处理人</label>
+              <div class="col-sm-8">
+                <select id="handler" name="handler" placeholder="邮件组" class="form-control"></select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6">
+          <form role="form" class="form-horizontal">
+            <div class="form-group">
+              <label for="city" class="col-sm-3 control-label">城市</label>
+              <div class="col-sm-8">
+                <select id="city" name="city" placeholder="城市" class="form-control"></select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="startdate" class="col-sm-3 control-label">项目发起时间</label>
+              <div class="col-sm-8">
+                <div class="input-group date">
+                  <input id="startdate" name="startdate" type="text" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="promisedate" class="col-sm-3 control-label">要求结束时间</label>
+              <div class="col-sm-8">
+                <div class="input-group date">
+                  <input id="promisedate" name="promisedate" type="text" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <form role="form" onSubmit="return false;" class="form-horizontal">
+          <div class="form-group">
+            <label for="description" class="col-sm-3 control-label">问题描述</label>
+            <div class="col-sm-7">
+              <textarea id="description" name="description" can-value="description" rows="3" placeholder="请输入问题描述..." class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-8 col-sm-2">
+              <button id="submitBtn" class="btn btn-primary">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>
+              <button id="resetBtn" class="btn btn-default">&nbsp;&nbsp;重置&nbsp;&nbsp;</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

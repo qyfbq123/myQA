@@ -1,0 +1,36 @@
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">{{pageinfo}}</h1>
+  </div>
+</div>
+<div class="row">
+  <div style="padding:0 0 10px; 0" class="col-lg-10 col-lg-offset-1 text-center">
+    <form id="searchForm" onSubmit="return false;" class="form-inline">
+      <input type="hidden" can-value="category" name="category"/>
+      <input type="hidden" can-value="closed" name="closed"/>
+      <input type="hidden" can-value="handleStatus" name="handleStatus"/>
+      <div class="form-group">
+        <label for="number">编号:</label>
+        <input id="number" type="text" name="number" placeholder="编号" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label for="project">项目:</label>
+        <select id="project" name="project" class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label for="type">类型:</label>
+        <select id="type" name="type" class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label for="creatorId">发起人:</label>
+        <select id="creatorId" name="creatorId" class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label for="number">问题描述:</label>
+        <input id="description" type="text" name="description" placeholder="描述" class="form-control"/>
+      </div>
+      <button class="btn btn-primary">查询</button>
+    </form>
+  </div>
+</div>

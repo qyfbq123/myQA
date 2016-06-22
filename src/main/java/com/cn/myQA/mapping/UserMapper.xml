@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.myQA.dao.UserMapper" >
+
+  <select id="selectByPrimaryKey" resultMap="com.cn.myQA.dao.BaseMapper.RichUserResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="com.cn.myQA.dao.BaseMapper.Base_User_Column_List" />
+    from [user]
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from [user]
+    where id = #{id,jdbcType=INTEGER};
+    delete from user_has_role where user_id=#{id, jdbcType=INTEGER};
+    delete from user_has_group where user_id=#{id, jdbcType=INTEGER};
+  </delete>
+  <insert id="insert" parameterType="com.cn.myQA.pojo.User" useGeneratedKeys="true" keyProperty="id">
+    <!-- 16-6-20 添加用户领导 -->
+    insert into [user] (loginid, password, username, 
+      email, city_id
+      <if test="leader != null">
+      , leader_id
+      </if>
+      )
+    values (#{loginid,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{username, jdbcType=VARCHAR},
+      #{email,jdbcType=VARCHAR}, #{city.id,jdbcType=INTEGER}
+      <if test="leader != null">, #{leader.id,jdbcType=INTEGER}</if>
+      );
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.myQA.pojo.User" >
+    insert into [user]
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="modified != null" >
+        modified,
+      </if>
+      <if test="locked != null" >
+        locked,
+      </if>
+      <if test="loginid != null" >
+        loginid,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="city != null" >
+        city.id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="locked != null" >
+        #{locked,jdbcType=BIT},
+      </if>
+      <if test="loginid != null" >
+        #{loginid,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city.id,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.myQA.pojo.User" >
+    update [user]
+    <set >
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        modified = #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="locked != null" >
+        locked = #{locked,jdbcType=BIT},
+      </if>
+      <if test="loginid != null" >
+        loginid = #{loginid,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderemail != null" >
+        leaderEmail = #{leaderemail,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city_id = #{city.id,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.myQA.pojo.User" >
+    update [user]
+    set loginid = #{loginid,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      username = #{username, jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      city_id = #{city.id,jdbcType=INTEGER}
+      <!-- 16-6-20 添加用户领导 -->
+      <if test="leader != null">
+      , leader_id = #{leader.id, jdbcType=INTEGER}
+      </if>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findByLoginID" parameterType="java.lang.String" resultMap="com.cn.myQA.dao.BaseMapper.RichUserResultMap">
+    select
+    <include refid="com.cn.myQA.dao.BaseMapper.Base_User_Column_List"></include>
+    from [user]
+    where loginid=#{id, jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findUserMenu" parameterType="java.lang.Integer" resultMap="com.cn.myQA.dao.BaseMapper.BaseMenuResultMap">
+    select
+    distinct menu.id, menu.name, menu.url, menu.[index]
+    from [user]
+    inner join user_has_role on [user].id = user_has_role.user_id
+    inner join role_has_menu on user_has_role.role_id = role_has_menu.role_id
+    inner join sys_menu menu on role_has_menu.menu_id = menu.id
+    where [user].id=#{id, jdbcType=INTEGER}
+    order by menu.[index] asc
+  </select>
+
+  <select id="all" resultMap="com.cn.myQA.dao.BaseMapper.RichUserResultMap">
+    select
+    <include refid="com.cn.myQA.dao.BaseMapper.Base_User_Column_List" />
+    from [user]
+  </select>
+  
+  <select id="page" resultMap="com.cn.myQA.dao.BaseMapper.RichUserResultMap">
+    select
+    <include refid="com.cn.myQA.dao.BaseMapper.Base_User_Column_List" />
+    from [user]
+  </select>
+  
+  <select id="loginIDVerify" resultType="int">
+    select count(*) from
+    [user]
+    where loginid=#{loginID, jdbcType=VARCHAR}
+    <if test="id!=null and id>0">
+        and id!=#{id, jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <delete id="removeUserRoles">
+    delete
+    from user_has_role
+    where user_id=#{id, jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="putUserRoles">
+    insert into user_has_role(user_id, role_id)
+    values
+    <foreach collection="roleList" item="role" separator=",">
+        (#{id, jdbcType=INTEGER}, #{role.id, jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  
+  <update id="toggleLocked" parameterType="java.lang.Integer">
+    update [user] set locked=case locked when 0 then 1 else 0 end where id=#{id, jdbcType=INTEGER}
+  </update>
+  
+  <select id="findAllRoles" resultMap="com.cn.myQA.dao.BaseMapper.RichRoleResultMap">
+    select
+    <include refid="com.cn.myQA.dao.BaseMapper.Base_Role_Column_List"></include>
+    from role
+  </select>
+  
+  <select id="verifyRoleName" resultType="int">
+    select count(*) from role
+    where name=#{name}
+    <if test="id!=null and id>0">
+        and id!=#{id, jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <insert id="insertRole" parameterType="com.cn.myQA.pojo.Role" useGeneratedKeys="true" keyProperty="id">
+    insert into role (name)
+    values (#{name,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateRoleByPrimaryKey" parameterType="com.cn.myQA.pojo.Role" >
+    update role
+    set name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="rolePutMenus">
+    insert role_has_menu(role_id, menu_id)
+    values
+    <foreach collection="menuList" item="menu" separator=",">
+        (#{id, jdbcType=INTEGER}, #{menu.id, jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  
+  <delete id="roleRemoveMenus" parameterType="java.lang.Integer">
+    delete from role_has_menu where role_id=#{id, jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteRoleByPrimaryKey" parameterType="java.lang.Integer">
+    delete from role where id=#{id, jdbcType=INTEGER};
+    delete from user_has_role where role_id=#{id, jdbcType=INTEGER};
+    delete from role_has_menu where role_id=#{id, jdbcType=INTEGER};
+  </delete>
+  
+  <select id="findAllMenus" resultMap="com.cn.myQA.dao.BaseMapper.BaseMenuResultMap">
+    select
+    <include refid="com.cn.myQA.dao.BaseMapper.Base_Menu_Column_List"></include>
+    from sys_menu
+  </select>
+  
+  <select id="findAllGroups" resultMap="com.cn.myQA.dao.BaseMapper.RichGroupResultMap">
+    select
+    <include refid="com.cn.myQA.dao.BaseMapper.Base_Group_Column_List"></include>
+    from [group]
+  </select>
+  
+  <select id="verifyGroupName" resultType="int">
+    select count(*) from [group]
+    where name=#{name, jdbcType=VARCHAR}
+    <if test="id!=null and id>0">
+        and id!=#{id, jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <insert id="insertGroup" parameterType="com.cn.myQA.pojo.Group" useGeneratedKeys="true" keyProperty="id">
+    insert into [group] (name)
+    values (#{name,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateGroupByPrimaryKey" parameterType="com.cn.myQA.pojo.Group">
+    update [group]
+    set name=#{name, jdbcType=VARCHAR}
+    where id=#{id, jdbcType=INTEGER}
+  </update>
+  
+  <insert id="groupPutUsers">
+    insert into user_has_group(user_id, group_id)
+    values
+    <foreach collection="userList" item="u" separator=",">
+        (#{u.id, jdbcType=INTEGER}, #{id, jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  
+  <delete id="groupRemoveUsers" parameterType="java.lang.Integer">
+    delete from user_has_group
+    where group_id=#{id, jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteGroupByPrimaryKey" parameterType="java.lang.Integer">
+    delete from [group]
+    where id=#{id, jdbcType=INTEGER};
+    delete from user_has_group
+    where group_id=#{id, jdbcType=INTEGER};
+  </delete>
+  
+  <select id="findPMGroup" resultMap="com.cn.myQA.dao.BaseMapper.RichGroupResultMap">
+    select top 1 <include refid="com.cn.myQA.dao.BaseMapper.Base_Group_Column_List"></include> from [group]
+  </select>
+</mapper>

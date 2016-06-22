@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook>
+    <worksheet idx="0">
+    <section startRow="0" endRow="6">
+    </section>
+        <loop startRow="7" endRow="7" items="datas" var="employee" varType="com.cn.myQA.web.BackImportVO">
+                                <section startRow="7" endRow="7">
+                                    <mapping row="7" col="1">employee.col0</mapping>
+                                    <mapping row="7" col="2">employee.col1</mapping>
+                                    <mapping row="7" col="5">employee.col2</mapping>
+                                </section>
+                                <loopbreakcondition>
+                                    <rowcheck offset="0">
+                                        <cellcheck offset="0">完结</cellcheck>
+                                    </rowcheck>
+                                </loopbreakcondition>
+                            </loop>
+    </worksheet>
+</workbook>

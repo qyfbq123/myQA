@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook>
+    <worksheet idx="0">
+        <section startRow="0" endRow="0"></section>
+        <loop startRow="1" endRow="1" items="questions" var="question" varType="com.cn.myQA.web.QuestionVO">
+                <section startRow="1" endRow="1">
+                    <mapping row="1" col="0">question.id</mapping>
+					<mapping row="1" col="1">question.itemId</mapping>
+					<mapping row="1" col="2">question.projectName</mapping>
+					<mapping row="1" col="3">question.projectManager</mapping>
+					<mapping row="1" col="4">question.vendor</mapping>
+					<mapping row="1" col="5">question.issueDate</mapping>
+					<mapping row="1" col="6">question.attendee</mapping>
+					<mapping row="1" col="7">question.isCustomerFeed</mapping>
+					<mapping row="1" col="8">question.containmentPlanDate</mapping>
+					<mapping row="1" col="9">question.actionPlanDate</mapping>
+					<mapping row="1" col="10">question.issueType</mapping>
+					<mapping row="1" col="11">question.severity</mapping>
+					<mapping row="1" col="12">question.warehouse</mapping>
+					<mapping row="1" col="13">question.spcName</mapping>
+					<mapping row="1" col="14">question.orderNo</mapping>
+					<mapping row="1" col="15">question.hawb</mapping>
+					<mapping row="1" col="16">question.partInformation</mapping>
+					<mapping row="1" col="17">question.pickupTime</mapping>
+					<mapping row="1" col="18">question.actPickupTime</mapping>
+					<mapping row="1" col="19">question.problemStatement</mapping>
+					<mapping row="1" col="20">question.issueDescription</mapping>
+					<mapping row="1" col="21">question.correctiveDescription</mapping>
+					<mapping row="1" col="22">question.rootCause</mapping>
+					<mapping row="1" col="23">question.correctiveAction</mapping>
+					<mapping row="1" col="24">question.modifyby</mapping>
+					<mapping row="1" col="25">question.modifytime</mapping>
+                </section>
+                <loopbreakcondition>
+                    <rowcheck offset="0"/>
+                    <rowcheck offset="1"/>
+                </loopbreakcondition>
+            </loop>
+    </worksheet>
+</workbook>
