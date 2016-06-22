@@ -30,6 +30,10 @@
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="email" property="email" jdbcType="VARCHAR" />
         <result column="leaderEmail" property="leaderemail" jdbcType="VARCHAR" />
+        
+        <!-- 16-6-22 现在用户需要按地域分组 所以填充用户城市 -->
+        <association property="city" javaType="com.cn.myQA.pojo.City"
+            column="city_id" select="fullCity"></association>
     </resultMap>
     
 	<resultMap id="RichUserResultMap" type="com.cn.myQA.pojo.User">
@@ -133,8 +137,9 @@
 	</select>
 	
 	<select id="fullUserList" resultMap="BaseUserResultMap">
+	   <!-- 16-6-22 用户需要按地域分组 -->
 	   select
-	       `user`.id, `user`.created, `user`.modified, `user`.locked, `user`.loginid, `user`.password, `user`.username, `user`.email, `user`.leaderEmail
+	       `user`.id, `user`.created, `user`.modified, `user`.locked, `user`.loginid, `user`.password, `user`.username, `user`.email, `user`.leaderEmail, `user`.city_id
 	   from user_has_group
 	   inner join `user` on user_has_group.user_id = `user`.id
 	   where user_has_group.group_id=#{id, jdbcType=INTEGER}

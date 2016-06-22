@@ -158,6 +158,15 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             data: 'loginid'
           }, {
             data: 'username'
+          }, {
+
+            /**
+             * 16-6-22 显示用户的地域
+             */
+            data: 'city',
+            render: function(data) {
+              return (data != null ? data.name : void 0) || '';
+            }
           }
         ],
         rowCallback: function(row, data, dataIndex) {

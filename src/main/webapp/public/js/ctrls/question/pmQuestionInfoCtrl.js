@@ -19,11 +19,41 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
        * 获取pm组事件参与人
        */
       reqwest(Auth.apiHost + "user/group/pm?_=" + (Date.now())).then(function(data) {
-        return _.each(data, function(user) {
-          var $input, $label;
-          $label = $('<label/>').text(user.username);
-          $input = $('<input type="checkbox" name="teammates"/>').val(user.id).prependTo($label);
-          return $('#teammates').append($label);
+
+        /**
+         * 16-6-22 用户按地域区分显示
+         */
+        var generateCityTeammates;
+        data = _.groupBy(data, function(u) {
+          return u.city && u.city.name;
+        });
+        generateCityTeammates = function(cityName, users) {
+          var $div;
+          $("#teammates").append($('<div class="col-sm-2"/>').text(cityName + ":"));
+          $div = $('<div class="col-sm-10"/>');
+          _.each(users, function(user) {
+            var $input, $label;
+            $label = $('<label/>').text(user.username);
+            $input = $('<input type="checkbox" name="teammates"/>').val(user.id).prependTo($label);
+            return $div.append($label);
+          });
+          return $('#teammates').append($div);
+        };
+        return reqwest(Auth.apiHost + "dict/cities?_=" + (Date.now())).then(function(cities) {
+          var k, results, v;
+          _.each(cities, function(city) {
+            if (data[city.text]) {
+              generateCityTeammates(city.text, data[city.text]);
+              return delete data[city.text];
+            }
+          });
+          results = [];
+          for (k in data) {
+            v = data[k];
+            k = k === 'null' ? '其他' : k;
+            results.push(generateCityTeammates(k, v));
+          }
+          return results;
         });
       });
 

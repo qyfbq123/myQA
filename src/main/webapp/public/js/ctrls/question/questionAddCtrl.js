@@ -58,10 +58,24 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         });
       });
       reqwest(Auth.apiHost + "user/all?_=" + (Date.now())).then(function(data) {
-        data = _.map(data, function(d) {
+
+        /**
+         * 16-6-22 用户按地域区分下
+         */
+        data = _.groupBy(data, function(user) {
+          return user.city && user.city.name;
+        });
+        data = _.map(data, function(users, city) {
+          var children;
+          children = _.map(users, function(user) {
+            return {
+              id: user.id,
+              text: user.username || user.loginid
+            };
+          });
           return {
-            id: d.id,
-            text: d.username || d.loginid
+            text: (city === 'null' ? '其他' : city),
+            children: children
           };
         });
         return $('#handler').select2({
