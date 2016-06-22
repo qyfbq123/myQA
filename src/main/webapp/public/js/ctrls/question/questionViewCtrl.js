@@ -93,6 +93,10 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           $body.append($('<p/>').text("原定派送／取件时间：" + (question.scheduledTime ? new Date(question.scheduledTime).toLocaleString() : '')));
           $body.append($('<p/>').text("实际派送／取件时间：" + (question.actualTime ? new Date(question.actualTime).toLocaleString() : '')));
           $body.append($('<p/>').text("问题描述：" + (question.problemStatement || '')));
+
+          /**
+           * 16-6-20 隐藏情况反馈
+           */
           $body.append($('<p/>').text("补救方案描述：" + (question.recoveryDescription || '')));
           $body.append($('<p/>').text("问题根本原因：" + (question.rootCause || '')));
           $body.append($('<p/>').text("改善方案：" + (question.correctiveAction || '')));

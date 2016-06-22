@@ -40,6 +40,7 @@
     <result column="recovery_description" property="recoveryDescription" jdbcType="VARCHAR"/>
     <result column="root_cause" property="rootCause" jdbcType="VARCHAR"/>
     <result column="corrective_action" property="correctiveAction" jdbcType="VARCHAR"/>
+    <!-- 16-6-20 添加主管建议 -->
     <result column="suggest" property="suggest" jdbcType="VARCHAR"/>
     <result column="attachment_path" property="attachmentPath" jdbcType="VARCHAR"/>
     
@@ -54,6 +55,7 @@
     description, suggestion, feedback, closed, creator_id, modifier_id, handler_id, handle_status, handle_promisedate, handle_result, to_top,
     supplier, issue_date, teammates, is_c_feedback, containment_plan_date, action_plan_date, severity, begin_storehouse, spc, order_no, hawb,
     part_information, scheduled_time, actual_time, problem_statement, issue_description, recovery_description, root_cause, corrective_action,
+    <!-- 16-6-20添加主管建议 -->
     suggest, attachment_path
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -191,6 +193,7 @@
     where id=#{id, jdbcType=INTEGER}
   </update>
   
+  <!-- 16-6-20 调整了一下样式 -->
   <insert id="insertSelective" parameterType="com.cn.myQA.pojo.Question" useGeneratedKeys="true" keyProperty="id">
     insert into question
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -276,6 +279,8 @@
       <if test="closed != null" >#{closed,jdbcType=BIT},</if>
     </trim>
   </insert>
+  
+  <!-- 16-6-20 添加了更新方法 -->
   <update id="updateByPrimaryKeySelective" parameterType="com.cn.myQA.pojo.Question" >
     update question
     <set >

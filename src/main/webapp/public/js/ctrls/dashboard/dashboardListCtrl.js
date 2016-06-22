@@ -164,6 +164,10 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
           data: data
         });
       });
+
+      /**
+       * 16-6-20 PM单独列出处理
+       */
       $('#category').select2({
         language: 'zh-CN',
         theme: "bootstrap",

@@ -55,6 +55,10 @@ class DictController {
         return new ResponseEntity<List<Option>>(dictService.beginStorehouses(), HttpStatus.OK);
     }
     
+    /**
+     * 16-6-20 添加供应商
+     * @return
+     */
     @ApiOperation(value="所属供应商", notes="所属供应商", httpMethod="GET")
     @RequestMapping(value="/suppliers", method=RequestMethod.GET)
     public ResponseEntity<List<Option>> suppliers() {

@@ -227,9 +227,13 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         $('.input-group.date input').each(function(e, i) {
           return question[$(this).attr('name')] = $(this).datepicker('getDate');
         });
+
+        /**
+         * 16-6-20 textarea转纪录
+         */
         $('form textarea').each(function() {
           if (question[$(this).attr('name')]) {
-            return question[$(this).attr('name')] = (new Date().toLocaleString()) + " 来自 " + (Auth.user().username) + "\n" + question[$(this).attr('name')] + "\n";
+            return question[$(this).attr('name')] = (new Date().toLocaleString()) + " 来自 " + (Auth.user().username) + "\n" + question[$(this).attr('name')];
           }
         });
         question.isCFeedback = !!parseInt(question.isCFeedback);

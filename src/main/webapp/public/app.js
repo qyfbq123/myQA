@@ -53,8 +53,16 @@ require.config({
     loginCtrl: '../public/js/ctrls/loginCtrl',
     dashboardCtrl: '../public/js/ctrls/dashboard/dashboardCtrl',
     dashboardListCtrl: '../public/js/ctrls/dashboard/dashboardListCtrl',
+
+    /**
+     * 16-6-20 新增事件列表
+     */
     pmDashboardListCtrl: '../public/js/ctrls/dashboard/pmDashboardListCtrl',
     pmQuestionInfoCtrl: '../public/js/ctrls/question/pmQuestionInfoCtrl',
+
+    /**
+     * 16-6-20 新增事件关闭组件
+     */
     pmQuestionCloseCtrl: '../public/js/ctrls/question/pmQuestionCloseCtrl',
     questionAddCtrl: '../public/js/ctrls/question/questionAddCtrl',
     questionViewCtrl: '../public/js/ctrls/question/questionViewCtrl',
@@ -186,6 +194,10 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         });
       });
     },
+
+    /**
+     * 16-6-20 事件列表
+     */
     'home/pmDashboardList route': function(data) {
       return require(['pmDashboardListCtrl', 'base'], function(pmDashboardListCtrl, base) {
         if (!can.base) {
@@ -278,6 +290,12 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         });
       });
     },
+
+    /**
+     * 16-6-20 事件关闭单独处理
+     * @param  {[type]} data [description]
+     * @return {[type]}      [description]
+     */
     'home/question/pmClose route': function(data) {
       return require(['pmQuestionCloseCtrl', 'base'], function(pmQuestionCloseCtrl, base) {
         if (!can.base) {
@@ -438,6 +456,10 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
     },
     'question/:category/:id route': function(data) {
       if (data.category === 'PM') {
+
+        /**
+         * 16-6-20 事件处理单独列出
+         */
         return require(['pmQuestionCloseCtrl', 'base'], function(pmQuestionCloseCtrl, base) {
           if (Auth.logined()) {
             if (!can.base) {
@@ -463,6 +485,10 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
     },
     'home/question/:category/:id route': function(data) {
       if (data.category === 'PM') {
+
+        /**
+         * 16-6-20 事件处理单独列出
+         */
         return require(['pmQuestionCloseCtrl', 'base'], function(pmQuestionCloseCtrl, base) {
           if (!can.base) {
             new base('', data);

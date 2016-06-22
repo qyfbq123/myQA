@@ -11,6 +11,10 @@ define(['can/control', 'can/view/mustache', 'Auth', 'localStorage', 'reqwest', '
       var failed, success, updateMenus;
       this.element.html(can.view('../public/view/home/home.html', homePageData));
       $('body').removeClass('DHL-backgroud');
+
+      /**
+       * 弹出框弹出登录
+       */
       $('#loginBtn').click(function() {
         return bootbox.dialog({
           title: "登录",

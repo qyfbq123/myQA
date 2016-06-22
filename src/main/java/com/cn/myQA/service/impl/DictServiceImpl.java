@@ -61,6 +61,7 @@ public class DictServiceImpl implements IDictService {
         return transDict2Option( dictMapper.findByType(5) );
     }
     
+//    16-6-20
     @Override
     public List<Option> suppliers() {
         return transDict2Option( dictMapper.findByType(6) );

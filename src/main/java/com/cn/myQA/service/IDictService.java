@@ -37,7 +37,7 @@ public interface IDictService {
     public List<Option> beginStorehouses();
     
     /**
-     * 所属供应商
+     * 16-6-20 所属供应商
      * @return 列表
      */
     public List<Option> suppliers();

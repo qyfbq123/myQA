@@ -115,7 +115,7 @@ public class QuestionController {
 //    16-6-20
     @ApiOperation(value="事件列表查询", notes="事件列表查询", httpMethod="GET")
     @RequestMapping(value="/pmList", method=RequestMethod.GET)
-    public ResponseEntity<List<Question>> page2(@ModelAttribute("user") User user) {
+    public ResponseEntity<List<Question>> pmList(@ModelAttribute("user") User user) {
         if(user == null) {
             user = new User();
         }

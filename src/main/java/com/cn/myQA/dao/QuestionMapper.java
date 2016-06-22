@@ -69,14 +69,14 @@ public interface QuestionMapper {
     int toggleTop(Integer id);
     
     /**
-     * 修改问题
+     * 16-6-20 修改问题
      * @param question 问题
      * @return 结果
      */
     int updateByPrimaryKeySelective(Question question);
     
     /**
-     * 周报查询
+     * 16-6-20 周报查询
      * @return 一周内的问题
      */
     List<Question> questionsThisWeek();

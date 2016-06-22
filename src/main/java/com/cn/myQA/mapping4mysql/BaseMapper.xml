@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cn.myQA.dao.BaseMapper">
+    <!-- 16-6-20 用户添加一个主管id -->
 	<sql id="Base_User_Column_List">
 	    id, created, modified, locked, loginid, username, password, email,
         leaderEmail,
@@ -43,6 +44,7 @@
 
 		<association property="city" javaType="com.cn.myQA.pojo.City"
 			column="city_id" select="fullCity"></association>
+		<!-- 16-6-20 用户－主管 -->
 	    <association property="leader" javaType="com.cn.myQA.pojo.User"
 	        column="leader_id" select="fullUser"></association>
 			
@@ -152,6 +154,7 @@
 		where id=#{id, jdbcType=INTEGER}
 	</select>
 	
+	<!-- 16-6-20 添加填充完整用户的方法 暂时未用到 -->
 	<select id="fullRichUser" resultMap="RichUserResultMap">
         select
         <include refid="Base_User_Column_List"></include>
