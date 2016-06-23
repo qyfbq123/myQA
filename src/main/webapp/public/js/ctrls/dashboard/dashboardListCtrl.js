@@ -15,6 +15,7 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
         bFilter: false,
         processing: true,
         serverSide: true,
+        ordering: false,
         "order": [],
         ajax: {
           url: Auth.apiHost + "question/page2?_=" + (Date.now()),

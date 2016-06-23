@@ -86,7 +86,8 @@
   
   <update id="updateByPrimaryKey" parameterType="com.cn.myQA.pojo.Question" >
     update question
-    set category = #{category,jdbcType=VARCHAR},
+    set modified=getDate(), 
+      category = #{category,jdbcType=VARCHAR},
       project = #{project,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       emailto = #{emailto,jdbcType=VARCHAR},
@@ -156,24 +157,24 @@
         question.id, question.number, question.project, question.begin_storehouse, question.creator_id, question.created, question.issue_date,
         question.type, question.closed, question.to_top
     from question
-    inner join user on question.creator_id = user.id
+    inner join [user] on question.creator_id = [user].id
     where category='PM'
-    and closed=false
+    and closed=0
     and (
         creator_id=#{associationId, jdbcType=INTEGER}
-        or user.leader_id=#{associationId, jdbcType=INTEGER}
+        or [user].leader_id=#{associationId, jdbcType=INTEGER}
         or teammates like #{pattern}
         )
     order by to_top desc, created desc
   </select>
   
   <update id="close">
-    update question set closed=1, feedback=#{feedback, jdbcType=VARCHAR}, modifier_id=#{modifierId, jdbcType=INTEGER}
+    update question set closed=1, feedback=#{feedback, jdbcType=VARCHAR}, modifier_id=#{modifierId, jdbcType=INTEGER}, modified=getDate()
     where id=#{id, jdbcType=INTEGER}
   </update>
   
   <update id="handle">
-    update question set handle_status=#{handleStatus, jdbcType=INTEGER}, modifier_id=#{modifierId, jdbcType=INTEGER}
+    update question set handle_status=#{handleStatus, jdbcType=INTEGER}, modifier_id=#{modifierId, jdbcType=INTEGER}, modified=getDate()
     <if test="handlePromisedate!=null">
         , handle_promisedate=#{handlePromisedate, jdbcType=TIMESTAMP}
     </if>
@@ -279,6 +280,7 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.cn.myQA.pojo.Question" >
     update question
     <set >
+      modified=getDate(),
       <if test="number != null" >number = #{number,jdbcType=VARCHAR},</if>
       <if test="category != null" >category = #{category,jdbcType=VARCHAR},</if>
       <if test="project != null" >project = #{project,jdbcType=VARCHAR},</if>

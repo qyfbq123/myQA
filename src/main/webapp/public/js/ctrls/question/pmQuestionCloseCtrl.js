@@ -228,7 +228,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
                 if (index % 2 === 0) {
                   return $('li:last strong', $chat).text(record);
                 } else {
-                  return $('li:last p', $chat).text(record);
+                  return $('li:last p', $chat).html(record);
                 }
               });
               $('#sampleOdd, #sampleEven', $chat).remove();
@@ -295,7 +295,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         });
         $('#question form textarea').each(function() {
           if (question[$(this).attr('name')]) {
-            return question[$(this).attr('name')] = (new Date().toLocaleString()) + " 来自 " + (Auth.user().username) + "\n" + question[$(this).attr('name')] + "\n";
+            return question[$(this).attr('name')] = (new Date().toLocaleString()) + " 来自 " + (Auth.user().username) + "\n" + (question[$(this).attr('name')].replace(/\n/g, '<br/>')) + "\n";
           }
         });
         question.isCFeedback = !!parseInt(question.isCFeedback);

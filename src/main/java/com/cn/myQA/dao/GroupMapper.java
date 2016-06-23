@@ -11,7 +11,5 @@ public interface GroupMapper {
 
     Group selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Group record);
-
     int updateByPrimaryKey(Group record);
 }

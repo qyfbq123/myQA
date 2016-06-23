@@ -158,12 +158,12 @@
         question.id, question.number, question.project, question.begin_storehouse, question.creator_id, question.created, question.issue_date,
         question.type, question.closed, question.to_top
     from question
-    inner join user on question.creator_id = user.id
+    inner join `user` on question.creator_id = `user`.id
     where category='PM'
     and closed=false
     and (
         creator_id=#{associationId, jdbcType=INTEGER}
-        or user.leader_id=#{associationId, jdbcType=INTEGER}
+        or `user`.leader_id=#{associationId, jdbcType=INTEGER}
         or teammates like #{pattern}
         )
     order by to_top desc, created desc

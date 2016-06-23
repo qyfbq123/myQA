@@ -114,7 +114,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cn.myQA.pojo.User" >
     update [user]
-    set loginid = #{loginid,jdbcType=VARCHAR},
+    set modified=getDate(), 
+      loginid = #{loginid,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       username = #{username, jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
@@ -180,7 +181,7 @@
   </insert>
   
   <update id="toggleLocked" parameterType="java.lang.Integer">
-    update [user] set locked=case locked when 0 then 1 else 0 end where id=#{id, jdbcType=INTEGER}
+    update [user] set modified=getDate(), locked=case locked when 0 then 1 else 0 end where id=#{id, jdbcType=INTEGER}
   </update>
   
   <select id="findAllRoles" resultMap="com.cn.myQA.dao.BaseMapper.RichRoleResultMap">
@@ -204,7 +205,7 @@
   
   <update id="updateRoleByPrimaryKey" parameterType="com.cn.myQA.pojo.Role" >
     update role
-    set name = #{name,jdbcType=VARCHAR}
+    set modified=getDate(), name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -253,7 +254,7 @@
   
   <update id="updateGroupByPrimaryKey" parameterType="com.cn.myQA.pojo.Group">
     update [group]
-    set name=#{name, jdbcType=VARCHAR}
+    set name=#{name, jdbcType=VARCHAR}, modified=getDate()
     where id=#{id, jdbcType=INTEGER}
   </update>
   
