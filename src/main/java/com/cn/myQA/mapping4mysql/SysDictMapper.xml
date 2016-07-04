@@ -94,8 +94,6 @@
   <insert id="saveAttributes">
     insert into sys_dict (typeid, dict_id, dict_value)
     values
-    <foreach collection="dictList" item="dict" separator=",">
-        (#{id, jdbcType=INTEGER}, #{dict.dictId, jdbcType=INTEGER}, #{dict.dictValue, jdbcType=VARCHAR})
-    </foreach>
+    <foreach collection="dictList" item="dict" separator=",">(#{id, jdbcType=INTEGER}, #{dict.dictId, jdbcType=INTEGER}, #{dict.dictValue, jdbcType=VARCHAR})</foreach>
   </insert>
 </mapper>
