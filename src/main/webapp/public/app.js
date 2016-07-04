@@ -75,6 +75,7 @@ require.config({
     groupAddCtrl: '../public/js/ctrls/system/groupAddCtrl',
     dictSettingCtrl: '../public/js/ctrls/system/dictSettingCtrl',
     batchImportCtrl: '../public/js/ctrls/system/batchImportCtrl',
+    otherCtrl: '../public/js/ctrls/system/otherCtrl',
 
     /**
      * 图表控件单独列出
@@ -445,6 +446,16 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
           new base('', data);
         }
         return new batchImportCtrl('#page-wrapper', {
+          id: 'batchImport'
+        });
+      });
+    },
+    'home/system/other route': function(data) {
+      return require(['otherCtrl', 'base'], function(otherCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new otherCtrl('#page-wrapper', {
           id: 'batchImport'
         });
       });

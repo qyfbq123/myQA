@@ -323,9 +323,9 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <!-- 周报 -->
-  <select id="questionsThisWeek" resultMap="BaseResultMap">
+  <!-- 日、周、月报 -->
+  <select id="questionsByDays" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
-    from question where DateAdd(day, -7, getdate()) &lt;= created or DateAdd(day, -7, getdate()) &lt;= modified;
+    from question where DateAdd(day, -#{days, jdbcType=INTEGER}, getdate()) &lt;= created or DateAdd(day, -#{days, jdbcType=INTEGER}, getdate()) &lt;= modified;
   </select>
 </mapper>

@@ -66,7 +66,7 @@ public class ReportServiceImpl implements IReportService {
     @Override
     @Scheduled(cron = "0 0 1 ? * SUN")
     public void monthReport() throws Exception {
-        List<Question> questions = questionMapper.questionsThisWeek();
+        List<Question> questions = questionMapper.questionsByDays(7);
         try {
             File tempQuestionFile = File.createTempFile("temp-问题每周总结", ".xlsx");
             

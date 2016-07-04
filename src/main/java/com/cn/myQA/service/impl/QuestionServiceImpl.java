@@ -1,9 +1,15 @@
 package com.cn.myQA.service.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -12,6 +18,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.jxls.common.Context;
+import org.jxls.util.JxlsHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
@@ -38,7 +46,6 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 @Service
 public class QuestionServiceImpl implements IQuestionService {
-    @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(QuestionServiceImpl.class);
     @Autowired
     private QuestionMapper questionMapper;
@@ -362,6 +369,69 @@ public class QuestionServiceImpl implements IQuestionService {
             }
             
             this.create(q);
+        }
+        return "ok";
+    }
+    
+    public String reportByDays(Integer days) {
+        List<Question> qList = questionMapper.questionsByDays(days);
+        List<Question> pmList = new ArrayList<Question>();
+        List<Question> otherList = new ArrayList<Question>();
+        for(Question q : qList) {
+            if(q.getClosed()) q.setStatus("关闭");
+            else if(q.getModified() == null) q.setStatus("新建");
+            else q.setStatus("更新");
+            if(q.getCategory().equals("PM")) {
+                pmList.add(q);
+            } else {
+                otherList.add(q);
+            }
+        }
+        try(InputStream is = this.getClass().getResourceAsStream("/template/reportTemplate.xls")) {
+            File outFile = File.createTempFile("temp-问题报表", ".xls");
+            OutputStream os = new FileOutputStream(outFile);
+            Context context = new Context();
+            context.putVar("headers", Arrays.asList("status", "number","id","projectName","vendor",
+                    "issueDate","attendee","isCustomerFeed","containmentPlanDate","actionPlanDate","issueType",
+                    "severity","warehouse","spcName","orderNo","hawb","partInformation","pickupTime","actPickupTime",
+                    "problemStatement","issueDescription","correctiveDescription","rootCause","correctiveAction",
+                    "createby","modifytime"));
+            context.putVar("data", pmList);
+            context.putVar("questions", otherList);
+            JxlsHelper.getInstance().processGridTemplateAtCell(is, os, context, "status,number,id,project,supplier,"
+                    + "issueDate,teammates,isCFeedback,containmentPlanDate,actionPlanDate,type,"
+                    + "severity,beginStorehouse,spc,orderNo,hawb,partInformation,scheduledTime,actualTime,"
+                    + "problemStatement,issueDescription,recoveryDescription,rootCause,correctiveAction,"
+                    + "creator.email,modified", "报表!A1");
+            return outFile.getAbsolutePath();
+        } catch (IOException e) {
+            logger.error("找不到报表模版", e);
+        }
+        return null;
+    }
+    
+    public String reportPush(Integer days) {
+        String filePath = this.reportByDays(days);
+        if(filePath == null) {
+            logger.error("报表生成失败！");
+            return "error";
+        } else {
+            String reportName = (days == 1 ? "日" : days == 7 ? "周" : days == 30 ? "月" : "") + "问题汇总报表";
+                    
+            Group pm = userMapper.findPMGroup();
+            List<String> mailList = new ArrayList<String>();
+            for(User u : pm.getUserList()) {
+                if(!StringUtils.isEmpty(u.getEmail()))
+                    mailList.add(u.getEmail());
+            }
+            if(mailList.size() > 0) {
+                taskExecutor.execute(new Runnable(){    
+                    public void run(){
+                        mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每"+ (days == 1 ? "日" : days == 7 ? "周" : days == 30 ? "月" : "") + "总结", "附件为" + reportName + "。", new File(filePath));
+                        System.out.println("发送完毕");
+                    }    
+                 }); 
+            }
         }
         return "ok";
     }

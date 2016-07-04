@@ -88,4 +88,18 @@ public interface IQuestionService {
      * @return
      */
     public String batchImport(List<QuestionVO> questionVOs);
+    
+    /**
+     * 日、周、月报
+     * @param days 天数
+     * @return 生成的文件路径
+     */
+    public String reportByDays(Integer days);
+    
+    /**
+     * 日、周、月报推送
+     * @param days 天数
+     * @return 执行结果
+     */
+    public String reportPush(Integer days);
 }

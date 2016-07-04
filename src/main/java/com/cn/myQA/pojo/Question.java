@@ -91,6 +91,9 @@ public class Question {
     
     private String suggest;
     
+    //为配合周报，新增一条表示问题状态的属性，有效值：新建｜更新｜关闭
+    private String status;
+    
     public Question() {
         
     }
@@ -445,6 +448,14 @@ public class Question {
 
     public void setSuggest(String suggest) {
         this.suggest = suggest;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
 }

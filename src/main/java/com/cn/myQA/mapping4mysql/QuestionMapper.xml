@@ -326,9 +326,9 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <!-- 16-6-20 周报 -->
-  <select id="questionsThisWeek" resultMap="BaseResultMap">
+  <!-- 日、周、月报 -->
+  <select id="questionsByDays" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
-    from question where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= created or DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= modified;
+    from question where DATE_SUB(CURDATE(), INTERVAL #{days, jdbcType=INTEGER} DAY) &lt;= created or DATE_SUB(CURDATE(), INTERVAL #{days, jdbcType=INTEGER} DAY) &lt;= modified;
   </select>
 </mapper>

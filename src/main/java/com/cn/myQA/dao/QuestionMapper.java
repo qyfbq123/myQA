@@ -76,8 +76,9 @@ public interface QuestionMapper {
     int updateByPrimaryKeySelective(Question question);
     
     /**
-     * 16-6-20 周报查询
-     * @return 一周内的问题
+     * 16-6-20 日、周、月报查询
+     * @param days 天数
+     * @return 问题列表
      */
-    List<Question> questionsThisWeek();
+    List<Question> questionsByDays(Integer days);
 }
