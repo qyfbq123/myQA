@@ -70,7 +70,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           return $('#city').val(null).change();
         }
       });
-      reqwest(Auth.apiHost + "user/role/all").then(function(data) {
+      reqwest(Auth.apiHost + "user/role/all?_=" + (Date.now())).then(function(data) {
         var roleList, roles;
         roleList = _.map(data, function(role) {
           return {
