@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.jxls.reader.ReaderBuilder;
@@ -37,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import com.cn.myQA.pojo.Question;
+import com.cn.myQA.pojo.QuestionAttachment;
 import com.cn.myQA.pojo.User;
 import com.cn.myQA.service.IQuestionService;
 import com.cn.myQA.web.QuestionSearch;
@@ -136,6 +138,39 @@ public class QuestionController {
         return new ResponseEntity<String>("ok", result == 1 ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
     
+    @ApiOperation(value="上传问题附件", notes="附件上传", httpMethod="POST")
+    @RequestMapping(value="/attachment/upload", method=RequestMethod.POST)
+    public ResponseEntity<QuestionAttachment> uploadAttachment(MultipartFile Filedata, @ModelAttribute("user") User user) {
+        if(user == null) user = new User();
+        String fileName = Filedata.getOriginalFilename();
+        long l = System.currentTimeMillis();
+        String newFileName = l + "_" + fileName;
+        File tempFile = new File(questionService.getUploadPath() + System.getProperty("file.separator"), newFileName);
+        
+        if (!tempFile.getParentFile().exists()) {  
+            tempFile.getParentFile().mkdirs();  
+        }  
+        try {
+            if (!tempFile.exists()) {  
+                tempFile.createNewFile();
+            }  
+            Filedata.transferTo(tempFile);
+            
+            QuestionAttachment qa = new QuestionAttachment();
+            qa.setFilename(fileName);
+            qa.setPath(newFileName);
+            qa.setUploader(user);
+            qa.setSize(FileUtils.byteCountToDisplaySize(tempFile.length()));
+            
+            int result = questionService.insertAttachment(qa);
+            if(result == 1)
+                return new ResponseEntity<QuestionAttachment>(qa, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<QuestionAttachment>(HttpStatus.BAD_REQUEST);
+    }
+    
     @ApiOperation(value="上传问题图片", notes="图片上传", httpMethod="POST")
     @RequestMapping(value="/photo/upload", method=RequestMethod.POST)
     public ResponseEntity<Map<String, List<Map<String, String>>>> uploadPhoto(MultipartFile Filedata) {
@@ -165,6 +200,29 @@ public class QuestionController {
         }
         
         return new ResponseEntity<Map<String, List<Map<String, String>>>>(HttpStatus.BAD_REQUEST);
+    }
+    
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @ApiOperation(value="按附件id下载", notes="按附件id下载", httpMethod="GET")
+    @RequestMapping(value="/attachment/{id}/download", method=RequestMethod.GET) 
+    public ResponseEntity<byte[]> download2(@PathVariable("id") Integer id){
+        QuestionAttachment qa = questionService.singleAttachment(id);
+        if( qa != null && !StringUtils.isNullOrEmpty(qa.getPath()) ) {
+            try {
+                File file = new File(questionService.getUploadPath() + System.getProperty("file.separator") + qa.getPath());
+                FileInputStream in = new FileInputStream(file);
+
+                final HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                headers.setContentDispositionFormData("attachment", new String(qa.getFilename().getBytes("gb2312"),"iso-8859-1"));
+        
+                return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+            } catch (FileNotFoundException e) {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            } catch (IOException e) {
+                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
     
     @SuppressWarnings({"unchecked", "rawtypes"})

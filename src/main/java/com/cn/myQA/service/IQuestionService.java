@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.cn.myQA.pojo.Question;
+import com.cn.myQA.pojo.QuestionAttachment;
 import com.cn.myQA.pojo.User;
 import com.cn.myQA.web.QuestionSearch;
 import com.cn.myQA.web.QuestionVO;
@@ -102,4 +103,18 @@ public interface IQuestionService {
      * @return 执行结果
      */
     public String reportPush(Integer days);
+    
+    /**
+     * 上传附件
+     * @param attachment 附件信息
+     * @return 结果
+     */
+    public int insertAttachment(QuestionAttachment attachment);
+    
+    /**
+     * 根据id获取附件信息
+     * @param aid 附件id
+     * @return 附件信息
+     */
+    public QuestionAttachment singleAttachment(Integer aid);
 }

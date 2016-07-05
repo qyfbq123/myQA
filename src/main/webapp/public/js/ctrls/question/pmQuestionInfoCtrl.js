@@ -2,7 +2,7 @@
 define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorage', 'select2cn', 'datepickercn', 'uploader', 'datatables.net', 'datatables.net-bs', 'es6shim', 'jqueryFileupload'], function(Ctrl, can, Auth, base, reqwest, bootbox, localStorage) {
   return Ctrl.extend({
     init: function(el, data) {
-      var questionInfo, ref;
+      var questionInfo, ref, table;
       if (!can.base) {
         new base('', data);
       }
@@ -218,12 +218,11 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         });
       }
       $('#filePicker').fileupload({
-        url: Auth.apiHost + "question/photo/upload",
+        url: Auth.apiHost + "question/attachment/upload",
         dataType: 'json',
         done: function(e, data) {
-          $('#attachmentPath').val(data.result.files[0].name);
-          $('#filePicker').parent().nextAll('label').remove();
-          return $('<label/>').text(data.result.files[0].name).insertAfter($('#filePicker').parent());
+          table.row.add(data.result).draw(false);
+          return $('#attachmentRow').removeClass('hide');
         },
         fail: function() {
           return bootbox.alert('附件上传失败');
@@ -245,14 +244,64 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           }
         }
         $('#teammates :checked').prop('checked', false);
-        return $('.input-group.date input').datepicker('setDate', null);
+        $('.input-group.date input').datepicker('setDate', null);
+        table.clear().draw();
+        return $('#attachmentRow').addClass('hide');
+      });
+
+      /**
+       * 16-7-4 附件修改
+       */
+      table = $('#attachmentList').DataTable({
+        paging: false,
+        ordering: false,
+        searching: false,
+        info: false,
+        columns: [
+          {
+            data: 'id',
+            visible: false
+          }, {
+            data: 'filename',
+            render: function(data, d, row) {
+              return "<a href='" + Auth.apiHost + "question/attachment/" + row.id + "/download'>" + data + "</a>";
+            }
+          }, {
+            data: 'uploaded',
+            render: function(data) {
+              if (data) {
+                return new Date(data).toLocaleString();
+              } else {
+                return new Date().toLocaleString();
+              }
+            }
+          }, {
+            data: 'size'
+          }, {
+            data: 'uploader',
+            render: function(data) {
+              return (data != null ? data.username : void 0) || (data != null ? data.email : void 0) || '';
+            }
+          }, {
+            data: 'question_id',
+            render: function(data) {
+              return $('<button/>').addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML;
+            }
+          }
+        ]
+      });
+      $('#attachmentList tbody').on('click', 'button.btn-danger', function() {
+        table.row($(this).parents('tr')).remove().draw();
+        if (table.rows().data().length <= 0) {
+          return $('#attachmentRow').addClass('hide');
+        }
       });
 
       /**
        * 保存问题
        */
       return $('#submitBtn').unbind('click').bind('click', function(e) {
-        var question;
+        var attachmentList, question;
         question = $('form').serializeObject();
         $('.input-group.date input').each(function(e, i) {
           return question[$(this).attr('name')] = $(this).datepicker('getDate');
@@ -272,6 +321,18 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         }
         if (question.teammates) {
           question.teammates = JSON.stringify(question.teammates);
+        }
+
+        /**
+         * 16-7-4 问题附件
+         */
+        attachmentList = table.rows().data();
+        if (attachmentList.length > 0) {
+          question.attachmentList = _.map(attachmentList, function(a) {
+            return {
+              id: a.id
+            };
+          });
         }
         return reqwest({
           url: Auth.apiHost + "question/create",

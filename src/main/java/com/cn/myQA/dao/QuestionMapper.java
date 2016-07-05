@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.cn.myQA.pojo.Question;
+import com.cn.myQA.pojo.QuestionAttachment;
 import com.cn.myQA.web.QuestionSearch;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -81,4 +82,25 @@ public interface QuestionMapper {
      * @return 问题列表
      */
     List<Question> questionsByDays(Integer days);
+    
+    /**
+     * 插入附件
+     * @param attachment 附件信息
+     * @return 结果 
+     */
+    int insertAttachment(QuestionAttachment attachment);
+    
+    /**
+     * 获取附件信息
+     * @param id 附件id
+     * @return 附件信息
+     */
+    QuestionAttachment singleAttachment(Integer id);
+    
+    /**
+     * 绑定异步上传的附件
+     * @param question 问题
+     * @return 结果
+     */
+    int bindQuestionAndAttachment(Question question);
 }

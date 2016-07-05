@@ -6,7 +6,7 @@
 define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorage', 'select2cn', 'datepickercn', 'uploader', 'datatables.net', 'datatables.net-bs', 'es6shim', 'jqueryFileupload'], function(Ctrl, can, Auth, base, reqwest, bootbox, localStorage) {
   return Ctrl.extend({
     init: function(el, data) {
-      var dialogLogin, fetchQuestion, pageInfo;
+      var dialogLogin, fetchQuestion, pageInfo, table;
       pageInfo = new can.Map({
         pageinfo: location.hash.indexOf('home') !== -1 ? '事件关闭' : '事件详情'
       });
@@ -173,7 +173,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       fetchQuestion = function(fetchUrl) {
         $('#question .row .chat-panel').remove();
         return reqwest(fetchUrl).then(function(data) {
-          var ref;
+          var ref, ref1;
           if ($('#question').css('visibility') === 'hidden') {
             $('#question').css('visibility', 'inherit');
           }
@@ -235,10 +235,13 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
               return $chat.removeClass('hide').insertBefore($(this));
             }
           });
-          if (data.attachmentPath) {
-            $('#attachment').attr('href', Auth.apiHost + "question/" + data.id + "/attachment/download").removeClass('hide');
+          if (((ref = data.attachmentList) != null ? ref.length : void 0) > 0) {
+            table.clear();
+            table.rows.add(data.attachmentList);
+            table.draw();
+            $('#attachmentRow').removeClass('hide');
           } else {
-            $('#attachment').closest('.row').addClass('hide');
+            $('#attachmentRow').addClass('hide');
           }
           $('#question').removeClass('hide');
           if (!Auth.logined()) {
@@ -261,12 +264,11 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
               });
             });
           } else {
-            if (data.creator.leader && data.creator.leader.loginid === ((ref = Auth.user()) != null ? ref.loginID : void 0)) {
+            if (data.creator.leader && data.creator.leader.loginid === ((ref1 = Auth.user()) != null ? ref1.loginID : void 0)) {
               $('#suggest').removeClass('hide');
               $('#closeBtn').removeClass('hide');
             }
           }
-          console.log(data.closed);
           if (data.closed) {
             return $('#submitBtn, #closeBtn').remove();
           }
@@ -319,7 +321,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           return bootbox.alert("保存失败！" + err.responseText);
         });
       });
-      return $('#closeBtn').unbind('click').bind('click', function(e) {
+      $('#closeBtn').unbind('click').bind('click', function(e) {
         return bootbox.prompt({
           title: "解决回馈：",
           inputType: 'textarea',
@@ -341,6 +343,44 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             }
           }
         });
+      });
+      return table = $('#attachmentList').DataTable({
+        paging: false,
+        ordering: false,
+        searching: false,
+        info: false,
+        columns: [
+          {
+            data: 'id',
+            visible: false
+          }, {
+            data: 'filename',
+            render: function(data, d, row) {
+              return "<a href='" + Auth.apiHost + "question/attachment/" + row.id + "/download'>" + data + "</a>";
+            }
+          }, {
+            data: 'uploaded',
+            render: function(data) {
+              if (data) {
+                return new Date(data).toLocaleString();
+              } else {
+                return new Date().toLocaleString();
+              }
+            }
+          }, {
+            data: 'size'
+          }, {
+            data: 'uploader',
+            render: function(data) {
+              return (data != null ? data.username : void 0) || (data != null ? data.email : void 0) || '';
+            }
+          }, {
+            data: 'question_id',
+            render: function(data) {
+              return '无';
+            }
+          }
+        ]
       });
     }
   });

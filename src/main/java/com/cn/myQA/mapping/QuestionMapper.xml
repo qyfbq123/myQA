@@ -48,7 +48,24 @@
     <association property="creator" javaType="com.cn.myQA.pojo.User" column="creator_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
     <association property="modifier" javaType="com.cn.myQA.pojo.User" column="modifier_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
     <association property="handler" javaType="com.cn.myQA.pojo.User" column="handler_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
+    
+    <collection property="attachmentList" ofType="com.cn.myQA.pojo.QuestionAttachment" column="id" select="fullAttachmentList"></collection>
   </resultMap>
+  
+  <resultMap id="BaseAttachmentResultMap" type="com.cn.myQA.pojo.QuestionAttachment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="filename" property="filename" jdbcType="VARCHAR" />
+    <result column="uploaded" property="uploaded" jdbcType="TIMESTAMP" />
+    <result column="size" property="size" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    
+    <association property="uploader" javaType="com.cn.myQA.pojo.User" column="uploader_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
+  </resultMap>
+  
+  <select id="fullAttachmentList" resultMap="BaseAttachmentResultMap">
+    select id, question_id, filename, uploaded, size, uploader_id, path from question_attachment where question_id=#{id, jdbcType=INTEGER}
+  </select>
+  
   <sql id="Base_Column_List" >
     id, created, modified, number, category, project, type, emailto, group_id, city_id, startdate, promisedate, 
     description, suggestion, feedback, closed, creator_id, modifier_id, handler_id, handle_status, handle_promisedate, handle_result, to_top,
@@ -328,4 +345,24 @@
     select <include refid="Base_Column_List" />
     from question where DateAdd(day, -#{days, jdbcType=INTEGER}, getdate()) &lt;= created or DateAdd(day, -#{days, jdbcType=INTEGER}, getdate()) &lt;= modified;
   </select>
+  
+  <insert id="insertAttachment" parameterType="com.cn.myQA.pojo.QuestionAttachment" useGeneratedKeys="true" keyProperty="id">
+    insert into question_attachment
+     (question_id, filename, size, uploader_id, path)
+    values
+     (#{questionId, jdbcType=VARCHAR}, #{filename, jdbcType=VARCHAR}, #{size, jdbcType=VARCHAR}, #{uploader.id, jdbcType=INTEGER}, #{path, jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="singleAttachment" parameterType="java.lang.Integer" resultMap="BaseAttachmentResultMap">
+    select id, question_id, filename, uploaded, size, uploader_id, path from question_attachment where id=#{id, jdbcType=INTEGER}
+  </select>
+  
+  <update id="bindQuestionAndAttachment" parameterType="com.cn.myQA.pojo.Question">
+    update question_attachment
+        set question_id=#{id, jdbcType=INTEGER}
+    where id in
+    <foreach collection="attachmentList" item="attachment" open="(" close=")" separator=",">
+        #{attachment.id, jdbcType=INTEGER}
+    </foreach>
+  </update>
 </mapper>

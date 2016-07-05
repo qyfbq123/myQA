@@ -1,6 +1,7 @@
 package com.cn.myQA.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class Question {
     private Integer id;
@@ -93,6 +94,8 @@ public class Question {
     
     //为配合周报，新增一条表示问题状态的属性，有效值：新建｜更新｜关闭
     private String status;
+    
+    private List<QuestionAttachment> attachmentList;
     
     public Question() {
         
@@ -456,6 +459,14 @@ public class Question {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<QuestionAttachment> getAttachmentList() {
+        return attachmentList;
+    }
+
+    public void setAttachmentList(List<QuestionAttachment> attachmentList) {
+        this.attachmentList = attachmentList;
     }
     
 }

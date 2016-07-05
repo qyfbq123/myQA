@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.jxls.common.Context;
@@ -31,6 +32,7 @@ import com.cn.myQA.dao.QuestionMapper;
 import com.cn.myQA.dao.UserMapper;
 import com.cn.myQA.pojo.Group;
 import com.cn.myQA.pojo.Question;
+import com.cn.myQA.pojo.QuestionAttachment;
 import com.cn.myQA.pojo.User;
 import com.cn.myQA.service.IDictService;
 import com.cn.myQA.service.IMailService;
@@ -135,6 +137,9 @@ public class QuestionServiceImpl implements IQuestionService {
             question.setCreated(newQuestion.getCreated());
             question.setCity(newQuestion.getCity());
             question.setHandler(newQuestion.getHandler());
+            if(CollectionUtils.isNotEmpty(question.getAttachmentList())) {
+                questionMapper.bindQuestionAndAttachment(question);
+            }
         }
         
         if(question.getClosed() == null || !question.getClosed()) {
@@ -434,5 +439,13 @@ public class QuestionServiceImpl implements IQuestionService {
             }
         }
         return "ok";
+    }
+    
+    public int insertAttachment(QuestionAttachment attachment) {
+        return questionMapper.insertAttachment(attachment);
+    }
+    
+    public QuestionAttachment singleAttachment(Integer aid) {
+        return questionMapper.singleAttachment(aid);
     }
 }
