@@ -103,4 +103,11 @@ public interface QuestionMapper {
      * @return 结果
      */
     int bindQuestionAndAttachment(Question question);
+    
+    /**
+     * 删除附件
+     * @param question 问题
+     * @return 结果
+     */
+    int removeAttachment(Question question);
 }

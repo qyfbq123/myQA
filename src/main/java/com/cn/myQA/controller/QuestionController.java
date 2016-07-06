@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -140,7 +142,8 @@ public class QuestionController {
     
     @ApiOperation(value="上传问题附件", notes="附件上传", httpMethod="POST")
     @RequestMapping(value="/attachment/upload", method=RequestMethod.POST)
-    public ResponseEntity<QuestionAttachment> uploadAttachment(MultipartFile Filedata, @ModelAttribute("user") User user) {
+    public ResponseEntity<QuestionAttachment> uploadAttachment(MultipartFile Filedata, HttpSession session) {
+        User user = (User)session.getAttribute("user");
         if(user == null) user = new User();
         String fileName = Filedata.getOriginalFilename();
         long l = System.currentTimeMillis();

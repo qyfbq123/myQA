@@ -6,7 +6,7 @@
 define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorage', 'select2cn', 'datepickercn', 'uploader', 'datatables.net', 'datatables.net-bs', 'es6shim', 'jqueryFileupload'], function(Ctrl, can, Auth, base, reqwest, bootbox, localStorage) {
   return Ctrl.extend({
     init: function(el, data) {
-      var dialogLogin, fetchQuestion, pageInfo, table;
+      var dialogLogin, fetchQuestion, pageInfo, ref, table;
       pageInfo = new can.Map({
         pageinfo: location.hash.indexOf('home') !== -1 ? '事件关闭' : '事件详情'
       });
@@ -246,9 +246,13 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             table.clear();
             table.rows.add(data.attachmentList);
             table.draw();
-            $('#attachmentRow').removeClass('hide');
+            $('#attachmentList').removeClass('hide');
           } else {
-            $('#attachmentRow').addClass('hide');
+            table.clear();
+            $('#attachmentList').addClass('hide');
+            if (data.closed) {
+              $('#attachmentRow').addClass('hide');
+            }
           }
           $('#question').removeClass('hide');
           if (!Auth.logined()) {
@@ -277,7 +281,10 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             }
           }
           if (data.closed) {
-            return $('#submitBtn, #closeBtn').remove();
+            $('#fileSpan').addClass('hide');
+            return $('#submitBtn, #closeBtn').addClass('hide');
+          } else {
+            return $('#fileSpan').removeClass('hide');
           }
         }).fail(function() {
           $('#question').addClass('hide');
@@ -297,7 +304,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         return fetchQuestion(Auth.apiHost + "question/byNumber/" + ($('#number').val()));
       });
       $('#submitBtn').unbind('click').bind('click', function(e) {
-        var question;
+        var attachmentList, question;
         question = $('#question form').serializeObject();
         $('.input-group.date input').each(function(e, i) {
           return question[$(this).attr('name')] = $(this).datepicker('getDate');
@@ -313,6 +320,18 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         }
         if (question.teammates) {
           question.teammates = JSON.stringify(question.teammates);
+        }
+
+        /**
+         * 16-7-4 问题附件
+         */
+        attachmentList = table.rows().data();
+        if (attachmentList.length > 0) {
+          question.attachmentList = _.map(attachmentList, function(a) {
+            return {
+              id: a.id
+            };
+          });
         }
         return reqwest({
           url: Auth.apiHost + "question/update",
@@ -351,7 +370,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           }
         });
       });
-      return table = $('#attachmentList').DataTable({
+      table = $('#attachmentList').DataTable({
         paging: false,
         ordering: false,
         searching: false,
@@ -382,12 +401,36 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
               return (data != null ? data.username : void 0) || (data != null ? data.email : void 0) || '';
             }
           }, {
-            data: 'question_id',
+            data: 'uploader',
             render: function(data) {
-              return '无';
+              var ref;
+              if (((ref = Auth.user()) != null ? ref.loginID : void 0) === data.loginid) {
+                return $('<button/>').addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML;
+              } else {
+                return '无';
+              }
             }
           }
         ]
+      });
+      $('#attachmentList tbody').on('click', 'button.btn-danger', function() {
+        table.row($(this).parents('tr')).remove().draw();
+        if (table.rows().data().length <= 0) {
+          return $('#attachmentRow').addClass('hide');
+        }
+      });
+      return $('#filePicker').fileupload({
+        url: Auth.apiHost + "question/attachment/upload",
+        dataType: 'json',
+        done: function(e, data) {
+          table.row.add(data.result).draw(false);
+          return $('#attachmentList').removeClass('hide');
+        },
+        fail: function() {
+          return bootbox.alert('附件上传失败');
+        }
+      }).prop('disabled', !$.support.fileInput).parent().addClass((ref = $.support.fileInput) != null ? ref : {
+        undefined: 'disabled'
       });
     }
   });

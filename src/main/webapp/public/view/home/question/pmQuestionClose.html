@@ -221,10 +221,11 @@
             </div>
           </div>
         </div>
-        <div id="attachmentRow" class="row hide">
+        <div id="attachmentRow" class="row">
           <div class="form-group">
             <label for="attachmentPath" class="col-sm-3 control-label">附件:</label>
-            <div class="col-sm-8">
+            <div class="col-sm-8"><span id="fileSpan" class="btn btn-success fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Select files...</span>
+                <input id="filePicker" type="file" name="Filedata" class="file-loading"/></span>
               <table id="attachmentList" cellspacing="0" width="100%" class="table table-striped table-bordered table-hover dt-responsive nowrap">
                 <thead>
                   <tr>

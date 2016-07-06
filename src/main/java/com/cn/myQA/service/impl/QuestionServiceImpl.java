@@ -185,7 +185,12 @@ public class QuestionServiceImpl implements IQuestionService {
                  }); 
             }
         }
-        return questionMapper.updateByPrimaryKeySelective(question);
+        int rows = questionMapper.updateByPrimaryKeySelective(question);
+        if(CollectionUtils.isNotEmpty(question.getAttachmentList())) {
+            questionMapper.bindQuestionAndAttachment(question);
+        }
+        questionMapper.removeAttachment(question);
+        return rows;
     }
     
     private String generateNumber(String category, Date today) {
