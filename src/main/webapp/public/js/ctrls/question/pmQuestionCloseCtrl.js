@@ -42,20 +42,23 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           return $('#teammates').append($div);
         };
         return reqwest(Auth.apiHost + "dict/cities?_=" + (Date.now())).then(function(cities) {
-          var k, results, v;
+          var cache, k, v;
           _.each(cities, function(city) {
             if (data[city.text]) {
               generateCityTeammates(city.text, data[city.text]);
               return delete data[city.text];
             }
           });
-          results = [];
           for (k in data) {
             v = data[k];
             k = k === 'null' ? '其他' : k;
-            results.push(generateCityTeammates(k, v));
+            generateCityTeammates(k, v);
           }
-          return results;
+          if (cache = $('#teammates').data('cache')) {
+            $('#teammates input').val(cache);
+            $('#teammates').removeData('cache');
+          }
+          return $('#teammates').data('ended', true);
         });
       });
 
@@ -171,6 +174,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         });
       };
       fetchQuestion = function(fetchUrl) {
+        $('#question').unbind('change');
         $('#question .row .chat-panel').remove();
         return reqwest(fetchUrl).then(function(data) {
           var ref, ref1;
@@ -185,6 +189,9 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           data.isCFeedback = Number(data.isCFeedback);
           if (data.teammates) {
             data.teammates = JSON.parse(data.teammates);
+            if (!($('#teammates').data('ended'))) {
+              $('#teammates').data('cache', data.teammates);
+            }
           }
           $('#question form select').each(function(i, e) {
             if (!$(this).attr('name')) {
