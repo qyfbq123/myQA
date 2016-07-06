@@ -127,6 +127,7 @@ public class QuestionServiceImpl implements IQuestionService {
     public String create(Question question) {
         
         question.setNumber(generateNumber(question.getCategory(), question.getCreated()));
+        question.setSuggest("");
         
         if(question.getCategory().equals("PM")) question.setHandleStatus(2);
         
