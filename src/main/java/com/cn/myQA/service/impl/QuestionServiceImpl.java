@@ -383,9 +383,9 @@ public class QuestionServiceImpl implements IQuestionService {
         List<Question> pmList = new ArrayList<Question>();
         List<Question> otherList = new ArrayList<Question>();
         for(Question q : qList) {
-            if(q.getClosed()) q.setStatus("关闭");
-            else if(q.getModified() == null) q.setStatus("新建");
-            else q.setStatus("更新");
+            if(q.getClosed()) q.setStatus("CLOSE");
+            else if(q.getModified() == null) q.setStatus("OPEN");
+            else q.setStatus("UPDATE");
             if(q.getCategory().equals("PM")) {
                 pmList.add(q);
             } else {
@@ -396,18 +396,22 @@ public class QuestionServiceImpl implements IQuestionService {
             File outFile = File.createTempFile("temp-问题报表", ".xls");
             OutputStream os = new FileOutputStream(outFile);
             Context context = new Context();
-            context.putVar("headers", Arrays.asList("status", "number","id","projectName","vendor",
-                    "issueDate","attendee","isCustomerFeed","containmentPlanDate","actionPlanDate","issueType",
-                    "severity","warehouse","spcName","orderNo","hawb","partInformation","pickupTime","actPickupTime",
-                    "problemStatement","issueDescription","correctiveDescription","rootCause","correctiveAction",
-                    "createby","modifytime"));
+//            context.putVar("headers", Arrays.asList("status", "number","id","projectName","vendor",
+//                    "issueDate","attendee","isCustomerFeed","containmentPlanDate","actionPlanDate","issueType",
+//                    "severity","warehouse","spcName","orderNo","hawb","partInformation","pickupTime","actPickupTime",
+//                    "problemStatement","issueDescription","correctiveDescription","rootCause","correctiveAction",
+//                    "createby","modifytime"));
+            context.putVar("headers", Arrays.asList("item_id", "warehouse", "applyby", "applyDate", "projectName",
+                    "issueType", "problemStatement", "correctiveDescription", "rootCause", "correctiveAction", "status"));
             context.putVar("data", pmList);
             context.putVar("questions", otherList);
-            JxlsHelper.getInstance().processGridTemplateAtCell(is, os, context, "status,number,id,project,supplier,"
-                    + "issueDate,teammates,isCFeedback,containmentPlanDate,actionPlanDate,type,"
-                    + "severity,beginStorehouse,spc,orderNo,hawb,partInformation,scheduledTime,actualTime,"
-                    + "problemStatement,issueDescription,recoveryDescription,rootCause,correctiveAction,"
-                    + "creator.email,modified", "报表!A1");
+//            JxlsHelper.getInstance().processGridTemplateAtCell(is, os, context, "status,number,id,project,supplier,"
+//                    + "issueDate,teammates,isCFeedback,containmentPlanDate,actionPlanDate,type,"
+//                    + "severity,beginStorehouse,spc,orderNo,hawb,partInformation,scheduledTime,actualTime,"
+//                    + "problemStatement,issueDescription,recoveryDescription,rootCause,correctiveAction,"
+//                    + "creator.email,modified", "报表!A1");
+            JxlsHelper.getInstance().processGridTemplateAtCell(is, os, context, "number,beginStorehouse,creator.username,created,project,"
+                    + "type,problemStatement,recoveryDescription,rootCause,correctiveAction,status", "报表!A1");
             return outFile.getAbsolutePath();
         } catch (IOException e) {
             logger.error("找不到报表模版", e);
