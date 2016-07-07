@@ -107,12 +107,9 @@ define(['can/control', 'can/view/mustache', 'Auth', 'localStorage', 'reqwest', '
       var fa;
       fa = $("#side-menu a:visible");
       if (window.location.hash === '#!home' && fa.size() > 0) {
-        fa[0].click();
-        if (fa[0].href.endsWith('#')) {
-          return setTimeout((function() {
-            return $("#side-menu a:visible[href!='#']")[0].click();
-          }), 100);
-        }
+        return setTimeout((function() {
+          return $("#side-menu a:visible[href!='#']")[0].click();
+        }), 100);
       }
     }
   });

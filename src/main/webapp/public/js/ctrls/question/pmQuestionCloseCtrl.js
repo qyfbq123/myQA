@@ -13,6 +13,13 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       this.element.html(can.view('../public/view/home/question/pmQuestionClose.html', pageInfo));
       if (!Auth.logined()) {
         $('#submitBtn').addClass('hide');
+        $('#subNavbar').removeClass('hide');
+        $('#fileSpan').addClass('hide');
+        $('#loginBtn').click(function() {
+          return dialogLogin(function() {
+            return window.location.reload();
+          });
+        });
       } else if (!can.base) {
         new base('', data);
       }
@@ -267,11 +274,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
                 return;
               }
               return dialogLogin(function() {
-                $('#submitBtn').removeClass('hide');
-                if (data.creator.leader && data.creator.leader.loginid === Auth.user().loginID) {
-                  $('#suggest').removeClass('hide');
-                  return $('#closeBtn').removeClass('hide');
-                }
+                return window.location.reload();
               });
             });
           } else {
@@ -283,7 +286,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           if (data.closed) {
             $('#fileSpan').addClass('hide');
             return $('#submitBtn, #closeBtn').addClass('hide');
-          } else {
+          } else if (Auth.logined()) {
             return $('#fileSpan').removeClass('hide');
           }
         }).fail(function() {
@@ -305,6 +308,12 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       });
       $('#submitBtn').unbind('click').bind('click', function(e) {
         var attachmentList, question;
+        if (!Auth.logined()) {
+          dialogLogin(function() {
+            return window.location.reload();
+          });
+          return;
+        }
         question = $('#question form').serializeObject();
         $('.input-group.date input').each(function(e, i) {
           return question[$(this).attr('name')] = $(this).datepicker('getDate');
@@ -348,6 +357,12 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         });
       });
       $('#closeBtn').unbind('click').bind('click', function(e) {
+        if (!Auth.logined()) {
+          dialogLogin(function() {
+            return window.location.reload();
+          });
+          return;
+        }
         return bootbox.prompt({
           title: "解决回馈：",
           inputType: 'textarea',

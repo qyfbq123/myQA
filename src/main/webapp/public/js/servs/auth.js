@@ -34,7 +34,7 @@ define(['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], function(lo
         if (done) {
           return done();
         } else {
-          return window.location.hash = '!home';
+          return window.location.hash = '#!home';
         }
       }).fail(function(err) {
         isLogining = false;
