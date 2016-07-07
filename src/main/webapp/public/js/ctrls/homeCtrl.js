@@ -75,10 +75,8 @@ define(['can/control', 'can/view/mustache', 'Auth', 'localStorage', 'reqwest', '
       reqwest({
         url: Auth.apiHost + ("user/menu?_=" + (Date.now()))
       }).then(updateMenus).fail(function(err) {
-        return bootbox.alert('登录超时，请重新登录!' + err.responseText, function() {
-          delete can.home;
-          return Auth.logout();
-        });
+        delete can.home;
+        return Auth.logout();
       });
       $('#side-menu').metisMenu();
       $("#side-menu>li").hide();
