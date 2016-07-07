@@ -250,6 +250,7 @@
       <if test="rootCause != null" >root_cause,</if>
       <if test="correctiveAction != null" >corrective_action,</if>
       <if test="attachmentPath != null" >attachment_path,</if>
+      <if test="suggest != null" >suggest,</if>
       <if test="closed!=null">closed</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -291,6 +292,7 @@
       <if test="rootCause != null" >#{rootCause,jdbcType=VARCHAR},</if>
       <if test="correctiveAction != null" >#{correctiveAction,jdbcType=VARCHAR},</if>
       <if test="attachmentPath != null" >#{attachmentPath,jdbcType=VARCHAR},</if>
+      <if test="suggest != null" >#{suggest,jdbcType=VARCHAR},</if>
       <if test="closed != null" >#{closed,jdbcType=BIT},</if>
     </trim>
   </insert>
