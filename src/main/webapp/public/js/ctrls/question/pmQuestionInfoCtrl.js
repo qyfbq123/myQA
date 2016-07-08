@@ -148,7 +148,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
        */
       if (data.id) {
         if (location.hash.startsWith('#!home')) {
-          $('#submitBtn, #resetBtn').addClass('hide');
+          $('#submitBtn').addClass('hide');
           $('#closeBtn').removeClass('hide').unbind('click').bind('click', function(e) {
             return bootbox.prompt({
               title: "解决回馈：",
