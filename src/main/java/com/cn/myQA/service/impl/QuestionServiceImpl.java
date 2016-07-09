@@ -300,7 +300,7 @@ public class QuestionServiceImpl implements IQuestionService {
         List<User> allUsers = userMapper.all();
         List<Option> warehouses = dictService.beginStorehouses();
         List<Option> projects = dictService.projects();
-        List<Option> types = dictService.types();
+        List<Option> types = dictService.pmTypes();
         
         List<String> allUseremails = new ArrayList<String>();
         List<String> allWNames = new ArrayList<String>();
