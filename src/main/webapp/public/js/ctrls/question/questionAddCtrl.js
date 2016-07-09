@@ -57,7 +57,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           data: groups
         });
       });
-      reqwest(Auth.apiHost + "user/all?_=" + (Date.now())).then(function(data) {
+      reqwest(Auth.apiHost + "user/role/handlers?_=" + (Date.now())).then(function(data) {
 
         /**
          * 16-6-22 用户按地域区分下

@@ -109,4 +109,10 @@ public interface IUserService {
      * @return PM组成员
      */
     public List<User> findPMMembers();
+    
+    /**
+     * 获取所有处理人
+     * @return 处理人列表
+     */
+    public List<User> findHanlders();
 }

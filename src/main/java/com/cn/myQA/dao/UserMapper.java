@@ -192,4 +192,10 @@ public interface UserMapper {
      * @return PM组
      */
     Group findPMGroup();
+    
+    /**
+     * 按角色查找处理人
+     * @return 处理人列表
+     */
+    List<User> findHanlers();
 }

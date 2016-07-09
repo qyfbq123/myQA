@@ -132,4 +132,10 @@ public class UserController extends BaseController {
     public ResponseEntity<List<User>> getPMGroupMember() {
         return new ResponseEntity<List<User>>(userService.findPMMembers(), HttpStatus.OK);
     }
+    
+    @ApiOperation(value="获取所有处理人", notes="获取所有处理人", httpMethod="GET")
+    @RequestMapping(value="/role/handlers", method=RequestMethod.GET)
+    public ResponseEntity<List<User>> getHandlers() {
+        return new ResponseEntity<List<User>>(userService.findHanlders(), HttpStatus.OK);
+    }
 }

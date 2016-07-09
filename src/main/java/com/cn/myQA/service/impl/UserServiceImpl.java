@@ -158,4 +158,8 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
     
+    @Override
+    public List<User> findHanlders() {
+        return userMapper.findHanlers();
+    }
 }
