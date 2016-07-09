@@ -103,42 +103,42 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           $body.append($('<p/>').append(genTextArea("补救方案描述：", "" + (question.recoveryDescription || ''))));
           $body.append($('<p/>').append(genTextArea("问题根本原因：", "" + (question.rootCause || ''))));
           $body.append($('<p/>').append(genTextArea("改善方案：", "" + (question.correctiveAction || ''))));
-          if (((ref5 = question.attachmentList) != null ? ref5.length : void 0) > 0) {
-            $table = $('#tempAttachmentList').clone().removeAttr('id').removeClass('hide');
-            $table.DataTable({
-              paging: false,
-              ordering: false,
-              searching: false,
-              info: false,
-              data: question.attachmentList,
-              columns: [
-                {
-                  data: 'filename',
-                  render: function(data, d, row) {
-                    return "<a href='" + Auth.apiHost + "question/attachment/" + row.id + "/download'>" + data + "</a>";
-                  }
-                }, {
-                  data: 'uploaded',
-                  render: function(data) {
-                    if (data) {
-                      return new Date(data).toLocaleString();
-                    } else {
-                      return new Date().toLocaleString();
-                    }
-                  }
-                }, {
-                  data: 'size'
-                }, {
-                  data: 'uploader',
-                  render: function(data) {
-                    return (data != null ? data.username : void 0) || (data != null ? data.email : void 0) || '';
+        }
+        if (((ref5 = question.attachmentList) != null ? ref5.length : void 0) > 0) {
+          $table = $('#tempAttachmentList').clone().removeAttr('id').removeClass('hide');
+          $table.DataTable({
+            paging: false,
+            ordering: false,
+            searching: false,
+            info: false,
+            data: question.attachmentList,
+            columns: [
+              {
+                data: 'filename',
+                render: function(data, d, row) {
+                  return "<a href='" + Auth.apiHost + "question/attachment/" + row.id + "/download'>" + data + "</a>";
+                }
+              }, {
+                data: 'uploaded',
+                render: function(data) {
+                  if (data) {
+                    return new Date(data).toLocaleString();
+                  } else {
+                    return new Date().toLocaleString();
                   }
                 }
-              ]
-            });
-            $body.append($('<p/>').text("附件："));
-            $body.append($('<p/>').append($table));
-          }
+              }, {
+                data: 'size'
+              }, {
+                data: 'uploader',
+                render: function(data) {
+                  return (data != null ? data.username : void 0) || (data != null ? data.email : void 0) || '';
+                }
+              }
+            ]
+          });
+          $body.append($('<p/>').text("附件："));
+          $body.append($('<p/>').append($table));
         }
         $('.panel', $row).append($body);
         return $('#page-wrapper').append($row);
@@ -160,23 +160,6 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           data: data
         });
       });
-//      reqwest(Auth.apiHost + "dict/types?_=" + (Date.now())).then(function(data) {
-//        data = _.map(data, function(d) {
-//          return {
-//            id: d.text,
-//            text: d.text
-//          };
-//        });
-//        data.unshift({
-//          id: 'unselected',
-//          text: '不限'
-//        });
-//        return $('#type').select2({
-//          language: 'zh-CN',
-//          theme: "bootstrap",
-//          data: data
-//        });
-//      });
       reqwest(Auth.apiHost + "user/all?_=" + (Date.now())).then(function(data) {
         data = _.map(data, function(d) {
           return {

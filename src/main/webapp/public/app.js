@@ -485,8 +485,10 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         });
       } else {
         return require(['questionAddCtrl', 'base'], function(questionAddCtrl, base) {
-          if (!can.base) {
-            new base('', data);
+          if (Auth.logined()) {
+            if (!can.base) {
+              new base('', data);
+            }
           }
           return new questionAddCtrl('body', {
             id: data.id
