@@ -160,23 +160,23 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           data: data
         });
       });
-      reqwest(Auth.apiHost + "dict/types?_=" + (Date.now())).then(function(data) {
-        data = _.map(data, function(d) {
-          return {
-            id: d.text,
-            text: d.text
-          };
-        });
-        data.unshift({
-          id: 'unselected',
-          text: '不限'
-        });
-        return $('#type').select2({
-          language: 'zh-CN',
-          theme: "bootstrap",
-          data: data
-        });
-      });
+//      reqwest(Auth.apiHost + "dict/types?_=" + (Date.now())).then(function(data) {
+//        data = _.map(data, function(d) {
+//          return {
+//            id: d.text,
+//            text: d.text
+//          };
+//        });
+//        data.unshift({
+//          id: 'unselected',
+//          text: '不限'
+//        });
+//        return $('#type').select2({
+//          language: 'zh-CN',
+//          theme: "bootstrap",
+//          data: data
+//        });
+//      });
       reqwest(Auth.apiHost + "user/all?_=" + (Date.now())).then(function(data) {
         data = _.map(data, function(d) {
           return {

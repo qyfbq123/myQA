@@ -37,10 +37,16 @@ class DictController {
         return new ResponseEntity<List<Option>>(dictService.projects(), HttpStatus.OK);
     }
     
-    @ApiOperation(value="问题类型", notes="获取所有问题类型字典", httpMethod="GET")
-    @RequestMapping(value="/types", method=RequestMethod.GET)
-    public ResponseEntity<List<Option>> types() {
-        return new ResponseEntity<List<Option>>(dictService.types(), HttpStatus.OK);
+    @ApiOperation(value="事件问题类型", notes="获取所有事件问题类型字典", httpMethod="GET")
+    @RequestMapping(value="/types/pm", method=RequestMethod.GET)
+    public ResponseEntity<List<Option>> pmTypes() {
+        return new ResponseEntity<List<Option>>(dictService.pmTypes(), HttpStatus.OK);
+    }
+    
+    @ApiOperation(value="WMS、TMS事件问题类型", notes="获取所有WMS、TMS问题类型字典", httpMethod="GET")
+    @RequestMapping(value="/types/ms", method=RequestMethod.GET)
+    public ResponseEntity<List<Option>> msTypes() {
+        return new ResponseEntity<List<Option>>(dictService.msTypes(), HttpStatus.OK);
     }
     
     @ApiOperation(value="问题严重性", notes="获取所有问题严重性字典", httpMethod="GET")

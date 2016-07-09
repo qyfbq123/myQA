@@ -131,7 +131,7 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
           data: data
         });
       });
-      reqwest(Auth.apiHost + "dict/types?_=" + (Date.now())).then(function(data) {
+      reqwest(Auth.apiHost + "dict/types/ms?_=" + (Date.now())).then(function(data) {
         data = _.map(data, function(d) {
           return {
             id: d.text,

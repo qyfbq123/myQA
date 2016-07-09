@@ -40,8 +40,20 @@ public class DictServiceImpl implements IDictService {
     }
 
     @Override
-    public List<Option> types() {
+    public List<Option> pmTypes() {
         List<SysDict> typeList = dictMapper.findByType(3);
+//        16-6-20 问题类型排序
+        Collections.sort(typeList, new Comparator<SysDict>() {
+            public int compare(SysDict a, SysDict b) {
+                return a.getDictValue().compareToIgnoreCase(b.getDictValue());
+            }
+        });
+        return transDict2Option(typeList);
+    }
+    
+    @Override
+    public List<Option> msTypes() {
+        List<SysDict> typeList = dictMapper.findByType(7);
 //        16-6-20 问题类型排序
         Collections.sort(typeList, new Comparator<SysDict>() {
             public int compare(SysDict a, SysDict b) {

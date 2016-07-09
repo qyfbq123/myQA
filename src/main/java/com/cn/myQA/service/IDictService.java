@@ -19,10 +19,16 @@ public interface IDictService {
     public List<Option> projects();
     
     /**
-     * 获取问题类型
+     * 获取事件问题类型
      * @return 类型列表
      */
-    public List<Option> types();
+    public List<Option> pmTypes();
+    
+    /**
+     * 获取WMS&TMS问题类型
+     * @return 类型列表
+     */
+    public List<Option> msTypes();
     
     /**
      * 获取问题严重性
