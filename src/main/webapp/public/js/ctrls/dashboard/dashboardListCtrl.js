@@ -84,6 +84,23 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
               $btn = $("<button class='btn btn-primary btn-xs' type='button'/>").text(data ? '取消置顶' : '置顶');
               return $btn[0].outerHTML;
             }
+          }, {
+            data: 'toTop',
+            responsivePriority: 2,
+            render: function(data, d, row) {
+              var $btn;
+              if (row.closed) {
+                $btn = $("<a href='#!home/question/" + (row.category.toLowerCase()) + "View/" + row.number + "' class='btn btn-danger btn-xs' type='button'/>").text('历史');
+              } else if (row.handleStatus < 2) {
+                $btn = $("<a href='#!home/question/handle/" + row.number + "' class='btn btn-danger btn-xs' type='button'/>").text('处理');
+                if (row.handler.loginid !== Auth.user().loginID) {
+                  $btn.addClass('disabled');
+                }
+              } else {
+                $btn = $("<a href='#!home/question/" + (row.category.toLowerCase()) + "Close/" + row.number + "' class='btn btn-danger btn-xs' type='button'/>").text('关闭');
+              }
+              return $btn[0].outerHTML;
+            }
           }
         ],
         rowCallback: function(row, data, dataIndex) {

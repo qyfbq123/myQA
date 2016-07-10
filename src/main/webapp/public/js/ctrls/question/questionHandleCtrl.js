@@ -283,6 +283,9 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           });
         });
       });
+      if (data.number) {
+        $('#number').val(data.number);
+      }
       return $('#searchForm button').trigger('click');
     }
   });

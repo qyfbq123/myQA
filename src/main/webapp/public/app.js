@@ -258,6 +258,17 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         });
       });
     },
+    'home/question/handle/:number route': function(data) {
+      return require(['questionHandleCtrl', 'base'], function(questionHandleCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionHandleCtrl('#page-wrapper', {
+          id: 'questionHandle',
+          number: data.number
+        });
+      });
+    },
     'home/question/pmView route': function(data) {
       return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
         if (!can.base) {
@@ -288,6 +299,30 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         return new questionViewCtrl('#page-wrapper', {
           category: 'TMS',
           closed: true
+        });
+      });
+    },
+    'home/question/wmsView/:number route': function(data) {
+      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionViewCtrl('#page-wrapper', {
+          category: 'WMS',
+          closed: true,
+          number: data.number
+        });
+      });
+    },
+    'home/question/tmsView/:number route': function(data) {
+      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionViewCtrl('#page-wrapper', {
+          category: 'TMS',
+          closed: true,
+          number: data.number
         });
       });
     },
@@ -337,6 +372,30 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         return new questionViewCtrl('#page-wrapper', {
           category: 'TMS',
           closed: false
+        });
+      });
+    },
+    'home/question/wmsClose/:number route': function(data) {
+      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionViewCtrl('#page-wrapper', {
+          category: 'WMS',
+          closed: false,
+          number: data.number
+        });
+      });
+    },
+    'home/question/tmsClose/:number route': function(data) {
+      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionViewCtrl('#page-wrapper', {
+          category: 'TMS',
+          closed: false,
+          number: data.number
         });
       });
     },
