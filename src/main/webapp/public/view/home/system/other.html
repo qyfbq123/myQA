@@ -5,14 +5,15 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-lg-2">
-    <select id="days" class="form-control">
-      <option value="1">日报</option>
-      <option value="7" selected="selected">周报</option>
-      <option value="30">月报</option>
+  <div class="col-lg-2 col-lg-offset-1">
+    <select id="section" class="form-control">
+      <option value="day">日报</option>
+      <option value="week" selected="selected">周报</option>
+      <option value="month">月报</option>
+      <option value="year">年报</option>
     </select>
   </div>
-  <div class="row col-lg-10">
+  <div class="row col-lg-8">
     <div class="row">
       <div class="col-lg-4">一键生成 & 下载：</div>
       <div class="col-lg-8"><a id="downloadBtn" href="#" target="_blank" class="btn btn-primary btn-sm">生成 & 下载</a></div>
@@ -27,4 +28,21 @@
       </div>
     </div>
   </div>
+</div>
+<hr/>
+<h2>高级导出：</h2>
+<div class="row">
+  <div class="col-lg-2 col-lg-offset-1">
+    <select id="year" class="form-control"></select>
+  </div>
+  <div class="col-lg-1">年</div>
+  <div class="col-lg-1">
+    <select id="month" class="form-control"></select>
+  </div>
+  <div class="col-lg-1">月</div>
+  <div class="col-lg-1">
+    <select id="date" class="form-control"></select>
+  </div>
+  <div class="col-lg-1">日</div>
+  <div class="col-lg-2"><a id="richDownloadBtn" href="#" target="_blank" class="btn btn-primary btn-sm">生成 & 下载</a></div>
 </div>

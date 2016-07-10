@@ -95,14 +95,31 @@ public interface IQuestionService {
      * @param days 天数
      * @return 生成的文件路径
      */
+    @Deprecated
     public String reportByDays(Integer days);
     
     /**
+     * 报表
+     * @param time 基准时间
+     * @param section 区段：day日报，week周报，month月报，year年报
+     * @return 生成的文件路径
+     */
+    public String reportByTime(Date time, String section);
+    
+    /**
+     * 报表
+     * @param time 基准时间
+     * @return 生成的文件路径
+     */
+    public String richReportByTime(Date time, String section);
+    
+    /**
      * 日、周、月报推送
-     * @param days 天数
+     * @param time 基准时间
+     * @param section 区段：day日报，week周报，month月报，year年报
      * @return 执行结果
      */
-    public String reportPush(Integer days);
+    public String reportPush(Date time, String section);
     
     /**
      * 上传附件

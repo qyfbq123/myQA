@@ -2,22 +2,23 @@
 define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'select2cn'], function(Ctrl, can, Auth, base, reqwest, bootbox) {
   return Ctrl.extend({
     init: function(el, data) {
+      var days, months, years;
       if (!can.base) {
         new base('', data);
       }
       this.element.html(can.view('../public/view/home/system/other.html'));
-      $('#days').select2({
+      $('#section').select2({
         language: 'zh-CN',
         width: '80px',
         theme: "bootstrap"
       });
-      $('#days').change(function() {
-        return $('#downloadBtn').attr('href', Auth.apiHost + "question/report/download?_=" + (Date.now()) + "&days=" + ($(this).val()));
+      $('#section').change(function() {
+        return $('#downloadBtn').attr('href', Auth.apiHost + "question/report/" + ($(this).val()) + "/download?_=" + (Date.now()));
       });
-      $('#days').trigger('change');
-      return $('#pushBtn').click(function() {
+      $('#section').trigger('change');
+      $('#pushBtn').click(function() {
         return reqwest({
-          url: Auth.apiHost + "question/report/push?_=" + (Date.now()) + "&days=" + ($("#days").val()),
+          url: Auth.apiHost + "question/report/" + ($('#section').val()) + "/push?_=" + (Date.now()),
           type: 'html'
         }).then(function(data) {
           return bootbox.alert('推送成功！');
@@ -25,6 +26,121 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'select2cn']
           return bootbox.alert('推送失败！');
         });
       });
+      years = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020];
+      $('#year').select2({
+        language: 'zh-CN',
+        width: '80px',
+        theme: 'bootstrap',
+        data: years.map(function(y) {
+          return {
+            id: y,
+            text: y
+          };
+        })
+      });
+      months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(function(m) {
+        return {
+          id: m,
+          text: m
+        };
+      });
+      months.unshift({
+        id: 0,
+        text: '请选择',
+        selected: true
+      });
+      $('#month').select2({
+        language: 'zh-CN',
+        width: '80px',
+        theme: 'bootstrap',
+        data: months
+      });
+      $('#month').change(function() {
+        var _days, _m, _year, i, j, k, results, results1, results2;
+        if ((_m = $(this).val()) > 0) {
+          $('#date').prop('disabled', false);
+          switch (Number(_m)) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+              _days = (function() {
+                results = [];
+                for (i = 1; i <= 31; i++){ results.push(i); }
+                return results;
+              }).apply(this);
+              break;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+              _days = (function() {
+                results1 = [];
+                for (j = 1; j <= 30; j++){ results1.push(j); }
+                return results1;
+              }).apply(this);
+              break;
+            case 2:
+              _days = (function() {
+                results2 = [];
+                for (k = 1; k <= 28; k++){ results2.push(k); }
+                return results2;
+              }).apply(this);
+              _year = $('#year').val();
+              if ((_year % 4 === 0 && _year % 100 !== 0) || _year % 400 === 0) {
+                _days.push(29);
+              }
+          }
+          _days = _days.map(function(d) {
+            return {
+              id: d,
+              text: d
+            };
+          });
+          _days.unshift({
+            id: 0,
+            text: '请选择',
+            selected: true
+          });
+          $('#date').select2().empty();
+          return $('#date').select2({
+            language: 'zh-CN',
+            width: '80px',
+            theme: 'bootstrap',
+            data: _days
+          });
+        } else {
+          $('#date').select2().empty();
+          return $('#date').prop('disabled', true);
+        }
+      });
+      days = [
+        {
+          id: 0,
+          text: '请选择',
+          selected: true
+        }
+      ];
+      $('#date').select2({
+        language: 'zh-CN',
+        width: '80px',
+        theme: 'bootstrap',
+        data: days
+      });
+      $('#year, #month, #date').change(function() {
+        var _date, _href, _month, _year;
+        _href = Auth.apiHost + "question/report/download?_=" + (Date.now());
+        _year = $('#year').val();
+        _month = $('#month').val();
+        _date = $('#date').val();
+        _href += "&year=" + _year + (_month !== '0' ? '&month=' + _month : '') + (_date !== '0' ? '&date=' + _date : '');
+        return $('#richDownloadBtn').attr('href', _href);
+      });
+      $('#year').val((new Date()).getFullYear()).change();
+      return $('#date').prop('disabled', true);
     }
   });
 });

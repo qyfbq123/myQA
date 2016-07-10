@@ -84,6 +84,14 @@ public interface QuestionMapper {
     List<Question> questionsByDays(Integer days);
     
     /**
+     * 报表查询
+     * @param section 区间：day为日报，week为周报,month为月报,year为年报
+     * @param date 基准时间
+     * @return 问题列表
+     */
+    List<Question> reportByTime(@Param("section")String section, @Param("date")Date date);
+    
+    /**
      * 插入附件
      * @param attachment 附件信息
      * @return 结果 

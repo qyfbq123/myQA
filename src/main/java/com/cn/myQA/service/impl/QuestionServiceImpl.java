@@ -384,6 +384,7 @@ public class QuestionServiceImpl implements IQuestionService {
         return "ok";
     }
     
+    @Deprecated
     public String reportByDays(Integer days) {
         List<Question> qList = questionMapper.questionsByDays(days);
         List<Question> pmList = new ArrayList<Question>();
@@ -425,13 +426,82 @@ public class QuestionServiceImpl implements IQuestionService {
         return null;
     }
     
-    public String reportPush(Integer days) {
-        String filePath = this.reportByDays(days);
+    public String reportByTime(Date time, String section) {
+        List<Question> qList = questionMapper.reportByTime(section, time);
+        List<Question> pmList = new ArrayList<Question>();
+        List<Question> otherList = new ArrayList<Question>();
+        for(Question q : qList) {
+            if(q.getClosed()) q.setStatus("CLOSE");
+            else if(q.getModified() == null) q.setStatus("OPEN");
+            else q.setStatus("UPDATE");
+            if(q.getCategory().equals("PM")) {
+                pmList.add(q);
+            } else {
+                otherList.add(q);
+            }
+        }
+        try(InputStream is = this.getClass().getResourceAsStream("/template/reportTemplate.xls")) {
+            File outFile = File.createTempFile("temp-问题报表", ".xls");
+            OutputStream os = new FileOutputStream(outFile);
+            Context context = new Context();
+            context.putVar("headers", Arrays.asList("item_id", "warehouse", "applyby", "applyDate", "projectName",
+                    "issueType", "problemStatement", "correctiveDescription", "rootCause", "correctiveAction", "status"));
+            context.putVar("data", pmList);
+            context.putVar("questions", otherList);
+            JxlsHelper.getInstance().processGridTemplateAtCell(is, os, context, "number,beginStorehouse,creator.username,created,project,"
+                    + "type,problemStatement,recoveryDescription,rootCause,correctiveAction,status", "报表!A1");
+            return outFile.getAbsolutePath();
+        } catch (IOException e) {
+            logger.error("找不到报表模版", e);
+        }
+        return null;
+    }
+    
+    public String richReportByTime(Date time, String section) {
+        List<Question> qList = questionMapper.reportByTime(section, time);
+        List<Question> pmList = new ArrayList<Question>();
+        List<Question> otherList = new ArrayList<Question>();
+        for(Question q : qList) {
+            if(q.getClosed()) q.setStatus("CLOSE");
+            else if(q.getModified() == null) q.setStatus("OPEN");
+            else q.setStatus("UPDATE");
+            if(q.getCategory().equals("PM")) {
+                pmList.add(q);
+            } else {
+                otherList.add(q);
+            }
+        }
+        try(InputStream is = this.getClass().getResourceAsStream("/template/reportTemplate.xls")) {
+            File outFile = File.createTempFile("temp-问题报表", ".xls");
+            OutputStream os = new FileOutputStream(outFile);
+            Context context = new Context();
+            context.putVar("headers", Arrays.asList("status", "item_id","projectName","vendor",
+                    "issueDate","attendee","isCustomerFeed","containmentPlanDate","actionPlanDate","issueType",
+                    "severity","warehouse","spcName","orderNo","hawb","partInformation","pickupTime","actPickupTime",
+                    "problemStatement","issueDescription","correctiveDescription","rootCause","correctiveAction",
+                    "createby","modifytime"));
+            context.putVar("data", pmList);
+            context.putVar("questions", otherList);
+            JxlsHelper.getInstance().processGridTemplateAtCell(is, os, context, "status,number,project,supplier,"
+                    + "issueDate,teammates,isCFeedback,containmentPlanDate,actionPlanDate,type,"
+                    + "severity,beginStorehouse,spc,orderNo,hawb,partInformation,scheduledTime,actualTime,"
+                    + "problemStatement,issueDescription,recoveryDescription,rootCause,correctiveAction,"
+                    + "creator.email,modified", "报表!A1");
+            return outFile.getAbsolutePath();
+        } catch (IOException e) {
+            logger.error("找不到报表模版", e);
+        }
+        return null;
+    }
+    
+    public String reportPush(Date time, String section) {
+        String filePath = this.reportByTime(time, section);
         if(filePath == null) {
             logger.error("报表生成失败！");
             return "error";
         } else {
-            String reportName = (days == 1 ? "日" : days == 7 ? "周" : days == 30 ? "月" : "") + "问题汇总报表";
+            String type = section.equals("day") ? "日" : section.equals("week") ? "周" : section.equals("month") ? "月" : section.equals("year") ? "年" : "";
+            String reportName = type + "问题汇总报表";
                     
             Group pm = userMapper.findPMGroup();
             List<String> mailList = new ArrayList<String>();
@@ -442,7 +512,7 @@ public class QuestionServiceImpl implements IQuestionService {
             if(mailList.size() > 0) {
                 taskExecutor.execute(new Runnable(){    
                     public void run(){
-                        mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每"+ (days == 1 ? "日" : days == 7 ? "周" : days == 30 ? "月" : "") + "总结", "附件为" + reportName + "。", new File(filePath));
+                        mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每"+ type + "总结", "附件为" + reportName + "。", new File(filePath));
                         System.out.println("发送完毕");
                     }    
                  }); 

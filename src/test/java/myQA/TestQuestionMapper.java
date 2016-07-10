@@ -1,5 +1,9 @@
 package myQA;
 
+import java.util.Calendar;
+import java.util.List;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +20,19 @@ public class TestQuestionMapper {
     private QuestionMapper questionMapper;
     
     @Test
+    @Ignore
     public void testPage() throws Exception {
         Question q = questionMapper.selectByPrimaryKey(5328);
         System.out.println(q.getAttachmentList().size());
 //        PageList<Question> list = questionMapper.page(new PageBounds(1, 10), "PM");
 //        assertNotNull(list.getPaginator());
+    }
+    
+    @Test
+    public void testReport() throws Exception {
+        List<Question> list = questionMapper.reportByTime("dd", Calendar.getInstance().getTime());
+        for(Question q : list) {
+            System.out.println(q.getNumber());
+        }
     }
 }

@@ -351,7 +351,20 @@
     from question where DATE_SUB(CURDATE(), INTERVAL #{days, jdbcType=INTEGER} DAY) &lt;= created or DATE_SUB(CURDATE(), INTERVAL #{days, jdbcType=INTEGER} DAY) &lt;= modified;
   </select>
   
-    <insert id="insertAttachment" parameterType="com.cn.myQA.pojo.QuestionAttachment" useGeneratedKeys="true" keyProperty="id">
+  <select id="reportByTime" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from question where
+        (YEAR(created)=YEAR(#{date, jdbcType=TIMESTAMP}) or YEAR(modified)=YEAR(#{date, jdbcType=TIMESTAMP}))
+        and
+        (<choose>
+            <when test="section=='day'">DATE(created)=DATE(#{date, jdbcType=TIMESTAMP}) or DATE(modified)=DATE(#{date, jdbcType=TIMESTAMP})</when>
+            <when test="section=='week'">WEEK(created)=WEEK(#{date, jdbcType=TIMESTAMP}) or WEEK(modified)=WEEK(#{date, jdbcType=TIMESTAMP})</when>
+            <when test="section=='month'">MONTH(created)=MONTH(#{date, jdbcType=TIMESTAMP}) or MONTH(modified)=MONTH(#{date, jdbcType=TIMESTAMP})</when>
+            <otherwise>1=1</otherwise>
+        </choose>)
+  </select>
+  
+  <insert id="insertAttachment" parameterType="com.cn.myQA.pojo.QuestionAttachment" useGeneratedKeys="true" keyProperty="id">
     insert into question_attachment
      (question_id, filename, size, uploader_id, path)
     values
