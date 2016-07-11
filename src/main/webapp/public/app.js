@@ -548,10 +548,13 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
             if (!can.base) {
               new base('', data);
             }
+            return window.location.hash = "home/question/" + data.category + "/" + data.id;
+          } else {
+            return new questionAddCtrl('body', {
+              id: data.id,
+              category: data.category
+            });
           }
-          return new questionAddCtrl('body', {
-            id: data.id
-          });
         });
       }
     },
@@ -575,7 +578,8 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
             new base('', data);
           }
           return new questionAddCtrl('#page-wrapper', {
-            id: data.id
+            id: data.id,
+            category: data.category
           });
         });
       }

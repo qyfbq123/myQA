@@ -155,7 +155,7 @@ public class QuestionServiceImpl implements IQuestionService {
                         content += "<br/><br/>";
                         content += "问题类型：" + question.getType();
                         content += "<br/><br/>";
-                        content += "详细信息请点击：<a href='http://" + host + "/#question/" + question.getCategory() + "/" + question.getId() + "'>http://" + host + "/#question/" + question.getCategory() + "/" + question.getId() + "</a>";
+                        content += "详细信息请点击：<a href='http://" + host + "/#!question/" + question.getCategory() + "/" + question.getId() + "'>http://" + host + "/#!question/" + question.getCategory() + "/" + question.getId() + "</a>";
                         mailService.sendmail(mailArray, question.getCategory() + " Issue 发起", content);
                     }    
                  }); 
@@ -180,7 +180,7 @@ public class QuestionServiceImpl implements IQuestionService {
                         content += "<br/><br/>";
                         content += "问题类型：" + question.getType();
                         content += "<br/><br/>";
-                        content += "详细信息请点击：<a href='http://" + host + "/#question/" + question.getCategory() + "/" + question.getId() + "'>http://" + host + "/#question/" + question.getCategory() + "/" + question.getId() + "</a>";
+                        content += "详细信息请点击：<a href='http://" + host + "/#!question/" + question.getCategory() + "/" + question.getId() + "'>http://" + host + "/#!question/" + question.getCategory() + "/" + question.getId() + "</a>";
                         mailService.sendmail(mailArray, question.getCategory() + " Issue 更新", content);
                     }    
                  }); 
@@ -251,7 +251,7 @@ public class QuestionServiceImpl implements IQuestionService {
                         content += "<br/><br/>";
                         content += "问题类型：" + question.getType();
                         content += "<br/><br/>";
-                        content += "详细信息请点击：<a href='http://" + host + "/#question/" + question.getCategory() + "/" + question.getId() + "'>http://" + host + "/#question/" + question.getCategory() + "/" + question.getId() + "</a>";
+                        content += "详细信息请点击：<a href='http://" + host + "/#!question/" + question.getCategory() + "/" + question.getId() + "'>http://" + host + "/#!question/" + question.getCategory() + "/" + question.getId() + "</a>";
                         mailService.sendmail(mailArray, question.getCategory() + " Issue 关闭", content);
                     }    
                  }); 
@@ -282,7 +282,7 @@ public class QuestionServiceImpl implements IQuestionService {
                     content += "<br/><br/>";
                     content += "问题类型：" + question.getType();
                     content += "<br/><br/>";
-                    content += "详细信息请点击：<a href='http://" + host + "/#question/" + question.getCategory() + "/" + question.getId() + "'>http://" + host + "/#question/" + question.getCategory() + "/" + question.getId() + "</a>";
+                    content += "详细信息请点击：<a href='http://" + host + "/#!question/" + question.getCategory() + "/" + question.getId() + "'>http://" + host + "/#!question/" + question.getCategory() + "/" + question.getId() + "</a>";
                     mailService.sendmail(mailArray, question.getCategory() + " Issue 处理", content);
                 }    
              }); 

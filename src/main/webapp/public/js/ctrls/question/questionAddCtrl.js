@@ -2,18 +2,51 @@
 define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorage', 'select2cn', 'datepickercn', 'datatables.net', 'datatables.net-bs', 'es6shim', 'jqueryFileupload'], function(Ctrl, can, Auth, base, reqwest, bootbox, localStorage) {
   return Ctrl.extend({
     init: function(el, data) {
-      var questionInfo, ref, table;
+      var dialogLogin, questionInfo, ref, table;
       questionInfo = new can.Map({
         category: data.category,
         title: data.id ? "详情" : data.category + "管理 / 新增"
       });
       this.element.html(can.view('../public/view/home/question/questionAdd.html', questionInfo));
+      dialogLogin = function(done) {
+        return bootbox.dialog({
+          title: "登录",
+          message: '<div class="row">  ' + '<div class="col-md-12"> ' + '<form class="form-horizontal"> ' + '<div class="form-group"> ' + '<label class="col-md-4 control-label" for="dialogLoginID">LoginID</label> ' + '<div class="col-md-4"> ' + '<input id="dialogLoginID" name="dialogLoginID" type="text" placeholder="Your loginID" class="form-control input-md"> ' + '</div> ' + '</div> ' + '<div class="form-group"> ' + '<label class="col-md-4 control-label" for="dialogPassword">Password</label> ' + '<div class="col-md-4"> ' + '<input id="dialogPassword" name="dialogPassword" type="password" placeholder="Your password" class="form-control input-md"> ' + '</div> ' + '</div> ' + '</form> </div>  </div>',
+          buttons: {
+            success: {
+              label: "登录",
+              className: "btn-success",
+              callback: function() {
+                var loginID, password;
+                loginID = $('#dialogLoginID').val();
+                password = $('#dialogPassword').val();
+                return Auth.login({
+                  loginID: loginID,
+                  password: password
+                }, function(e) {
+                  if (e) {
+                    return bootbox.alert(e.responseText);
+                  }
+                  return typeof done === "function" ? done(e) : void 0;
+                });
+              }
+            }
+          }
+        });
+      };
       if (Auth.logined()) {
         if (!can.base) {
           new base('', data);
         }
       } else {
         $('#subNavbar').removeClass('hide');
+        $('#filePicker').closest('span').remove();
+        $('#submitBtn').closest('.form-group').remove();
+        $('#loginBtn').click(function() {
+          return dialogLogin(function() {
+            return window.location.reload();
+          });
+        });
       }
       $('.input-group.date input').datepicker({
         language: 'zh-CN',
@@ -96,8 +129,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         });
       });
       if (data.id) {
-        $('#submitBtn').closest('.form-group').addClass('hide');
-        $('#filePicker').closest('span').addClass('hide');
+        $('#submitBtn, #resetBtn').addClass('hide');
         reqwest(Auth.apiHost + "/question/" + data.id).then(function(data) {
           var ref;
           questionInfo.attr('title', "编号：" + data.number);
@@ -108,10 +140,11 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             return $(this).val(data[$(this).attr('name')]).change();
           });
           $('#group, #city, #handler').each(function(i, e) {
+            var ref;
             if (!$(this).attr('name')) {
               return;
             }
-            return $(this).val(data[$(this).attr('name')].id).change();
+            return $(this).val((ref = data[$(this).attr('name')]) != null ? ref.id : void 0).change();
           });
           $('form input').each(function(i, e) {
             var d;
@@ -135,10 +168,15 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             table.clear();
             table.rows.add(data.attachmentList);
             table.draw();
-            return $('#attachmentRow').removeClass('hide');
+            $('#attachmentRow').removeClass('hide');
           } else {
             table.clear();
-            return $('#attachmentRow').addClass('hide');
+            $('#attachmentRow').addClass('hide');
+          }
+          if (!data.closed && !data.handleStatus) {
+            return $('#saveBtn').removeClass('hide');
+          } else {
+            return $('#filePicker').closest('span').addClass('hide');
           }
         }).fail(function() {
           return bootbox.alert('获取问题详细信息失败！');
@@ -173,7 +211,8 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             id: $('#handler').val()
           },
           startdate: $('#startdate').datepicker('getDate'),
-          promisedate: $('#promisedate').datepicker('getDate')
+          promisedate: $('#promisedate').datepicker('getDate'),
+          description: $('#description').val()
         };
         ref = questionInfo.attr();
         for (k in ref) {
@@ -202,6 +241,48 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           });
         }).fail(function(err) {
           return bootbox.alert("新增失败！" + err.responseText);
+        });
+      });
+      $('#saveBtn').click(function() {
+        var attachmentList, question;
+        question = {
+          id: $('#id').val(),
+          category: $('#category').val(),
+          project: $('#project').val(),
+          type: $('#type').val(),
+          group: {
+            id: $('#group').val()
+          },
+          city: {
+            id: $('#city').val()
+          },
+          handler: {
+            id: $('#handler').val()
+          },
+          startdate: $('#startdate').datepicker('getDate'),
+          promisedate: $('#promisedate').datepicker('getDate'),
+          description: $('#description').val()
+        };
+        attachmentList = table.rows().data();
+        if (attachmentList.length > 0) {
+          question.attachmentList = _.map(attachmentList, function(a) {
+            return {
+              id: a.id
+            };
+          });
+        }
+        return reqwest({
+          url: Auth.apiHost + "question/update",
+          method: 'post',
+          data: JSON.stringify(question),
+          contentType: "application/json",
+          type: 'html'
+        }).then(function() {
+          return bootbox.alert('保存成功！', function() {
+            return history.go(-1);
+          });
+        }).fail(function(err) {
+          return bootbox.alert("保存失败！" + err.responseText);
         });
       });
       $('#filePicker').fileupload({
@@ -248,10 +329,14 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
               return (data != null ? data.username : void 0) || (data != null ? data.email : void 0) || '';
             }
           }, {
-            data: 'question_id',
-            visible: !data.id,
+            data: 'uploader',
             render: function(data) {
-              return $('<button/>').addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML;
+              var ref1;
+              if (((ref1 = Auth.user()) != null ? ref1.loginID : void 0) === data.loginid) {
+                return $('<button/>').addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML;
+              } else {
+                return '无';
+              }
             }
           }
         ]

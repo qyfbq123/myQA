@@ -89,11 +89,19 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
             responsivePriority: 2,
             render: function(data, d, row) {
               var $btn;
+              $btn = $("<a href='#!home/question/" + row.category + "/" + row.id + "' class='btn btn-danger btn-xs' type='button'/>").text('详情');
+              return $btn[0].outerHTML;
+            }
+          }, {
+            data: 'toTop',
+            responsivePriority: 2,
+            render: function(data, d, row) {
+              var $btn, ref;
               if (row.closed) {
                 $btn = $("<a href='#!home/question/" + (row.category.toLowerCase()) + "View/" + row.number + "' class='btn btn-danger btn-xs' type='button'/>").text('历史');
               } else if (row.handleStatus < 2) {
                 $btn = $("<a href='#!home/question/handle/" + row.number + "' class='btn btn-danger btn-xs' type='button'/>").text('处理');
-                if (row.handler.loginid !== Auth.user().loginID) {
+                if (((ref = row.handler) != null ? ref.loginid : void 0) !== Auth.user().loginID) {
                   $btn.addClass('disabled');
                 }
               } else {
