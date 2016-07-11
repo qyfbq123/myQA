@@ -87,9 +87,10 @@ public interface QuestionMapper {
      * 报表查询
      * @param section 区间：day为日报，week为周报,month为月报,year为年报
      * @param date 基准时间
+     * @param associationId 关联用户id
      * @return 问题列表
      */
-    List<Question> reportByTime(@Param("section")String section, @Param("date")Date date);
+    List<Question> reportByTime(@Param("section")String section, @Param("date")Date date, @Param("associationId") Integer associationId);
     
     /**
      * 插入附件

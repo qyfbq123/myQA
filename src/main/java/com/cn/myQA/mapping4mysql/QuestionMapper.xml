@@ -352,6 +352,7 @@
   </select>
   
   <select id="reportByTime" resultMap="BaseResultMap">
+    <bind name="pattern" value="'%&quot;' + associationId + '&quot;%'"/>
     select <include refid="Base_Column_List" />
     from question where
         (YEAR(created)=YEAR(#{date, jdbcType=TIMESTAMP}) or YEAR(modified)=YEAR(#{date, jdbcType=TIMESTAMP}))
@@ -362,6 +363,13 @@
             <when test="section=='month'">MONTH(created)=MONTH(#{date, jdbcType=TIMESTAMP}) or MONTH(modified)=MONTH(#{date, jdbcType=TIMESTAMP})</when>
             <otherwise>1=1</otherwise>
         </choose>)
+        <if test="associationId > 0">
+            and (
+                 creator_id=#{associationId, jdbcType=INTEGER}
+                 or teammates like #{pattern}
+                 or handler_id=#{associationId, jdbcType=INTEGER}
+                )
+        </if>
   </select>
   
   <insert id="insertAttachment" parameterType="com.cn.myQA.pojo.QuestionAttachment" useGeneratedKeys="true" keyProperty="id">

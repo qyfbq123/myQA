@@ -104,14 +104,14 @@ public interface IQuestionService {
      * @param section 区段：day日报，week周报，month月报，year年报
      * @return 生成的文件路径
      */
-    public String reportByTime(Date time, String section);
+    public String reportByTime(Date time, String section, Integer userId);
     
     /**
      * 报表
      * @param time 基准时间
      * @return 生成的文件路径
      */
-    public String richReportByTime(Date time, String section);
+    public String richReportByTime(Date time, String section, Integer userId);
     
     /**
      * 日、周、月报推送
@@ -119,7 +119,7 @@ public interface IQuestionService {
      * @param section 区段：day日报，week周报，month月报，year年报
      * @return 执行结果
      */
-    public String reportPush(Date time, String section);
+    public String reportPush(Date time, String section, Integer userId);
     
     /**
      * 上传附件

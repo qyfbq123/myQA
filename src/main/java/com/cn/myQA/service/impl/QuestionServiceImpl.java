@@ -33,6 +33,7 @@ import com.cn.myQA.dao.UserMapper;
 import com.cn.myQA.pojo.Group;
 import com.cn.myQA.pojo.Question;
 import com.cn.myQA.pojo.QuestionAttachment;
+import com.cn.myQA.pojo.Role;
 import com.cn.myQA.pojo.User;
 import com.cn.myQA.service.IDictService;
 import com.cn.myQA.service.IMailService;
@@ -426,8 +427,24 @@ public class QuestionServiceImpl implements IQuestionService {
         return null;
     }
     
-    public String reportByTime(Date time, String section) {
-        List<Question> qList = questionMapper.reportByTime(section, time);
+    public String reportByTime(Date time, String section, Integer userId) {
+        List<Question> qList;
+        if(userId == -1) {
+            qList = new ArrayList<Question>();
+        } else {
+            User user = userMapper.selectByPrimaryKey(userId);
+            if(user != null) {
+                if(CollectionUtils.isNotEmpty(user.getRoleList())) {
+                    for(Role r : user.getRoleList()) {
+                        if(r.getName().equals("管理员")) {
+                            userId = 0;
+                            break;
+                        }
+                    }
+                }
+            }
+            qList = questionMapper.reportByTime(section, time, userId);
+        }
         List<Question> pmList = new ArrayList<Question>();
         List<Question> otherList = new ArrayList<Question>();
         for(Question q : qList) {
@@ -457,8 +474,8 @@ public class QuestionServiceImpl implements IQuestionService {
         return null;
     }
     
-    public String richReportByTime(Date time, String section) {
-        List<Question> qList = questionMapper.reportByTime(section, time);
+    public String richReportByTime(Date time, String section, Integer userId) {
+        List<Question> qList = questionMapper.reportByTime(section, time, userId);
         List<Question> pmList = new ArrayList<Question>();
         List<Question> otherList = new ArrayList<Question>();
         for(Question q : qList) {
@@ -494,8 +511,8 @@ public class QuestionServiceImpl implements IQuestionService {
         return null;
     }
     
-    public String reportPush(Date time, String section) {
-        String filePath = this.reportByTime(time, section);
+    public String reportPush(Date time, String section, Integer userId) {
+        String filePath = this.reportByTime(time, section, userId);
         if(filePath == null) {
             logger.error("报表生成失败！");
             return "error";

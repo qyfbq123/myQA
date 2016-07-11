@@ -349,15 +349,23 @@
   </select>
   
   <select id="reportByTime" resultMap="BaseResultMap">
+    <bind name="pattern" value="'%&quot;' + associationId + '&quot;%'"/>
     select <include refid="Base_Column_List" />
     from question where
-        <choose>
+        (<choose>
             <when test="section=='day'">DATEDIFF(DAY, created, #{date, jdbcType=TIMESTAMP}) = 0 or DATEDIFF(DAY, modified, #{date, jdbcType=TIMESTAMP}) = 0</when>
             <when test="section=='week'">DATEDIFF(WEEK, created, #{date, jdbcType=TIMESTAMP}) = 0 or DATEDIFF(WEEK, modified, #{date, jdbcType=TIMESTAMP}) = 0</when>
             <when test="section=='month'">DATEDIFF(MONTH, created, #{date, jdbcType=TIMESTAMP}) = 0 or DATEDIFF(MONTH, modified, #{date, jdbcType=TIMESTAMP}) = 0</when>
             <when test="section=='year'">DATEDIFF(YEAR, created, #{date, jdbcType=TIMESTAMP}) = 0 or DATEDIFF(YEAR, modified, #{date, jdbcType=TIMESTAMP}) = 0</when>
             <otherwise>1=1</otherwise>
-        </choose>
+        </choose>)
+        <if test="associationId > 0">
+            and (
+                 creator_id=#{associationId, jdbcType=INTEGER}
+		         or teammates like #{pattern}
+		         or handler_id=#{associationId, jdbcType=INTEGER}
+	            )
+        </if>
   </select>
   
   <insert id="insertAttachment" parameterType="com.cn.myQA.pojo.QuestionAttachment" useGeneratedKeys="true" keyProperty="id">

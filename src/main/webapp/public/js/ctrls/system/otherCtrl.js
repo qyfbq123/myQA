@@ -55,9 +55,9 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'select2cn']
         theme: 'bootstrap',
         data: months
       });
-      $('#month').change(function() {
+      $('#year,#month').change(function() {
         var _days, _m, _year, i, j, k, results, results1, results2;
-        if ((_m = $(this).val()) > 0) {
+        if ((_m = $('#month').val()) > 0) {
           $('#date').prop('disabled', false);
           switch (Number(_m)) {
             case 1:
@@ -113,7 +113,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'select2cn']
             data: _days
           });
         } else {
-          $('#date').select2().empty();
+          $('#date').val(0).change();
           return $('#date').prop('disabled', true);
         }
       });

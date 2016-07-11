@@ -309,17 +309,16 @@ public class QuestionController {
     @SuppressWarnings({"rawtypes", "unchecked"})
     @ApiOperation(value="日、周、月、年报", notes="报表下载", httpMethod="GET")
     @RequestMapping(value="/report/{section}/download", method=RequestMethod.GET)
-    public ResponseEntity<byte[]> reportDownload(@PathVariable("section") String section) {
+    public ResponseEntity<byte[]> reportDownload(@PathVariable("section") String section, HttpSession session) {
 //        默认周报
-         
+        User user = (User)session.getAttribute("user");
         String fileName = (section.equals("day") ? "日" : section.equals("week") ? "周" : section.equals("month") ? "月" : section.equals("year") ? "年" : "") + "问题汇总报表.xls";
 
         try {
             final HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("gb2312"),"iso-8859-1"));
-            
-            String filePath = questionService.reportByTime(Calendar.getInstance().getTime(), section);
+            String filePath = questionService.reportByTime(Calendar.getInstance().getTime(), section, user==null?-1:user.getId());
             
             if(filePath == null) {
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -336,15 +335,17 @@ public class QuestionController {
     
     @ApiOperation(value="日、周、月、年报", notes="报表推送", httpMethod="GET")
     @RequestMapping(value="/report/{section}/push", method=RequestMethod.GET) 
-    public ResponseEntity<String> reportPush(@PathVariable("section") String section) {
-        String result = questionService.reportPush(Calendar.getInstance().getTime(), section);
+    public ResponseEntity<String> reportPush(@PathVariable("section") String section, HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        String result = questionService.reportPush(Calendar.getInstance().getTime(), section, user==null?-1:user.getId());
         return new ResponseEntity<String>(result, result.equals("ok") ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
     
     @SuppressWarnings({"rawtypes", "unchecked"})
     @ApiOperation(value="日、周、月、年报", notes="报表下载", httpMethod="GET")
     @RequestMapping(value="/report/download", method=RequestMethod.GET)
-    public ResponseEntity<byte[]> richReportDownload(Integer year, Integer month, Integer date) {
+    public ResponseEntity<byte[]> richReportDownload(Integer year, Integer month, Integer date, HttpSession session) {
+        User user = (User)session.getAttribute("user");
         String fileName = year.toString();
         String section = "year";
         Calendar c = Calendar.getInstance();
@@ -367,7 +368,7 @@ public class QuestionController {
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("gb2312"),"iso-8859-1"));
             
-            String filePath = questionService.richReportByTime(c.getTime(), section);
+            String filePath = questionService.richReportByTime(c.getTime(), section, user==null?-1:user.getId());
             
             if(filePath == null) {
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -382,26 +383,5 @@ public class QuestionController {
         }
     }
     
-    @ApiOperation(value="日、周、月、年报", notes="报表推送", httpMethod="GET")
-    @RequestMapping(value="/report/push", method=RequestMethod.GET) 
-    public ResponseEntity<String> richReportPush(Integer year, Integer month, Integer date) {
-        String section = "year";
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        if(date != null) {
-            section = "day";
-            c.set(Calendar.MONTH, month - 1);
-            c.set(Calendar.DATE, date);
-        }
-        else if(month != null) {
-            section = "month";
-            c.set(Calendar.MONTH, month -1);
-        }
-        String result = questionService.reportPush(c.getTime(), section);
-        return new ResponseEntity<String>(result, result.equals("ok") ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
-    }
     
-    public static void main(String[] args) {
-        
-    }
 }
