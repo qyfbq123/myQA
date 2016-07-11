@@ -30,7 +30,7 @@ public class TestQuestionMapper {
     
     @Test
     public void testReport() throws Exception {
-        List<Question> list = questionMapper.reportByTime("dd", Calendar.getInstance().getTime());
+        List<Question> list = questionMapper.reportByTime("dd", Calendar.getInstance().getTime(), 1);
         for(Question q : list) {
             System.out.println(q.getNumber());
         }
