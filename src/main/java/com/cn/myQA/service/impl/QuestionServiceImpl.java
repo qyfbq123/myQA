@@ -110,7 +110,7 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public Question single(Integer id) {
         Question q = questionMapper.selectByPrimaryKey(id);
-        if(q!=null)
+        if(q!=null && q.getCreator() != null && q.getCreator().getId() != null)
             q.setCreator(userMapper.selectByPrimaryKey(q.getCreator().getId()));
         return q;
     }
