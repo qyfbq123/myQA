@@ -156,23 +156,6 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
           data: data
         });
       });
-      reqwest(Auth.apiHost + "dict/types/ms?_=" + (Date.now())).then(function(data) {
-        data = _.map(data, function(d) {
-          return {
-            id: d.text,
-            text: d.text
-          };
-        });
-        data.unshift({
-          id: 'unselected',
-          text: '不限'
-        });
-        return $('#type').select2({
-          language: 'zh-CN',
-          theme: "bootstrap",
-          data: data
-        });
-      });
       reqwest(Auth.apiHost + "user/all?_=" + (Date.now())).then(function(data) {
         data = _.map(data, function(d) {
           return {
@@ -197,6 +180,7 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
       $('#category').select2({
         language: 'zh-CN',
         theme: "bootstrap",
+        width: '80px',
         data: [
           {
             id: 'unselected',
@@ -209,6 +193,10 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
             text: 'TMS'
           }
         ]
+      });
+      $('#closed').select2({
+        language: 'zh-CN',
+        theme: "bootstrap"
       });
       return $('#searchForm button').unbind('click').bind('click', function(e) {
         return table.ajax.reload();
