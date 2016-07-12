@@ -45,7 +45,7 @@
     
     <association property="group" javaType="com.cn.myQA.pojo.Group" column="group_id" select="com.cn.myQA.dao.BaseMapper.fullGroup"></association>
     <association property="city" javaType="com.cn.myQA.pojo.City" column="city_id" select="com.cn.myQA.dao.BaseMapper.fullCity"></association>
-    <association property="creator" javaType="com.cn.myQA.pojo.User" column="creator_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
+    <association property="creator" javaType="com.cn.myQA.pojo.User" column="creator_id" select="com.cn.myQA.dao.BaseMapper.fullRichUserLeader"></association>
     <association property="modifier" javaType="com.cn.myQA.pojo.User" column="modifier_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
     <association property="handler" javaType="com.cn.myQA.pojo.User" column="handler_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
     

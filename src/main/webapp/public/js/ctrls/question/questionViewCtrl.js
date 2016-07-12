@@ -40,7 +40,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         return $('<div/>').append($('<div class="pull-left"/>').text(pre)).append($('<div class="pull-left"/>').html(content.replace(/\n/g, '<br/>'))).append($('<div class="clearfix"/>'));
       };
       generateRow = function(question) {
-        var $a, $body, $btn, $header, $row, $table, cls, ref, ref1, ref2, ref3, ref4, ref5;
+        var $a, $body, $btn, $header, $row, $table, cls, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7;
         cls = question.closed ? 'panel-warning' : 'panel-info';
         cls = question.toTop ? 'panel-danger' : cls || 'panel-info';
         $row = $('<div class="row question"><div class="col-lg-10 col-lg-offset-1"><div class="panel ' + cls + '"><div></div></div>');
@@ -48,10 +48,12 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         $header.append($('<div class="panel-title pull-left"/>').text("编号：" + question.number));
         if (!question.closed) {
           if (questionInfo.category !== 'PM') {
-            $btn = $('<button class="btn btn-default btn-sm" type="button"><span class="glyphicon glyphicon-close" aria-hidden="true">关闭</span></button>').bind('click', function(e) {
-              return closeQuestion(question, this);
-            });
-            $header.append($('<div class="btn-group pull-right"></div>').append($btn));
+            if (((ref = question.creator) != null ? (ref1 = ref.leader) != null ? ref1.loginid : void 0 : void 0) === Auth.user().loginID) {
+              $btn = $('<button class="btn btn-default btn-sm" type="button"><span class="glyphicon glyphicon-close" aria-hidden="true">关闭</span></button>').bind('click', function(e) {
+                return closeQuestion(question, this);
+              });
+              $header.append($('<div class="btn-group pull-right"></div>').append($btn));
+            }
           } else {
             $a = $("<a class='btn btn-default btn-sm' href='#!home/question/" + questionInfo.category + "/" + question.id + "'><span aria-hidden='true'>详情</span></button>");
             $header.append($('<div class="btn-group pull-right"></div>').append($a));
@@ -62,7 +64,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         $body.append($('<p/>').text("项目：" + question.project));
         $body.append($('<p/>').text("问题类型：" + question.type));
         if (questionInfo.category !== 'PM') {
-          $body.append($('<p/>').text("城市：" + ((ref = question.city) != null ? ref.name : void 0)));
+          $body.append($('<p/>').text("城市：" + ((ref2 = question.city) != null ? ref2.name : void 0)));
           if (!question.closed) {
             $body.append($('<p/>').text("项目发起时间：" + (question.startdate ? new Date(question.startdate).toLocaleDateString() : '')));
             $body.append($('<p/>').text("要求结束时间：" + (question.promisedate ? new Date(question.promisedate).toLocaleDateString() : '')));
@@ -72,9 +74,9 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             $body.append($('<p/>').text("解决回馈：" + question.feedback));
           }
         }
-        $body.append($('<p/>').text("发起人：" + (((ref1 = question.creator) != null ? ref1.username : void 0) || ((ref2 = question.creator) != null ? ref2.loginid : void 0) || '')));
+        $body.append($('<p/>').text("发起人：" + (((ref3 = question.creator) != null ? ref3.username : void 0) || ((ref4 = question.creator) != null ? ref4.loginid : void 0) || '')));
         if (questionInfo.category !== 'PM') {
-          $body.append($('<p/>').text("处理人：" + (((ref3 = question.handler) != null ? ref3.username : void 0) || ((ref4 = question.handler) != null ? ref4.loginid : void 0) || '')));
+          $body.append($('<p/>').text("处理人：" + (((ref5 = question.handler) != null ? ref5.username : void 0) || ((ref6 = question.handler) != null ? ref6.loginid : void 0) || '')));
           $body.append($('<p/>').text("处理结果：" + question.handleResult));
         }
         $body.append($('<p/>').text("提交时间：" + (question.created ? new Date(question.created).toLocaleString() : '')));
@@ -104,7 +106,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           $body.append($('<p/>').append(genTextArea("问题根本原因：", "" + (question.rootCause || ''))));
           $body.append($('<p/>').append(genTextArea("改善方案：", "" + (question.correctiveAction || ''))));
         }
-        if (((ref5 = question.attachmentList) != null ? ref5.length : void 0) > 0) {
+        if (((ref7 = question.attachmentList) != null ? ref7.length : void 0) > 0) {
           $table = $('#tempAttachmentList').clone().removeAttr('id').removeClass('hide');
           $table.DataTable({
             paging: false,

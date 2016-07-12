@@ -96,7 +96,7 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
             data: 'toTop',
             responsivePriority: 2,
             render: function(data, d, row) {
-              var $btn, ref;
+              var $btn, ref, ref1, ref2;
               if (row.closed) {
                 $btn = $("<a href='#!home/question/" + (row.category.toLowerCase()) + "View/" + row.number + "' class='btn btn-danger btn-xs' type='button'/>").text('历史');
               } else if (row.handleStatus < 2) {
@@ -106,6 +106,9 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
                 }
               } else {
                 $btn = $("<a href='#!home/question/" + (row.category.toLowerCase()) + "Close/" + row.number + "' class='btn btn-danger btn-xs' type='button'/>").text('关闭');
+                if (((ref1 = row.creator) != null ? (ref2 = ref1.leader) != null ? ref2.loginid : void 0 : void 0) !== Auth.user().loginID) {
+                  $btn.addClass('disabled');
+                }
               }
               return $btn[0].outerHTML;
             }

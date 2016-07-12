@@ -35,6 +35,22 @@
             column="city_id" select="fullCity"></association>
     </resultMap>
     
+    <resultMap id="RichUserResultMap" type="com.cn.myQA.pojo.User">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="created" property="created" jdbcType="TIMESTAMP" />
+        <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+        <result column="locked" property="locked" jdbcType="BIT" />
+        <result column="loginid" property="loginid" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="leaderEmail" property="leaderemail" jdbcType="VARCHAR" />
+
+        <association property="city" javaType="com.cn.myQA.pojo.City"
+            column="city_id" select="fullCity"></association>
+        <association property="leader" javaType="com.cn.myQA.pojo.User"
+            column="leader_id" select="fullUser"></association>
+    </resultMap>
+    
 	<resultMap id="RichUserResultMap" type="com.cn.myQA.pojo.User">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="created" property="created" jdbcType="TIMESTAMP" />
@@ -155,6 +171,13 @@
 		from [user]
 		where id=#{id, jdbcType=INTEGER}
 	</select>
+	
+	<select id="fullRichUserLeader" resultMap="RichUserLeaderResultMap">
+        select
+        <include refid="Base_User_Column_List"></include>
+        from [user]
+        where id=#{id, jdbcType=INTEGER}
+    </select>
 	
 	<select id="fullRichUser" resultMap="RichUserResultMap">
         select
