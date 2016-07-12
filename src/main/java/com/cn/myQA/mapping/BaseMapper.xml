@@ -35,7 +35,7 @@
             column="city_id" select="fullCity"></association>
     </resultMap>
     
-    <resultMap id="RichUserResultMap" type="com.cn.myQA.pojo.User">
+    <resultMap id="RichUserLeaderResultMap" type="com.cn.myQA.pojo.User">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="created" property="created" jdbcType="TIMESTAMP" />
         <result column="modified" property="modified" jdbcType="TIMESTAMP" />

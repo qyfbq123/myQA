@@ -1,38 +1,36 @@
 package com.cn.myQA.service.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jxls.common.Context;
-import org.jxls.util.JxlsHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import com.cn.myQA.dao.QuestionMapper;
-import com.cn.myQA.pojo.Question;
+import com.cn.myQA.pojo.User;
 import com.cn.myQA.service.IMailService;
+import com.cn.myQA.service.IQuestionService;
 import com.cn.myQA.service.IReportService;
+import com.cn.myQA.service.IUserService;
 
 @Component
 public class ReportServiceImpl implements IReportService {
     private static Logger logger = Logger.getLogger(ReportServiceImpl.class);
     
     @Autowired
-    private QuestionMapper questionMapper;
+    private IQuestionService questionService;
+    @Autowired
+    private IUserService userService;
     @Autowired
     private IMailService mailService;
     @Autowired
     private TaskExecutor taskExecutor;
-    @Value("${reportMails}")
-    private String reportMails;
+//    @Value("${reportMails}")
+//    private String reportMails;
     
     /*
     字段 允许值 允许的特殊字符 
@@ -62,33 +60,56 @@ public class ReportServiceImpl implements IReportService {
     "0 15 10 ? * 6#3" 每月的第三个星期五上午10:15触发 
     "0 *\/1 * * * ?" 每分钟（去除中间的转译符）
      * */
-//    每周星期天凌晨1点实行一次
+//    每周星期五下午1点实行一次
     @Override
-    @Scheduled(cron = "0 0 1 ? * SUN")
-    public void monthReport() throws Exception {
-        List<Question> questions = questionMapper.questionsByDays(7);
-        try {
-            File tempQuestionFile = File.createTempFile("temp-问题每周总结", ".xlsx");
-            
-            InputStream is = this.getClass().getResourceAsStream("/template/questions.xlsx");
-            
-            OutputStream os = new FileOutputStream(tempQuestionFile);
-            String[] mailArray = reportMails.split(",");
-            Context context = new Context();
-            context.putVar("questions", questions);
-            JxlsHelper.getInstance().processTemplate(is, os, context);
-            
-            if(mailArray.length > 0) {
-                taskExecutor.execute(new Runnable(){    
-                    public void run(){
-                        mailService.sendmail(mailArray, "每周总结", "本周问题总数为：" + questions.size(), tempQuestionFile);
-                        System.out.println("发送完毕");
-                    }    
-                 }); 
+    @Scheduled(cron = "0 0 13 ? * FRI")
+    public void weekReport() throws Exception {
+        Calendar now = Calendar.getInstance();
+        String reportPath = questionService.reportByTime(now.getTime(), "week", 0);
+        
+        List<User> pmUsers = userService.findPMMembers();
+        List<String> mailList = new ArrayList<String>();
+        for(User u : pmUsers) {
+            if(!StringUtils.isEmpty(u.getEmail())) {
+                mailList.add(u.getEmail());
             }
-        } catch (IOException e) {
-            logger.error("", e);
+        }
+        
+        if(mailList.size() > 0) {
+            taskExecutor.execute(new Runnable(){    
+                public void run(){
+                    mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每周报表", "附件为"+ now.get(Calendar.YEAR)+"第"+now.get(Calendar.WEEK_OF_YEAR)+"周问题汇总报表。", reportPath, "每周问题汇总报表.xls");
+                    logger.info("发送完毕");
+                }    
+             }); 
         }
     }
-
+    
+    /**
+     * 每天上午7点触发
+     */
+    @Override
+    @Scheduled(cron = "0 0 7 * * MON-FRI")
+    public void dailyReport() throws Exception {
+        Calendar time = Calendar.getInstance();
+        time.add(Calendar.DATE, -1);
+        String reportPath = questionService.reportByTime(time.getTime(), "day", 0);
+        
+        List<User> pmUsers = userService.findPMMembers();
+        List<String> mailList = new ArrayList<String>();
+        for(User u : pmUsers) {
+            if(!StringUtils.isEmpty(u.getEmail())) {
+                mailList.add(u.getEmail());
+            }
+        }
+        
+        if(mailList.size() > 0) {
+            taskExecutor.execute(new Runnable(){    
+                public void run(){
+                    mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每日报表", "附件为"+time.get(Calendar.YEAR) + "年" + time.get(Calendar.MONTH) + "月" + time.get(Calendar.DATE) +"日问题汇总报表。", reportPath, "每日问题汇总报表.xls");
+                    logger.info("发送完毕");
+                }    
+             }); 
+        }
+    }
 }

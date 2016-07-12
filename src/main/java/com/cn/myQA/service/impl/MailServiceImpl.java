@@ -97,7 +97,7 @@ public class MailServiceImpl implements IMailService {
     }
 
     @Override
-    public void sendmail(String[] mailArray,String subject,String content, File attachment){
+    public void sendmail(String[] mailArray,String subject,String content, String filePath, String fileName){
         if(StringUtils.isEmpty(MAIL_USER) || StringUtils.isEmpty(MAIL_PASSWORD) || StringUtils.isEmpty(MAIL_FROM_SMTP) || StringUtils.isEmpty(MAIL_HOST)) {
             return;
         }
@@ -136,8 +136,9 @@ public class MailServiceImpl implements IMailService {
             contentPart.setText(content);
             multipart.addBodyPart(contentPart);
             // 添加附件的内容
-            if (attachment != null) {
+            if (filePath != null) {
                 BodyPart attachmentBodyPart = new MimeBodyPart();
+                File attachment = new File(filePath);
                 DataSource source = new FileDataSource(attachment);
                 attachmentBodyPart.setDataHandler(new DataHandler(source));
                 
@@ -147,7 +148,8 @@ public class MailServiceImpl implements IMailService {
                 //messageBodyPart.setFileName("=?GBK?B?" + enc.encode(attachment.getName().getBytes()) + "?=");
                 
                 //MimeUtility.encodeWord可以避免文件名乱码
-                attachmentBodyPart.setFileName(MimeUtility.encodeWord(attachment.getName()));
+                if(StringUtils.isEmpty(fileName)) fileName = attachment.getName();
+                attachmentBodyPart.setFileName(MimeUtility.encodeWord(fileName));
                 multipart.addBodyPart(attachmentBodyPart);
             }
             
@@ -166,7 +168,7 @@ public class MailServiceImpl implements IMailService {
             msg.addRecipients(Message.RecipientType.TO, address);
             Transport.send(msg);            
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("邮件发送失败！", e);
         }finally{
             try {
                 if(transport!=null){

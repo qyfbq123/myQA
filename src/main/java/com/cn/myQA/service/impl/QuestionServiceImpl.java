@@ -529,7 +529,7 @@ public class QuestionServiceImpl implements IQuestionService {
             if(mailList.size() > 0) {
                 taskExecutor.execute(new Runnable(){    
                     public void run(){
-                        mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每"+ type + "总结", "附件为" + reportName + "。", new File(filePath));
+                        mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每"+ type + "总结", "附件为" + reportName + "。", filePath, reportName + ".xls");
                         System.out.println("发送完毕");
                     }    
                  }); 

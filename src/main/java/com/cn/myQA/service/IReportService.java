@@ -1,5 +1,15 @@
 package com.cn.myQA.service;
 
 public interface IReportService {
-    public void monthReport() throws Exception;
+    /**
+     * 周报
+     * @throws Exception
+     */
+    public void weekReport() throws Exception;
+    
+    /**
+     * 日报
+     * @throws Exception
+     */
+    public void dailyReport() throws Exception;
 }
