@@ -287,4 +287,8 @@
     inner join role on user_has_role.role_id = role.id
     where role.name='处理人'
   </select>
+  
+  <update id="updatePwdByPrimaryKey">
+    update `user` set password=#{newPwd, jdbcType=VARCHAR} where id=#{id, jdbcType=INTEGER}
+  </update>
 </mapper>

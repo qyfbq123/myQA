@@ -51,6 +51,7 @@ require.config({
     base: '../public/js/ctrls/base',
     homeCtrl: '../public/js/ctrls/homeCtrl',
     loginCtrl: '../public/js/ctrls/loginCtrl',
+    userProfileCtrl: '../public/js/ctrls/userProfileCtrl',
     dashboardCtrl: '../public/js/ctrls/dashboard/dashboardCtrl',
     dashboardListCtrl: '../public/js/ctrls/dashboard/dashboardListCtrl',
 
@@ -169,6 +170,14 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         return new base('', {
           id: 'dashboard'
         });
+      });
+    },
+    'home/userProfile route': function(data) {
+      return require(['userProfileCtrl', 'base'], function(userProfileCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new userProfileCtrl('#page-wrapper');
       });
     },
 

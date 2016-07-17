@@ -115,4 +115,12 @@ public interface IUserService {
      * @return 处理人列表
      */
     public List<User> findHanlders();
+    
+    /**
+     * 用户保存新密码
+     * @param id 用户id
+     * @param newPwd 新密码
+     * @return 结果
+     */
+    public int savePwd(Integer id, String newPwd);
 }

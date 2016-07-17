@@ -138,4 +138,14 @@ public class UserController extends BaseController {
     public ResponseEntity<List<User>> getHandlers() {
         return new ResponseEntity<List<User>>(userService.findHanlders(), HttpStatus.OK);
     }
+    
+    @ApiOperation(value="修改用户密码", notes="修改用户密码", httpMethod="POST")
+    @RequestMapping(value="/pwd/update", method=RequestMethod.POST)
+    public ResponseEntity<String> menu(HttpSession session, String newpwd) {
+        User user = (User)session.getAttribute("user");
+        if(user == null) return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+        int result = userService.savePwd(user.getId(), newpwd);
+        if(result == 1) return new ResponseEntity<String>("ok", HttpStatus.OK);
+        else return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+    }
 }

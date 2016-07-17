@@ -198,4 +198,12 @@ public interface UserMapper {
      * @return 处理人列表
      */
     List<User> findHanlers();
+    
+    /**
+     * 用户保存新密码
+     * @param id 用户id
+     * @param newPwd 新密码
+     * @return 结果
+     */
+    int updatePwdByPrimaryKey(@Param("id") Integer id, @Param("newPwd") String newPwd);
 }

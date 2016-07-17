@@ -162,4 +162,9 @@ public class UserServiceImpl implements IUserService {
     public List<User> findHanlders() {
         return userMapper.findHanlers();
     }
+    
+    @Override
+    public int savePwd(Integer id, String newpwd) {
+        return userMapper.updatePwdByPrimaryKey(id, newpwd);
+    }
 }
