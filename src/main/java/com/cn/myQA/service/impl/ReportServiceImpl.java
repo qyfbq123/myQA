@@ -106,7 +106,7 @@ public class ReportServiceImpl implements IReportService {
         if(mailList.size() > 0) {
             taskExecutor.execute(new Runnable(){    
                 public void run(){
-                    mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每日报表", "附件为"+time.get(Calendar.YEAR) + "年" + time.get(Calendar.MONTH) + "月" + time.get(Calendar.DATE) +"日问题汇总报表。", reportPath, "每日问题汇总报表.xls");
+                    mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每日报表", "附件为"+time.get(Calendar.YEAR) + "年" + (time.get(Calendar.MONTH) + 1) + "月" + time.get(Calendar.DATE) +"日问题汇总报表。", reportPath, "每日问题汇总报表.xls");
                     logger.info("发送完毕");
                 }    
              }); 
