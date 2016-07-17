@@ -212,7 +212,7 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public List<Question> page(TableModel model, QuestionSearch search) {
         PageBounds pb = model.translateToPB();
-        pb.setOrders(Order.formString("to_top.desc, created.desc"));
+        pb.setOrders(Order.formString("to_top.desc"));
         PageList<Question> qList = questionMapper.page(pb, search);
         return qList.subList(0, qList.size());
     }
@@ -220,7 +220,7 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public Pagination<Question> page2(TableModel model, QuestionSearch search) {
         PageBounds pb = model.translateToPB();
-        pb.setOrders(Order.formString("to_top.desc, created.desc"));
+        pb.setOrders(Order.formString("to_top.desc"));
         PageList<Question> qList = questionMapper.page(pb, search);
         Pagination<Question> page = new Pagination<Question>();
         page.setDraw(model.getDraw());

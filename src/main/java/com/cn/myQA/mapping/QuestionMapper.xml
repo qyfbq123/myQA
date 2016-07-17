@@ -182,7 +182,7 @@
         or [user].leader_id=#{associationId, jdbcType=INTEGER}
         or teammates like #{pattern}
         )
-    order by to_top desc, created desc
+    order by to_top desc
   </select>
   
   <update id="close">
