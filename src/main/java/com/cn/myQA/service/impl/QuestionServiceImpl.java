@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -332,6 +334,9 @@ public class QuestionServiceImpl implements IQuestionService {
             }
         }
         Charset charset = Charset.forName("UTF-8");
+        
+        // question group
+        Map<String, List<Question>> qg = new HashMap<String, List<Question>>();
         for(QuestionVO vo : questionVOs) {
             Question q = new Question();
             q.setCategory("PM");
@@ -380,7 +385,70 @@ public class QuestionServiceImpl implements IQuestionService {
                 q.setModified(modifyTime);
             }
             
-            this.create(q);
+            if(StringUtils.isEmpty(vo.getItemId())) {
+                this.create(q);
+            } else {
+                if(!qg.containsKey(vo.getItemId())) {
+                    List<Question> qList = new ArrayList<Question>();
+                    qList.add(q);
+                    qg.put(vo.getItemId(), qList);
+                } else {
+                    qg.get(vo.getItemId()).add(q);
+                }
+            }
+        }
+        
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        
+        for(List<Question> qList : qg.values()) {
+            int qsize = qList.size();
+            if(qsize > 1) {
+                Question basicQ = qList.get(qsize - 1);
+                if(!StringUtils.isEmpty(basicQ.getPartInformation())) {
+                    basicQ.setPartInformation(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getPartInformation().replaceAll("\n", "<br/>")  + "\n");
+                }
+                if(!StringUtils.isEmpty(basicQ.getProblemStatement())) {
+                    basicQ.setProblemStatement(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getProblemStatement().replaceAll("\n", "<br/>")  + "\n");
+                }
+                if(!StringUtils.isEmpty(basicQ.getIssueDescription())) {
+                    basicQ.setIssueDescription(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getIssueDescription().replaceAll("\n", "<br/>") + "\n");
+                }
+                if(!StringUtils.isEmpty(basicQ.getRecoveryDescription())) {
+                    basicQ.setRecoveryDescription(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getRecoveryDescription().replaceAll("\n", "<br/>") + "\n");
+                }
+                if(!StringUtils.isEmpty(basicQ.getRootCause())) {
+                    basicQ.setRootCause(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getRootCause().replaceAll("\n", "<br/>") + "\n");
+                }
+                if(!StringUtils.isEmpty(basicQ.getCorrectiveAction())) {
+                    basicQ.setCorrectiveAction(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getCorrectiveAction().replaceAll("\n", "<br/>") + "\n");
+                }
+                for(int i = qsize - 2; i >= 0; i--) {
+                    Question modifyQ = qList.get(i);
+                    if(!StringUtils.isEmpty(modifyQ.getPartInformation())) {
+                        basicQ.setPartInformation(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getPartInformation().replaceAll("\n", "<br/>")  + "\n" + (basicQ.getPartInformation()==null?"":basicQ.getPartInformation()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getProblemStatement())) {
+                        basicQ.setProblemStatement(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getProblemStatement().replaceAll("\n", "<br/>")  + "\n" + (basicQ.getProblemStatement()==null?"":basicQ.getProblemStatement()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getIssueDescription())) {
+                        basicQ.setIssueDescription(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getIssueDescription().replaceAll("\n", "<br/>") + "\n" + (basicQ.getIssueDescription()==null?"":basicQ.getIssueDescription()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getRecoveryDescription())) {
+                        basicQ.setRecoveryDescription(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getRecoveryDescription().replaceAll("\n", "<br/>") + "\n" + (basicQ.getRecoveryDescription()==null?"":basicQ.getRecoveryDescription()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getRootCause())) {
+                        basicQ.setRootCause(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getRootCause().replaceAll("\n", "<br/>") + "\n" + (basicQ.getRootCause()==null?"":basicQ.getRootCause()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getCorrectiveAction())) {
+                        basicQ.setCorrectiveAction(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getCorrectiveAction().replaceAll("\n", "<br/>") + "\n" + (basicQ.getCorrectiveAction()==null?"":basicQ.getCorrectiveAction()));
+                    }
+                }
+                basicQ.setCreator(qList.get(0).getCreator());
+                basicQ.setCreated(qList.get(0).getCreated());
+                this.create(basicQ);
+            } else if(qList.size() == 1) {
+                this.create(qList.get(0));
+            }
         }
         return "ok";
     }

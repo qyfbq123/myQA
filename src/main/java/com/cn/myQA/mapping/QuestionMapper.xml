@@ -213,6 +213,8 @@
   <insert id="insertSelective" parameterType="com.cn.myQA.pojo.Question" useGeneratedKeys="true" keyProperty="id">
     insert into question
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="created!=null">created,</if>
+      <if test="modified!=null">modified,</if>
       <if test="number != null" >number,</if>
       <if test="category != null" >category,</if>
       <if test="project != null" >project,</if>
@@ -256,6 +258,8 @@
       <if test="closed!=null">closed</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="created != null" >#{created,jdbcType=TIMESTAMP},</if>
+      <if test="modified != null" >#{modified,jdbcType=TIMESTAMP},</if>
       <if test="number != null" >#{number,jdbcType=VARCHAR},</if>
       <if test="category != null" >#{category,jdbcType=VARCHAR},</if>
       <if test="project != null" >#{project,jdbcType=VARCHAR},</if>
