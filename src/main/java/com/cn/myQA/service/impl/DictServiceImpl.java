@@ -78,6 +78,11 @@ public class DictServiceImpl implements IDictService {
     public List<Option> suppliers() {
         return transDict2Option( dictMapper.findByType(6) );
     }
+    
+    @Override
+    public List<Option> priorities() {
+        return transDict2Option( dictMapper.findByType(8) );
+    }
 
     @Override
     public List<SysDict> attriutes() {

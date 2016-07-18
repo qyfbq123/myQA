@@ -128,12 +128,25 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           data: data
         });
       });
+      reqwest(Auth.apiHost + "dict/priorities?_=" + (Date.now())).then(function(data) {
+        data = _.map(data, function(d) {
+          return {
+            id: d.text,
+            text: d.text
+          };
+        });
+        return $('#priority').select2({
+          language: 'zh-CN',
+          theme: "bootstrap",
+          data: data
+        });
+      });
       if (data.id) {
         $('#submitBtn, #resetBtn').addClass('hide');
         reqwest(Auth.apiHost + "/question/" + data.id).then(function(data) {
           var ref;
           questionInfo.attr('title', "编号：" + data.number);
-          $('#project, #type').each(function(i, e) {
+          $('#project, #type, #priority').each(function(i, e) {
             if (!$(this).attr('name')) {
               return;
             }
@@ -212,6 +225,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           },
           startdate: $('#startdate').datepicker('getDate'),
           promisedate: $('#promisedate').datepicker('getDate'),
+          priority: $('#priority').val(),
           description: $('#description').val()
         };
         ref = questionInfo.attr();
@@ -261,6 +275,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           },
           startdate: $('#startdate').datepicker('getDate'),
           promisedate: $('#promisedate').datepicker('getDate'),
+          priority: $('#priority').val(),
           description: $('#description').val()
         };
         attachmentList = table.rows().data();

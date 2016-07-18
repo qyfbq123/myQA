@@ -43,6 +43,7 @@
     <!-- 16-6-20 添加主管建议 -->
     <result column="suggest" property="suggest" jdbcType="VARCHAR"/>
     <result column="attachment_path" property="attachmentPath" jdbcType="VARCHAR"/>
+    <result column="priority" property="priority" jdbcType="VARCHAR"/>
     
     <association property="group" javaType="com.cn.myQA.pojo.Group" column="group_id" select="com.cn.myQA.dao.BaseMapper.fullGroup"></association>
     <association property="city" javaType="com.cn.myQA.pojo.City" column="city_id" select="com.cn.myQA.dao.BaseMapper.fullCity"></association>
@@ -73,7 +74,7 @@
     supplier, issue_date, teammates, is_c_feedback, containment_plan_date, action_plan_date, severity, begin_storehouse, spc, order_no, hawb,
     part_information, scheduled_time, actual_time, problem_statement, issue_description, recovery_description, root_cause, corrective_action,
     <!-- 16-6-20添加主管建议 -->
-    suggest, attachment_path
+    suggest, attachment_path, priority
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -253,6 +254,7 @@
       <if test="correctiveAction != null" >corrective_action,</if>
       <if test="suggest != null" >suggest,</if>
       <if test="attachmentPath != null" >attachment_path,</if>
+      <if test="priority != null" >priority,</if>
       <if test="closed!=null">closed</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -295,6 +297,7 @@
       <if test="correctiveAction != null" >#{correctiveAction,jdbcType=VARCHAR},</if>
       <if test="suggest != null" >#{suggest,jdbcType=VARCHAR},</if>
       <if test="attachmentPath != null" >#{attachmentPath,jdbcType=VARCHAR},</if>
+      <if test="priority != null" >#{priority,jdbcType=VARCHAR},</if>
       <if test="closed != null" >#{closed,jdbcType=BIT},</if>
     </trim>
   </insert>

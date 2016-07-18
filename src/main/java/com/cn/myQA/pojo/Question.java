@@ -90,6 +90,8 @@ public class Question {
     
     private String attachmentPath;
     
+    private String priority;
+    
     private String suggest;
     
     //为配合周报，新增一条表示问题状态的属性，有效值：新建｜更新｜关闭
@@ -467,6 +469,14 @@ public class Question {
 
     public void setAttachmentList(List<QuestionAttachment> attachmentList) {
         this.attachmentList = attachmentList;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
     
 }

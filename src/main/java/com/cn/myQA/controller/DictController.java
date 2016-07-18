@@ -71,6 +71,12 @@ class DictController {
         return new ResponseEntity<List<Option>>(dictService.suppliers(), HttpStatus.OK);
     }
     
+    @ApiOperation(value="系统问题优先级", notes="系统问题优先级", httpMethod="GET")
+    @RequestMapping(value="/priorities", method=RequestMethod.GET)
+    public ResponseEntity<List<Option>> priorities() {
+        return new ResponseEntity<List<Option>>(dictService.priorities(), HttpStatus.OK);
+    }
+    
     @ApiOperation(value="可维护字典", notes="获取所有可维护字典", httpMethod="GET")
     @RequestMapping(value="/attributes", method=RequestMethod.GET)
     public ResponseEntity<List<SysDict>> attributes() {
