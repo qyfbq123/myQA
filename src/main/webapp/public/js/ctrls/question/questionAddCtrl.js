@@ -61,6 +61,10 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             text: d.text
           };
         });
+        data.unshift({
+          id: 'unselected',
+          text: '请选择'
+        });
         return $('#project').select2({
           language: 'zh-CN',
           theme: "bootstrap",
@@ -87,6 +91,10 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             id: group.id,
             text: group.name
           };
+        });
+        groups.unshift({
+          id: 'unselected',
+          text: '请选择'
         });
         return $('#group').select2({
           language: 'zh-CN',
@@ -212,9 +220,9 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       $('#submitBtn').unbind('click').bind('click', function(e) {
         var attachmentList, k, question, ref, v;
         question = {
-          project: $('#project').val(),
+          project: $('#project').val() === 'unselected' ? null : $('#project').val(),
           type: $('#type').val(),
-          group: {
+          group: $('#group').val() === 'unselected' ? null : {
             id: $('#group').val()
           },
           city: {
@@ -262,9 +270,9 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         question = {
           id: $('#id').val(),
           category: $('#category').val(),
-          project: $('#project').val(),
+          project: $('#project').val() === 'unselected' ? null : $('#project').val(),
           type: $('#type').val(),
-          group: {
+          group: $('#group').val() === 'unselected' ? null : {
             id: $('#group').val()
           },
           city: {
