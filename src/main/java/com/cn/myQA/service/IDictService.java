@@ -48,13 +48,6 @@ public interface IDictService {
      */
     public List<Option> suppliers();
     
-    
-    /**
-     * 系统问题优先级
-     * @return 列表
-     */
-    public List<Option> priorities();
-    
     /**
      * 可修改的字典
      * @return 字典列表
