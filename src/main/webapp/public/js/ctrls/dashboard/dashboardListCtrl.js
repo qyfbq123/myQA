@@ -38,7 +38,7 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
           }, {
             data: 'project'
           }, {
-            data: 'beginStorehouse'
+            data: 'severity'
           }, {
             data: 'creator',
             render: function(data) {
