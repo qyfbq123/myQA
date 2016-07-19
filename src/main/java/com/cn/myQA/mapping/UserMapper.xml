@@ -286,7 +286,7 @@
     select [user].id, [user].created, [user].modified, [user].locked, [user].loginid, [user].username, [user].email, [user].leaderEmail, [user].city_id from [user]
     inner join user_has_role on [user].id = user_has_role.user_id
     inner join role on user_has_role.role_id = role.id
-    where role.name='处理人'
+    where role.name=N'处理人'
   </select>
   
   <update id="updatePwdByPrimaryKey">
