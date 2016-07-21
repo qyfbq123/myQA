@@ -43,12 +43,17 @@ public class MailServiceImpl implements IMailService {
     
     @Override
     public void sendmail(String[] mailArray,String subject,String content){
-        if(StringUtils.isEmpty(MAIL_USER) || StringUtils.isEmpty(MAIL_PASSWORD) || StringUtils.isEmpty(MAIL_FROM_SMTP) || StringUtils.isEmpty(MAIL_HOST)) {
-            return;
-        }
+//      if(StringUtils.isEmpty(MAIL_USER) || StringUtils.isEmpty(MAIL_PASSWORD) || StringUtils.isEmpty(MAIL_FROM_SMTP) || StringUtils.isEmpty(MAIL_HOST)) {
+//      return;
+//  	}
+    	if(StringUtils.isEmpty(MAIL_HOST) || StringUtils.isEmpty(MAIL_FROM_SMTP)) {
+    		return;
+    	}
+    	
+    	boolean isUserAuthen = !(StringUtils.isEmpty(MAIL_USER) || StringUtils.isEmpty(MAIL_PASSWORD));
         Properties props = new Properties();
         //设置服务器验证
-        props.setProperty("mail.smtp.auth", "true");
+        props.setProperty("mail.smtp.auth", Boolean.valueOf(isUserAuthen).toString());
         //设置传输协议
         props.setProperty("mail.transport.protocol", "smtp");
         //选择服务类型
@@ -59,7 +64,7 @@ public class MailServiceImpl implements IMailService {
                 {
                     protected PasswordAuthentication getPasswordAuthentication()
                     {
-                        return new PasswordAuthentication(MAIL_USER,MAIL_PASSWORD);
+                    	return isUserAuthen? new PasswordAuthentication(MAIL_USER,MAIL_PASSWORD) : null;
                     }
                 }
         );
@@ -98,12 +103,16 @@ public class MailServiceImpl implements IMailService {
 
     @Override
     public void sendmail(String[] mailArray,String subject,String content, String filePath, String fileName){
-        if(StringUtils.isEmpty(MAIL_USER) || StringUtils.isEmpty(MAIL_PASSWORD) || StringUtils.isEmpty(MAIL_FROM_SMTP) || StringUtils.isEmpty(MAIL_HOST)) {
-            return;
-        }
+//      if(StringUtils.isEmpty(MAIL_USER) || StringUtils.isEmpty(MAIL_PASSWORD) || StringUtils.isEmpty(MAIL_FROM_SMTP) || StringUtils.isEmpty(MAIL_HOST)) {
+//      	return;
+//  	}
+    	if(StringUtils.isEmpty(MAIL_HOST) || StringUtils.isEmpty(MAIL_FROM_SMTP)) {
+    		return;
+    	}
+    	boolean isUserAuthen = !(StringUtils.isEmpty(MAIL_USER) || StringUtils.isEmpty(MAIL_PASSWORD));
         Properties props = new Properties();
         //设置服务器验证
-        props.setProperty("mail.smtp.auth", "true");
+        props.setProperty("mail.smtp.auth", Boolean.valueOf(isUserAuthen).toString());
         //设置传输协议
         props.setProperty("mail.transport.protocol", "smtp");
         //选择服务类型
@@ -114,7 +123,7 @@ public class MailServiceImpl implements IMailService {
                 {
                     protected PasswordAuthentication getPasswordAuthentication()
                     {
-                        return new PasswordAuthentication(MAIL_USER,MAIL_PASSWORD);
+                    	return isUserAuthen? new PasswordAuthentication(MAIL_USER,MAIL_PASSWORD) : null;
                     }
                 }
         );

@@ -1,10 +1,17 @@
 package com.cn.myQA.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.cn.myQA.dao.UserMapper;
 import com.cn.myQA.pojo.Group;
@@ -21,6 +28,12 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Value("${ldapverify}")
+    private String verifyURL;
+    @Value("${ldapuser}")
+    private String userParam;
+    @Value("${ldappassword}")
+    private String passwordParam;
     @Override
     public User findByLoginID(String id) {
         return userMapper.findByLoginID(id);
@@ -167,4 +180,28 @@ public class UserServiceImpl implements IUserService {
     public int savePwd(Integer id, String newpwd) {
         return userMapper.updatePwdByPrimaryKey(id, newpwd);
     }
+    
+	@Override
+	public boolean isVerifiedByLdap() {
+		return !StringUtils.isEmpty(verifyURL);
+	}
+
+	@Override
+	public boolean verifiedByLdap(String loginId, String password) {
+		try {
+    		String verify = verifyURL + "?" + userParam + "=" + URLEncoder.encode(loginId, "utf-8") + "&" + passwordParam + "=" + URLEncoder.encode(password, "utf-8");
+			URL url = new URL(verify);
+			URLConnection connection = url.openConnection();
+			connection.setDoOutput(true);
+			connection.setRequestProperty("Content-Type", "text/xml");
+			connection.setConnectTimeout(10000);
+			InputStream is = connection.getInputStream();
+			byte[] resultBytes = new byte[100];
+			is.read(resultBytes);
+			String result = new String(resultBytes, "utf-8").trim();
+			return "验证通过".equals(result);
+		} catch (IOException e) {
+			return false;
+		}
+	}
 }
