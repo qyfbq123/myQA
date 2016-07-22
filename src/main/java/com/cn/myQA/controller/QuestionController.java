@@ -316,7 +316,8 @@ public class QuestionController {
 
         try {
             final HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//          headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentType(new MediaType("application", "vnd.ms-excel"));
             headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("gb2312"),"iso-8859-1"));
             String filePath = questionService.reportByTime(Calendar.getInstance().getTime(), section, user==null?-1:user.getId());
             
@@ -365,7 +366,8 @@ public class QuestionController {
 
         try {
             final HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//          headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentType(new MediaType("application", "application/vnd.ms-excel"));
             headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("gb2312"),"iso-8859-1"));
             
             String filePath = questionService.richReportByTime(c.getTime(), section, user==null?-1:user.getId());

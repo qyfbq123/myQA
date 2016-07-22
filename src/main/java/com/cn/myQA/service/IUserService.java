@@ -123,4 +123,13 @@ public interface IUserService {
      * @return 结果
      */
     public int savePwd(Integer id, String newPwd);
+    
+    
+    /**
+     * modified at 2016-07-15
+     * 增加内网ad验证
+     */
+    public boolean isVerifiedByLdap();
+    
+    public boolean verifiedByLdap(String loginId, String password);
 }
