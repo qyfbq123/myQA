@@ -337,8 +337,7 @@ public class QuestionController {
     @ApiOperation(value="日、周、月、年报", notes="报表推送", httpMethod="GET")
     @RequestMapping(value="/report/{section}/push", method=RequestMethod.GET) 
     public ResponseEntity<String> reportPush(@PathVariable("section") String section, HttpSession session) {
-        User user = (User)session.getAttribute("user");
-        String result = questionService.reportPush(Calendar.getInstance().getTime(), section, user==null?-1:user.getId());
+        String result = questionService.reportPush(Calendar.getInstance().getTime(), section, 0);
         return new ResponseEntity<String>(result, result.equals("ok") ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
     
@@ -367,7 +366,7 @@ public class QuestionController {
         try {
             final HttpHeaders headers = new HttpHeaders();
 //          headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentType(new MediaType("application", "application/vnd.ms-excel"));
+            headers.setContentType(new MediaType("application", "vnd.ms-excel"));
             headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("gb2312"),"iso-8859-1"));
             
             String filePath = questionService.richReportByTime(c.getTime(), section, user==null?-1:user.getId());
@@ -385,5 +384,25 @@ public class QuestionController {
         }
     }
     
-    
+    @ApiOperation(value="日、周、月、年报", notes="报表推送", httpMethod="GET")
+    @RequestMapping(value="/report/push", method=RequestMethod.GET) 
+    public ResponseEntity<String> richReportPush(Integer year, Integer month, Integer date, HttpSession session) {
+        String fileName = year.toString();
+        String section = "year";
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        if(date != null) {
+            fileName += "/" + month + "/" + date;
+            section = "day";
+            c.set(Calendar.MONTH, month - 1);
+            c.set(Calendar.DATE, date);
+        }
+        else if(month != null) {
+            fileName += "/" + month;
+            section = "month";
+            c.set(Calendar.MONTH, month -1);
+        }
+        String result = questionService.richReportPush(Calendar.getInstance().getTime(), section, 0, fileName);
+        return new ResponseEntity<String>(result, result.equals("ok") ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    }
 }

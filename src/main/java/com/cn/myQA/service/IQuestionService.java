@@ -122,6 +122,14 @@ public interface IQuestionService {
     public String reportPush(Date time, String section, Integer userId);
     
     /**
+     * 日、周、月报推送
+     * @param time 基准时间
+     * @param section 区段：day日报，week周报，month月报，year年报
+     * @return 执行结果
+     */
+    public String richReportPush(Date time, String section, Integer userId, String fileName);
+    
+    /**
      * 上传附件
      * @param attachment 附件信息
      * @return 结果

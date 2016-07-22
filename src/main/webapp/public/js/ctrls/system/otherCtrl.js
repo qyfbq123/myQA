@@ -26,6 +26,30 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'select2cn']
           return bootbox.alert('推送失败！');
         });
       });
+      $('#richPushBtn').click(function() {
+        var _date, _month, _year;
+        _year = $('#year').val();
+        _month = $('#month').val();
+        _date = $('#date').val();
+        data = {
+          year: _year
+        };
+        if (_month !== '0') {
+          data.month = _month;
+        }
+        if (_date !== '0') {
+          data.date = _date;
+        }
+        return reqwest({
+          url: Auth.apiHost + "question/report/push?_=" + (Date.now()),
+          data: data,
+          type: 'html'
+        }).then(function(data) {
+          return bootbox.alert('推送成功！');
+        }).fail(function() {
+          return bootbox.alert('推送失败！');
+        });
+      });
       years = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020];
       $('#year').select2({
         language: 'zh-CN',

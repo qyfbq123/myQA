@@ -611,6 +611,30 @@ public class QuestionServiceImpl implements IQuestionService {
         return "ok";
     }
     
+    public String richReportPush(Date time, String section, Integer userId, String fileName) {
+        String filePath = this.richReportByTime(time, section, userId);
+        if(filePath == null) {
+            logger.error("报表生成失败！");
+            return "error";
+        } else {
+            Group pm = userMapper.findPMGroup();
+            List<String> mailList = new ArrayList<String>();
+            for(User u : pm.getUserList()) {
+                if(!StringUtils.isEmpty(u.getEmail()))
+                    mailList.add(u.getEmail());
+            }
+            if(mailList.size() > 0) {
+                taskExecutor.execute(new Runnable(){    
+                    public void run(){
+                        mailService.sendmail(mailList.toArray(new String[mailList.size()]), fileName + "问题汇总", "附件为" + fileName + "问题汇总报表。", filePath, fileName + "问题汇总报表.xls");
+                        System.out.println("发送完毕");
+                    }    
+                 }); 
+            }
+        }
+        return "ok";
+    }
+    
     public int insertAttachment(QuestionAttachment attachment) {
         return questionMapper.insertAttachment(attachment);
     }
