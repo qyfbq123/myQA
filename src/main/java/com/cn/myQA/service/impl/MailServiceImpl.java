@@ -39,7 +39,7 @@ public class MailServiceImpl implements IMailService {
     private String MAIL_FROM_SMTP;
     @Value("${mailhost}")
     private String MAIL_HOST;
-    private String MAIL_NICK = "DHL问题管理系统";
+    private String MAIL_NICK = "ELC跨职能沟通平台";
     
     @Override
     public void sendmail(String[] mailArray,String subject,String content){
