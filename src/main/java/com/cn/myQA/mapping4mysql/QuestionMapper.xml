@@ -345,6 +345,32 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
+  <update id="updateOtherByPrimaryKeySelective" parameterType="com.cn.myQA.pojo.Question" >
+    update question
+    <set >
+      <if test="project != null" >project = #{project,jdbcType=VARCHAR},</if>
+      <if test="type != null" >type = #{type,jdbcType=VARCHAR},</if>
+      <if test="emailto != null" >emailto = #{emailto,jdbcType=VARCHAR},</if>
+      <if test="group != null" >group_id = #{group.id,jdbcType=INTEGER},</if>
+      <if test="city != null" >city_id = #{city.id,jdbcType=INTEGER},</if>
+      <if test="startdate != null" >startdate = #{startdate,jdbcType=TIMESTAMP},</if>
+      <if test="promisedate != null" >promisedate = #{promisedate,jdbcType=TIMESTAMP},</if>
+      <if test="description != null" >description = #{description,jdbcType=VARCHAR},</if>
+      <if test="suggestion != null" >suggestion = #{suggestion,jdbcType=VARCHAR},</if>
+      <if test="feedback != null" >feedback = #{feedback,jdbcType=VARCHAR},</if>
+      <if test="closed != null" >closed = #{closed,jdbcType=BIT},</if>
+      <if test="modifier != null" >modifier_id = #{modifier.id,jdbcType=INTEGER},</if>
+      <if test="handler != null" >handler_id = #{handler.id,jdbcType=INTEGER},</if>
+      <if test="handleStatus != null" >handle_status = #{handleStatus,jdbcType=INTEGER},</if>
+      <if test="handlePromisedate != null" >handle_promisedate = #{handlePromisedate,jdbcType=TIMESTAMP},</if>
+      <if test="handleResult != null" >handle_result = #{handleResult,jdbcType=VARCHAR},</if>
+      <if test="severity != null" >severity = #{severity,jdbcType=VARCHAR},</if>
+      <if test="rootCause != null" >root_cause = #{rootCause,jdbcType=VARCHAR},</if>
+      <if test="correctiveAction != null" >corrective_action = #{correctiveAction,jdbcType=VARCHAR},</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
   <!-- 日、周、月报 -->
   <select id="questionsByDays" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />

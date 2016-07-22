@@ -77,6 +77,13 @@ public interface QuestionMapper {
     int updateByPrimaryKeySelective(Question question);
     
     /**
+     * 修改系统问题
+     * @param question 问题
+     * @return 结果
+     */
+    int updateOtherByPrimaryKeySelective(Question question);
+    
+    /**
      * 16-6-20 日、周、月报查询
      * @param days 天数
      * @return 问题列表

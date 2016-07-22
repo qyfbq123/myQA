@@ -152,20 +152,24 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       if (data.id) {
         $('#submitBtn, #resetBtn').addClass('hide');
         reqwest(Auth.apiHost + "/question/" + data.id).then(function(data) {
-          var ref;
+          var ref, ref1;
           questionInfo.attr('title', "编号：" + data.number);
           $('#project, #type, #severity').each(function(i, e) {
             if (!$(this).attr('name')) {
               return;
             }
-            return $(this).val(data[$(this).attr('name')]).change();
+            return $(this).val(data[$(this).attr('name')] || 'unselected').change();
           });
           $('#group, #city, #handler').each(function(i, e) {
-            var ref;
+            var ref, ref1;
             if (!$(this).attr('name')) {
               return;
             }
-            return $(this).val((ref = data[$(this).attr('name')]) != null ? ref.id : void 0).change();
+            if ($(this).attr('name') === 'group') {
+              return $(this).val(((ref = data[$(this).attr('name')]) != null ? ref.id : void 0) || 'unselected').change();
+            } else {
+              return $(this).val((ref1 = data[$(this).attr('name')]) != null ? ref1.id : void 0).change();
+            }
           });
           $('form input').each(function(i, e) {
             var d;
@@ -194,10 +198,16 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             table.clear();
             $('#attachmentRow').addClass('hide');
           }
-          if (!data.closed && !data.handleStatus) {
-            return $('#saveBtn').removeClass('hide');
+          if (!data.closed && data.handleStatus < 2) {
+            $('#saveBtn').removeClass('hide');
           } else {
-            return $('#filePicker').closest('span').addClass('hide');
+            $('#filePicker').closest('span').addClass('hide');
+          }
+          $('#rootCause,#correctiveAction').closest('.form-group').removeClass('hide');
+          if (((ref1 = data.handler) != null ? ref1.loginid : void 0) !== Auth.user().loginID) {
+            $('<p class="form-control-static"/>').text(data.rootCause || '').insertAfter($('#rootCause'));
+            $('<p class="form-control-static"/>').text(data.correctiveAction || '').insertAfter($('#correctiveAction'));
+            return $('#rootCause,#correctiveAction').remove();
           }
         }).fail(function() {
           return bootbox.alert('获取问题详细信息失败！');
@@ -222,6 +232,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         question = {
           project: $('#project').val() === 'unselected' ? null : $('#project').val(),
           type: $('#type').val(),
+          emailto: $('#emailTo').val(),
           group: $('#group').val() === 'unselected' ? null : {
             id: $('#group').val()
           },
@@ -272,6 +283,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           category: $('#category').val(),
           project: $('#project').val() === 'unselected' ? null : $('#project').val(),
           type: $('#type').val(),
+          emailto: $('#emailTo').val(),
           group: $('#group').val() === 'unselected' ? null : {
             id: $('#group').val()
           },
@@ -284,7 +296,9 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           startdate: $('#startdate').datepicker('getDate'),
           promisedate: $('#promisedate').datepicker('getDate'),
           severity: $('#severity').val(),
-          description: $('#description').val()
+          description: $('#description').val(),
+          rootCause: $('#rootCause').val(),
+          correctiveAction: $('#correctiveAction').val()
         };
         attachmentList = table.rows().data();
         if (attachmentList.length > 0) {

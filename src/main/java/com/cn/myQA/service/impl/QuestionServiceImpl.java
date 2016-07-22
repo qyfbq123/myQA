@@ -189,7 +189,12 @@ public class QuestionServiceImpl implements IQuestionService {
                  }); 
             }
         }
-        int rows = questionMapper.updateByPrimaryKeySelective(question);
+        int rows = 0;
+        if(question.getCategory().equals("PM")) {
+            rows = questionMapper.updateByPrimaryKeySelective(question);
+        } else {
+            rows = questionMapper.updateOtherByPrimaryKeySelective(question);
+        }
         if(CollectionUtils.isNotEmpty(question.getAttachmentList())) {
             questionMapper.bindQuestionAndAttachment(question);
         }
