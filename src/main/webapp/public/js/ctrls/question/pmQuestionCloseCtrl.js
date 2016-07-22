@@ -92,6 +92,10 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             text: d.text
           };
         });
+        data.unshift({
+          id: 'unselected',
+          text: '请选择'
+        });
         return $('#project').select2({
           language: 'zh-CN',
           theme: "bootstrap",
@@ -104,6 +108,10 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             id: d.text,
             text: d.text
           };
+        });
+        data.unshift({
+          id: 'unselected',
+          text: '请选择'
         });
         return $('#type').select2({
           language: 'zh-CN',
@@ -131,6 +139,10 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             text: d.text
           };
         });
+        data.unshift({
+          id: 'unselected',
+          text: '请选择'
+        });
         return $('#beginStorehouse').select2({
           language: 'zh-CN',
           theme: "bootstrap",
@@ -147,6 +159,10 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             id: d.text,
             text: d.text
           };
+        });
+        data.unshift({
+          id: 'unselected',
+          text: '请选择'
         });
         return $('#supplier').select2({
           language: 'zh-CN',
@@ -204,7 +220,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             if (!$(this).attr('name')) {
               return;
             }
-            return $(this).val(data[$(this).attr('name')]).change();
+            return $(this).val(data[$(this).attr('name')] || 'unselected').change();
           });
           $('#question form input').each(function(i, e) {
             var d;
@@ -315,6 +331,14 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           return;
         }
         question = $('#question form').serializeObject();
+        $('select').each(function(i, e) {
+          if (!$(this).attr('name')) {
+            return;
+          }
+          if ($(this).val() === 'unselected') {
+            return delete question[$(this).attr('name')];
+          }
+        });
         $('.input-group.date input').each(function(e, i) {
           return question[$(this).attr('name')] = $(this).datepicker('getDate');
         });
