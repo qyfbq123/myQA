@@ -385,12 +385,12 @@
     <bind name="pattern" value="'%&quot;' + associationId + '&quot;%'"/>
     select <include refid="Base_Column_List" />
     from question where
-        (YEAR(created)=YEAR(#{date, jdbcType=TIMESTAMP}) or YEAR(modified)=YEAR(#{date, jdbcType=TIMESTAMP}))
+        (YEAR(created)=YEAR(#{date, jdbcType=TIMESTAMP}))
         and
         (<choose>
-            <when test="section=='day'">DATE(created)=DATE(#{date, jdbcType=TIMESTAMP}) or DATE(modified)=DATE(#{date, jdbcType=TIMESTAMP})</when>
-            <when test="section=='week'">WEEK(created)=WEEK(#{date, jdbcType=TIMESTAMP}) or WEEK(modified)=WEEK(#{date, jdbcType=TIMESTAMP})</when>
-            <when test="section=='month'">MONTH(created)=MONTH(#{date, jdbcType=TIMESTAMP}) or MONTH(modified)=MONTH(#{date, jdbcType=TIMESTAMP})</when>
+            <when test="section=='day'">DATE(created)=DATE(#{date, jdbcType=TIMESTAMP})</when>
+            <when test="section=='week'">WEEK(created)=WEEK(#{date, jdbcType=TIMESTAMP})</when>
+            <when test="section=='month'">MONTH(created)=MONTH(#{date, jdbcType=TIMESTAMP})</when>
             <otherwise>1=1</otherwise>
         </choose>)
         <if test="associationId > 0">

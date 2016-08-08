@@ -384,10 +384,10 @@
     select <include refid="Base_Column_List" />
     from question where
         (<choose>
-            <when test="section=='day'">DATEDIFF(DAY, created, #{date, jdbcType=TIMESTAMP}) = 0 or DATEDIFF(DAY, modified, #{date, jdbcType=TIMESTAMP}) = 0</when>
-            <when test="section=='week'">DATEDIFF(WEEK, created, #{date, jdbcType=TIMESTAMP}) = 0 or DATEDIFF(WEEK, modified, #{date, jdbcType=TIMESTAMP}) = 0</when>
-            <when test="section=='month'">DATEDIFF(MONTH, created, #{date, jdbcType=TIMESTAMP}) = 0 or DATEDIFF(MONTH, modified, #{date, jdbcType=TIMESTAMP}) = 0</when>
-            <when test="section=='year'">DATEDIFF(YEAR, created, #{date, jdbcType=TIMESTAMP}) = 0 or DATEDIFF(YEAR, modified, #{date, jdbcType=TIMESTAMP}) = 0</when>
+            <when test="section=='day'">DATEDIFF(DAY, created, #{date, jdbcType=TIMESTAMP}) = 0</when>
+            <when test="section=='week'">DATEDIFF(WEEK, created, #{date, jdbcType=TIMESTAMP}) = 0</when>
+            <when test="section=='month'">DATEDIFF(MONTH, created, #{date, jdbcType=TIMESTAMP}) = 0</when>
+            <when test="section=='year'">DATEDIFF(YEAR, created, #{date, jdbcType=TIMESTAMP}) = 0</when>
             <otherwise>1=1</otherwise>
         </choose>)
         <if test="associationId > 0">

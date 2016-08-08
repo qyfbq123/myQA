@@ -496,8 +496,8 @@ public class QuestionServiceImpl implements IQuestionService {
         }
         
         for(QuestionVO2 vo : questionVOs) {
-            if(!StringUtils.isEmpty(vo.getModifyby()) && !allUseremails.contains( vo.getModifyby() )) {
-//                return "用户 “" + vo.getModifyby() + "” 不存在";
+            if(!StringUtils.isEmpty(vo.getApplyby()) && !allUseremails.contains( vo.getApplyby() )) {
+                return "用户 “" + vo.getApplyby() + "” 不存在";
             } else if(!allWNames.contains(vo.getWarehouse())) {
                 return "始发地和涉及库房信息 “" + vo.getWarehouse() + "” 不存在";
             } else if(!allPNames.contains(vo.getProjectName())) {
