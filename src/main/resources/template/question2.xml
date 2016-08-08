@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook>
+	<worksheet idx="0">
+		<section startRow="0" endRow="0"></section>
+		<loop startRow="1" endRow="1" items="questions" var="question"
+			varType="com.cn.myQA.web.QuestionVO2">
+			<section startRow="1" endRow="1">
+				<mapping row="1" col="0">question.dbo_ELC_Item_item_id</mapping>
+				<mapping row="1" col="1">question.applyby</mapping>
+				<mapping row="1" col="2">question.applytime</mapping>
+				<mapping row="1" col="3">question.status</mapping>
+				<mapping row="1" col="4">question.closeby</mapping>
+				<mapping row="1" col="5">question.closetime</mapping>
+				<mapping row="1" col="6">question.id</mapping>
+				<mapping row="1" col="7">question.dbo_ELC_Content_item_id
+				</mapping>
+				<mapping row="1" col="8">question.projectName</mapping>
+				<mapping row="1" col="9">question.projectManager</mapping>
+				<mapping row="1" col="10">question.vendor</mapping>
+				<mapping row="1" col="11">question.issueDate</mapping>
+				<mapping row="1" col="12">question.attendee</mapping>
+				<mapping row="1" col="13">question.isCustomerFeed</mapping>
+				<mapping row="1" col="14">question.containmentPlanDate</mapping>
+				<mapping row="1" col="15">question.actionPlanDate</mapping>
+				<mapping row="1" col="16">question.issueType</mapping>
+				<mapping row="1" col="17">question.severity</mapping>
+				<mapping row="1" col="18">question.warehouse</mapping>
+				<mapping row="1" col="19">question.spcName</mapping>
+				<mapping row="1" col="20">question.orderNo</mapping>
+				<mapping row="1" col="21">question.hawb</mapping>
+				<mapping row="1" col="22">question.partInformation</mapping>
+				<mapping row="1" col="23">question.pickupTime</mapping>
+				<mapping row="1" col="24">question.actPickupTime</mapping>
+				<mapping row="1" col="25">question.problemStatement</mapping>
+				<mapping row="1" col="26">question.issueDescription</mapping>
+				<mapping row="1" col="27">question.correctiveDescription
+				</mapping>
+				<mapping row="1" col="28">question.rootCause</mapping>
+				<mapping row="1" col="29">question.correctiveAction</mapping>
+				<mapping row="1" col="30">question.modifyby</mapping>
+				<mapping row="1" col="31">question.modifytime</mapping>
+			</section>
+			<loopbreakcondition>
+				<rowcheck offset="0" />
+				<rowcheck offset="1" />
+			</loopbreakcondition>
+		</loop>
+	</worksheet>
+</workbook>

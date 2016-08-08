@@ -105,6 +105,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           $body.append($('<p/>').append(genTextArea("补救方案描述：", "" + (question.recoveryDescription || ''))));
           $body.append($('<p/>').append(genTextArea("问题根本原因：", "" + (question.rootCause || ''))));
           $body.append($('<p/>').append(genTextArea("改善方案：", "" + (question.correctiveAction || ''))));
+          $body.append($('<p/>').append(genTextArea("主管建议：", "" + (question.suggest || ''))));
         }
         if (((ref7 = question.attachmentList) != null ? ref7.length : void 0) > 0) {
           $table = $('#tempAttachmentList').clone().removeAttr('id').removeClass('hide');

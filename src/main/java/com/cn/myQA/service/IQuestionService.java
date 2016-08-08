@@ -8,6 +8,7 @@ import com.cn.myQA.pojo.QuestionAttachment;
 import com.cn.myQA.pojo.User;
 import com.cn.myQA.web.QuestionSearch;
 import com.cn.myQA.web.QuestionVO;
+import com.cn.myQA.web.QuestionVO2;
 import com.cn.myQA.web.datatables.Pagination;
 import com.cn.myQA.web.datatables.TableModel;
 
@@ -89,6 +90,13 @@ public interface IQuestionService {
      * @return
      */
     public String batchImport(List<QuestionVO> questionVOs);
+    
+    /**
+     * 问题批量导入
+     * @param questionVOs
+     * @return
+     */
+    public String batchImport2(List<QuestionVO2> questionVOs);
     
     /**
      * 日、周、月报

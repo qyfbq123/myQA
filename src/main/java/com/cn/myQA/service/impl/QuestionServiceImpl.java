@@ -29,6 +29,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSONArray;
 import com.cn.myQA.dao.GroupMapper;
 import com.cn.myQA.dao.QuestionMapper;
 import com.cn.myQA.dao.UserMapper;
@@ -42,6 +43,7 @@ import com.cn.myQA.service.IMailService;
 import com.cn.myQA.service.IQuestionService;
 import com.cn.myQA.web.QuestionSearch;
 import com.cn.myQA.web.QuestionVO;
+import com.cn.myQA.web.QuestionVO2;
 import com.cn.myQA.web.datatables.Pagination;
 import com.cn.myQA.web.datatables.TableModel;
 import com.cn.myQA.web.select2.Option;
@@ -390,6 +392,18 @@ public class QuestionServiceImpl implements IQuestionService {
                 q.setModified(modifyTime);
             }
             
+            if(!StringUtils.isEmpty(vo.getAttendee())) {
+                JSONArray teammatesJSONArr = JSONArray.parseArray(vo.getAttendee());
+                String[] teammatesArr = teammatesJSONArr.toArray(new String[teammatesJSONArr.size()]);
+                JSONArray teammatesJSON = new JSONArray();
+                for(String email : teammatesArr) {
+                    if(allUseremails.contains(email)) {
+                        teammatesJSON.add(allUsers.get(allUseremails.indexOf(email)).getId().toString());
+                    }
+                }
+                q.setTeammates(teammatesJSON.toJSONString());
+            }
+            
             if(StringUtils.isEmpty(vo.getItemId())) {
                 this.create(q);
             } else {
@@ -454,6 +468,184 @@ public class QuestionServiceImpl implements IQuestionService {
             } else if(qList.size() == 1) {
                 this.create(qList.get(0));
             }
+        }
+        return "ok";
+    }
+    
+    public String batchImport2(List<QuestionVO2> questionVOs) {
+        List<User> allUsers = userMapper.all();
+        List<Option> warehouses = dictService.beginStorehouses();
+        List<Option> projects = dictService.projects();
+        List<Option> types = dictService.pmTypes();
+        
+        List<String> allUseremails = new ArrayList<String>();
+        List<String> allWNames = new ArrayList<String>();
+        List<String> allPNames = new ArrayList<String>();
+        List<String> allTNames = new ArrayList<String>();
+        for(User u : allUsers) {
+            allUseremails.add(u.getEmail());
+        }
+        for(Option o : warehouses) {
+            allWNames.add(o.getText());
+        }
+        for(Option o : projects) {
+            allPNames.add(o.getText());
+        }
+        for(Option o : types) {
+            allTNames.add(o.getText());
+        }
+        
+        for(QuestionVO2 vo : questionVOs) {
+            if(!StringUtils.isEmpty(vo.getModifyby()) && !allUseremails.contains( vo.getModifyby() )) {
+//                return "用户 “" + vo.getModifyby() + "” 不存在";
+            } else if(!allWNames.contains(vo.getWarehouse())) {
+                return "始发地和涉及库房信息 “" + vo.getWarehouse() + "” 不存在";
+            } else if(!allPNames.contains(vo.getProjectName())) {
+                return "项目名称 “" + vo.getProjectName() + "” 不存在";
+            } else if(!allTNames.contains(vo.getIssueType())) {
+                return "问题类型 “" + vo.getIssueType() + "” 不存在";
+            }
+        }
+        Charset charset = Charset.forName("UTF-8");
+        
+        // question group
+        Map<String, List<Question>> qg = new HashMap<String, List<Question>>();
+        for(QuestionVO2 vo : questionVOs) {
+            Question q = new Question();
+            q.setCategory("PM");
+            q.setHandleStatus(2);
+            q.setClosed(true);
+            
+            q.setProject(vo.getProjectName());
+            q.setSupplier(vo.getVendor());
+            if(!StringUtils.isEmpty(vo.getIssueDate())) {
+                q.setIssueDate(DateUtil.getJavaDate(Double.parseDouble(vo.getIssueDate())));
+            }
+            
+            q.setIsCFeedback("Y".equals(vo.getIsCustomerFeed()) ? true: false);
+            if(!StringUtils.isEmpty(vo.getContainmentPlanDate())) {
+                q.setContainmentPlanDate(DateUtil.getJavaDate(Double.parseDouble(vo.getContainmentPlanDate())));
+            }
+            if(!StringUtils.isEmpty(vo.getActionPlanDate())) {
+                q.setActionPlanDate(DateUtil.getJavaDate(Double.parseDouble(vo.getActionPlanDate())));
+            }
+            q.setType(vo.getIssueType());
+            q.setSeverity(vo.getSeverity());
+            q.setBeginStorehouse(vo.getWarehouse());
+            q.setSpc(vo.getSpcName());
+            q.setOrderNo(vo.getOrderNo());
+            q.setHawb(vo.getHawb());
+            q.setPartInformation(vo.getPartInformation() == null ? null : charset.decode(charset.encode(vo.getPartInformation())).toString());
+            if(!StringUtils.isEmpty(vo.getPickupTime())) {
+                q.setScheduledTime(DateUtil.getJavaDate(Double.parseDouble(vo.getPickupTime())));
+            }
+            if(!StringUtils.isEmpty(vo.getActPickupTime())) {
+                q.setActualTime(DateUtil.getJavaDate(Double.parseDouble(vo.getActPickupTime())));
+            }
+            q.setProblemStatement(vo.getProblemStatement());
+            q.setIssueDescription(vo.getIssueDescription());
+            q.setRecoveryDescription(vo.getCorrectiveDescription());
+            q.setRootCause(vo.getRootCause());
+            q.setCorrectiveAction(vo.getCorrectiveAction());
+            if( !StringUtils.isEmpty(vo.getApplyby()) && allUseremails.contains(vo.getApplyby()) ) {
+                User user = allUsers.get(allUseremails.indexOf(vo.getApplyby()));
+                q.setCreator(user);
+            }
+            if( !StringUtils.isEmpty(vo.getCloseby()) && allUseremails.contains(vo.getCloseby()) ) {
+                User user = allUsers.get(allUseremails.indexOf(vo.getCloseby()));
+                q.setModifier(user);
+            }
+            else if( !StringUtils.isEmpty(vo.getModifyby()) && allUseremails.contains(vo.getModifyby()) ) {
+                User user = allUsers.get(allUseremails.indexOf(vo.getModifyby()));
+                q.setModifier(user);
+            }
+            if(!StringUtils.isEmpty(vo.getApplytime())) {
+                Date applyTime = DateUtil.getJavaDate(Double.parseDouble(vo.getApplytime()));
+                q.setCreated(applyTime);
+            }
+            if(!StringUtils.isEmpty(vo.getClosetime())) {
+                Date closeTime = DateUtil.getJavaDate(Double.parseDouble(vo.getClosetime()));
+                q.setModified(closeTime);
+            }
+            else if(!StringUtils.isEmpty(vo.getModifytime())) {
+                Date modifyTime = DateUtil.getJavaDate(Double.parseDouble(vo.getModifytime()));
+                q.setModified(modifyTime);
+            }
+            
+            if(!StringUtils.isEmpty(vo.getAttendee())) {
+                JSONArray teammatesJSONArr = JSONArray.parseArray(vo.getAttendee());
+                String[] teammatesArr = teammatesJSONArr.toArray(new String[teammatesJSONArr.size()]);
+                JSONArray teammatesJSON = new JSONArray();
+                for(String email : teammatesArr) {
+                    if(allUseremails.contains(email)) {
+                        teammatesJSON.add(allUsers.get(allUseremails.indexOf(email)).getId().toString());
+                    }
+                }
+                q.setTeammates(teammatesJSON.toJSONString());
+            }
+            
+            if(StringUtils.isEmpty(vo.getDbo_ELC_Item_item_id())) {
+                this.create(q);
+            } else {
+                if(!qg.containsKey(vo.getDbo_ELC_Item_item_id())) {
+                    List<Question> qList = new ArrayList<Question>();
+                    qList.add(q);
+                    qg.put(vo.getDbo_ELC_Item_item_id(), qList);
+                } else {
+                    qg.get(vo.getDbo_ELC_Item_item_id()).add(q);
+                }
+            }
+        }
+        
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        
+        for(List<Question> qList : qg.values()) {
+            int qsize = qList.size();
+            Question basicQ = qList.get(qsize - 1);
+            if(!StringUtils.isEmpty(basicQ.getPartInformation())) {
+                basicQ.setPartInformation(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getPartInformation().replaceAll("\n", "<br/>")  + "\n");
+            }
+            if(!StringUtils.isEmpty(basicQ.getProblemStatement())) {
+                basicQ.setProblemStatement(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getProblemStatement().replaceAll("\n", "<br/>")  + "\n");
+            }
+            if(!StringUtils.isEmpty(basicQ.getIssueDescription())) {
+                basicQ.setIssueDescription(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getIssueDescription().replaceAll("\n", "<br/>") + "\n");
+            }
+            if(!StringUtils.isEmpty(basicQ.getRecoveryDescription())) {
+                basicQ.setRecoveryDescription(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getRecoveryDescription().replaceAll("\n", "<br/>") + "\n");
+            }
+            if(!StringUtils.isEmpty(basicQ.getRootCause())) {
+                basicQ.setRootCause(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getRootCause().replaceAll("\n", "<br/>") + "\n");
+            }
+            if(!StringUtils.isEmpty(basicQ.getCorrectiveAction())) {
+                basicQ.setCorrectiveAction(df.format(basicQ.getCreated()) + " 来自 " + (basicQ.getCreator()==null?"未知":basicQ.getCreator().getUsername()) + "\n" + basicQ.getCorrectiveAction().replaceAll("\n", "<br/>") + "\n");
+            }
+            if(qsize > 1) {
+                for(int i = qsize - 2; i >= 0; i--) {
+                    Question modifyQ = qList.get(i);
+                    if(!StringUtils.isEmpty(modifyQ.getPartInformation())) {
+                        basicQ.setPartInformation(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getPartInformation().replaceAll("\n", "<br/>")  + "\n" + (basicQ.getPartInformation()==null?"":basicQ.getPartInformation()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getProblemStatement())) {
+                        basicQ.setProblemStatement(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getProblemStatement().replaceAll("\n", "<br/>")  + "\n" + (basicQ.getProblemStatement()==null?"":basicQ.getProblemStatement()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getIssueDescription())) {
+                        basicQ.setIssueDescription(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getIssueDescription().replaceAll("\n", "<br/>") + "\n" + (basicQ.getIssueDescription()==null?"":basicQ.getIssueDescription()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getRecoveryDescription())) {
+                        basicQ.setRecoveryDescription(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getRecoveryDescription().replaceAll("\n", "<br/>") + "\n" + (basicQ.getRecoveryDescription()==null?"":basicQ.getRecoveryDescription()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getRootCause())) {
+                        basicQ.setRootCause(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getRootCause().replaceAll("\n", "<br/>") + "\n" + (basicQ.getRootCause()==null?"":basicQ.getRootCause()));
+                    }
+                    if(!StringUtils.isEmpty(modifyQ.getCorrectiveAction())) {
+                        basicQ.setCorrectiveAction(df.format(modifyQ.getCreated()) + " 来自 " + (modifyQ.getCreator()==null?"未知":modifyQ.getCreator().getUsername()) + "\n" + modifyQ.getCorrectiveAction().replaceAll("\n", "<br/>") + "\n" + (basicQ.getCorrectiveAction()==null?"":basicQ.getCorrectiveAction()));
+                    }
+                }
+                basicQ.setCreator(qList.get(0).getCreator());
+                basicQ.setCreated(qList.get(0).getCreated());
+            } 
+            this.create(basicQ);
         }
         return "ok";
     }

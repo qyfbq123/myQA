@@ -13,7 +13,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'uploader'],
         'buttonText': "提交ELC File",
         'fileTypeDesc': '文件',
         'swf': './lib/uploadify/uploadify.swf',
-        'uploader': Auth.apiHost + "question/dailyReport/upload",
+        'uploader': Auth.apiHost + "question/dailyReport/upload2",
         'onUploadSuccess': function(file, data, response) {
           if (data === "ok") {
             return bootbox.alert('上传成功');

@@ -46,6 +46,7 @@ import com.cn.myQA.pojo.User;
 import com.cn.myQA.service.IQuestionService;
 import com.cn.myQA.web.QuestionSearch;
 import com.cn.myQA.web.QuestionVO;
+import com.cn.myQA.web.QuestionVO2;
 import com.cn.myQA.web.datatables.Pagination;
 import com.cn.myQA.web.datatables.TableModel;
 import com.mysql.jdbc.StringUtils;
@@ -296,6 +297,35 @@ public class QuestionController {
                     questions.remove(0);
                 }
                 String result = questionService.batchImport(questions);
+                return new ResponseEntity<String>(result, HttpStatus.OK);
+            }
+        } catch (IOException | SAXException | InvalidFormatException e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<String>("ok", HttpStatus.OK);
+    }
+    
+    @ApiOperation(value="旧系统数据导入", notes="旧系统数据导入", httpMethod="POST")
+    @RequestMapping(value="/dailyReport/upload2", method=RequestMethod.POST)
+    public ResponseEntity<String> uploadDailyReport2(MultipartFile Filedata) {
+        InputStream inputXML = new BufferedInputStream(getClass().getResourceAsStream("/template/question2.xml"));
+        XLSReader mainReader;
+        try {
+            mainReader = ReaderBuilder.buildFromXML( inputXML );
+
+            InputStream inputXLS = new BufferedInputStream(Filedata.getInputStream());
+            List<QuestionVO2> questions = new ArrayList<QuestionVO2>();
+            Map<String, Object> beans = new HashMap<String, Object>();
+            beans.put("questions", questions);
+            XLSReadStatus readStatus = mainReader.read( inputXLS, beans);
+            if(!readStatus.isStatusOK()) return new ResponseEntity<String>("读取excel数据失败", HttpStatus.BAD_REQUEST);
+            if(CollectionUtils.isNotEmpty(questions)) {
+                if(questions.get(0).getDbo_ELC_Item_item_id().equals("dbo_ELC_Item_item_id")) {
+                    questions.remove(0);
+                }
+                String result = questionService.batchImport2(questions);
                 return new ResponseEntity<String>(result, HttpStatus.OK);
             }
         } catch (IOException | SAXException | InvalidFormatException e) {
