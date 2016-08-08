@@ -740,7 +740,23 @@ public class QuestionServiceImpl implements IQuestionService {
     }
     
     public String richReportByTime(Date time, String section, Integer userId) {
-        List<Question> qList = questionMapper.reportByTime(section, time, userId);
+        List<Question> qList;
+        if(userId == -1) {
+            qList = new ArrayList<Question>();
+        } else {
+            User user = userMapper.selectByPrimaryKey(userId);
+            if(user != null) {
+                if(CollectionUtils.isNotEmpty(user.getRoleList())) {
+                    for(Role r : user.getRoleList()) {
+                        if(r.getName().equals("管理员")) {
+                            userId = 0;
+                            break;
+                        }
+                    }
+                }
+            }
+            qList = questionMapper.reportByTime(section, time, userId);
+        }
         List<Question> pmList = new ArrayList<Question>();
         List<Question> otherList = new ArrayList<Question>();
         for(Question q : qList) {
