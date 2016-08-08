@@ -1,0 +1,53 @@
+ul.nav.nav-tabs
+  // 16-6-20 添加事件列表
+  li(role="presentation")
+    a(href="#!home/pmDashboardList") 事件列表
+  li.active(role="presentation")
+    a(href="#!home/dashboardList") 系统列表
+  li(role="presentation")
+    a(href="#!home/dashboard") 图表统计
+br
+
+.row
+  .col-lg-12.text-center(style="padding:0 0 10px; 0")
+    form#searchForm.form-inline(onSubmit="return false;")
+      input(type="hidden", can-value="handlerId", name="handlerId")
+
+      .form-group
+        label(for="category") 种类:
+        select#category.form-control(name="category")
+      .form-group
+        label(for="number") 编号:
+        input#number.form-control(type="text", name="number", placeholder="编号")
+      .form-group
+        label(for="project") 项目:
+        select#project.form-control(name="project")
+      //- .form-group
+      //-   label(for="type") 类型:
+      //-   select#type.form-control(name="type")
+      .form-group
+        label(for="closed") 状态:
+        select#closed.form-control(name="closed")
+          option(value=0) OPEN
+          option(value=1) CLOSED
+      .form-group
+        label(for="creatorId") 发起人:
+        select#creatorId.form-control(name="creatorId")
+      button.btn.btn-primary 查询
+.row
+  .col-lg-12
+    table#issueList.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+      thead
+        tr
+          th 编号
+          th 项目名称
+          th 问题严重性
+          th 发起人
+          th 发起时间
+          th 处理预计完成时间
+          th 问题类型
+          th 状态
+          th
+          th
+          th
+      tfoot

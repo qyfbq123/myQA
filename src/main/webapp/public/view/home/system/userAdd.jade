@@ -1,0 +1,59 @@
+.row
+  .col-lg-12
+    h1.page-header 用户 / {{pageType}}
+
+.row
+  .panel.panel-default
+      .panel-heading.clearfix
+        .panel-title.pull-left 用户信息
+        #operates.btn-group.pull-right
+          button.btn.btn-default.btn-sm(type="button", data-action='save')
+            span.glyphicon.glyphicon-save(aria-hidden="true")
+            |保存
+          button.btn.btn-default.btn-sm(type="button", data-action='refresh')
+            span.glyphicon.glyphicon-repeat(aria-hidden="true")
+            |重置
+          button.btn.btn-default.btn-sm(type="button", data-action='cancel')
+            span.glyphicon.glyphicon-arrow-left(aria-hidden="true")
+            |取消
+
+      .panel-body
+        .row
+          .col-lg-6
+            form.form-horizontal(role='form')
+              input(type='hidden', name='id', can-value='id')
+              .form-group
+                label.col-sm-2.control-label(for="loginid") LoginID
+                .col-sm-10
+                  input#loginid.form-control(type="text", name="loginid", can-value="loginid", placeholder="LoginID")
+              .form-group
+                label.col-sm-2.control-label(for="password") Password
+                .col-sm-10
+                  input#password.form-control(type="text", name="password", can-value="password", placeholder="Password")
+              .form-group
+                label.col-sm-2.control-label(for="username") 用户名
+                .col-sm-10
+                  input#username.form-control(type="text", name="username", can-value="username", placeholder="用户名称")
+              .form-group
+                label.col-sm-2.control-label(for="email") Email
+                .col-sm-10
+                  input#email.form-control(type="email", name="email", can-value="email", placeholder="Email")
+              // 16-6-20 添加用户领导
+              //- .form-group
+              //-   label.col-sm-2.control-label(for="leaderemail") 领导邮箱
+              //-   .col-sm-10
+              //-     input#leaderemail.form-control(type="email", name="leaderemail", can-value="leaderemail", placeholder="LeaderEmail")
+              .form-group
+                label.col-sm-2.control-label(for='leader') 上级主管
+                .col-sm-10
+                  select#leader.form-control(name="leader", placeholder='上级主管')
+          .col-lg-6
+            form.form-horizontal(role="form")
+              .form-group
+                label.col-sm-2.control-label(for="city") 城市
+                .col-sm-10
+                  select#city.form-control(name="city", placeholder='城市')
+              .form-group
+                label.col-sm-2.control-label(for="roles") 角色
+                .col-sm-10
+                  select#roles.form-control(name="roles", placeholder='角色')

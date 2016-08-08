@@ -1,0 +1,25 @@
+.row
+  .col-lg-12
+    h1.page-header 系统字典
+    
+.row
+  .panel.panel-default
+      .panel-heading.clearfix
+        .panel-title.pull-left 系统字典
+
+      .panel-body
+        .row
+          .col-lg-4
+            h2.text-center 字典列表
+            #dictList.list-group
+
+          .col-lg-offset-2.col-lg-4
+            h2.text-center 参数列表
+            #params.list-group
+            #paramAdd.hide
+              .input-group
+                input#addValue.form-control(type="text", placeholder='新参数...')
+                span.input-group-btn
+                  button#addBtn.btn.btn-default(type='button') 添加
+              .text-center(style='margin-top: 10px;')
+                button#saveBtn.btn.btn-primary.btn-lg 保存

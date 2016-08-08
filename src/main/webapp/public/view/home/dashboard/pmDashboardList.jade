@@ -1,0 +1,29 @@
+// 16-6-20 添加这个页面专门处理事件列表
+ul.nav.nav-tabs
+  li.active(role="presentation")
+    a(href="#!home/pmDashboardList") 事件列表
+  li(role="presentation")
+    a(href="#!home/dashboardList") 系统列表
+  li(role="presentation")
+    a(href="#!home/dashboard") 图表统计
+br
+
+.row
+  .col-lg-12.text-center(style="padding:0 0 10px; 0")
+.row
+  .col-lg-12
+    table#issueList.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+      thead
+        tr
+          th 编号
+          th 项目名称
+          th 库房信息
+          th 发起人
+          th 发起时间
+          th 问题发现时间
+          th 问题类型
+          th 状态
+          th
+          // 16-6-20 添加详情列
+          th
+      tfoot

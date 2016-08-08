@@ -1,0 +1,33 @@
+.row
+  .col-lg-12
+    h1.page-header {{pageinfo}}
+
+.row
+  .col-lg-10.col-lg-offset-1.text-center(style="padding:0 0 10px; 0")
+    form#searchForm.form-inline(onSubmit="return false;")
+      input(type="hidden", can-value="category", name="category")
+      input(type="hidden", can-value="closed", name="closed")
+      input(type="hidden", can-value="handleStatus", name="handleStatus")
+      .form-group
+        label(for="number") 编号:
+        input#number.form-control(type="text", name="number", placeholder="编号")
+      .form-group
+        label(for="project") 项目:
+        select#project.form-control(name="project")
+      //- .form-group
+      //-   label(for="type") 类型:
+      //-   select#type.form-control(name="type")
+      .form-group
+        label(for="creatorId") 发起人:
+        select#creatorId.form-control(name="creatorId")
+      .form-group
+        label(for="number") 问题描述:
+        input#description.form-control(type="text", name="description", placeholder="描述")
+      button.btn.btn-primary 查询
+  table#tempAttachmentList.hide.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+    thead
+      tr
+        th 文件名
+        th 上传时间
+        th 大小
+        th 拥有人

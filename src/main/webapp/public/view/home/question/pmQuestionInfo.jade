@@ -1,0 +1,175 @@
+
+.row
+  .panel.panel-default
+      .panel-heading.clearfix
+        .panel-title.pull-left {{title}}
+
+      .panel-body
+        form.form-horizontal(role='form', onSubmit="return false;")
+          input(type="hidden",  name="category", value="PM")
+          .row
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="project") *项目名称(Project):
+                .col-sm-6
+                  select#project.form-control(name="project", placeholder="项目")
+          .row
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="supplier") *所属供应商:
+                .col-sm-6
+                  // 16-6-20 供应商换为下拉框
+                  select#supplier.form-control(name="supplier", placeholder="供应商")
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="issueDate") *问题发现时间(Issue Date):
+                .col-sm-6
+                  .input-group.date
+                    input#issueDate.form-control(name="issueDate", type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+          .row
+            .col-lg-6
+              .form-group
+                label.col-sm-3.control-label(for="teammates") *事件参与人:
+                .col-sm-9
+                  #teammates.checkbox
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="isCFeedback") *是否由客户反馈:
+                .col-sm-6
+                  select#isCFeedback.form-control(name="isCFeedback", placeholder="项目")
+                    option(value=1) Y
+                    option(value=0) N
+          .row
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="containmentPlanDate") *补救方案期限(Containment Plan Date):
+                .col-sm-6
+                  .input-group.date
+                    input#containmentPlanDate.form-control(name="containmentPlanDate", type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="actionPlanDate") *改善方案期限(Action Plan Date):
+                .col-sm-6
+                  .input-group.date
+                    input#actionPlanDate.form-control(name="actionPlanDate", type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+          .row
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="type") *问题类型(Issue Type):
+                .col-sm-6
+                  select#type.form-control(name="type", placeholder="类型")
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="severity") *问题严重性(severity):
+                .col-sm-6
+                  select#severity.form-control(name="severity", placeholder="严重性")
+          .row
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="beginStorehouse") *始发地和涉及库房信息:
+                .col-sm-6
+                  select#beginStorehouse.form-control(name="beginStorehouse")
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="spc") *SPC名(填写方式：自营／外包＋城市名，SAMPLE:自营 武汉):
+                .col-sm-6
+                  input#spc.form-control(name="spc", can-value='spc', placeholder="SPC")
+          .row
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="orderNo") 订单号(Order No.):
+                .col-sm-6
+                  input#orderNo.form-control(name="orderNo", can-value='orderNo', placeholder="订单号")
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="hawb") 运单号(HAWB):
+                .col-sm-6
+                  input#hawb.form-control(name="hawb", can-value='hawb', placeholder="运单号")
+          .row
+            .form-group
+              label.col-sm-3.control-label(for='partInformation') 备案信息(Part Information):
+              .col-sm-8
+                textarea#partInformation.form-control(name='partInformation', can-value="partInformation", rows="3", placeholder="请输入备案信息...")
+          .row
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="scheduledTime") 原定派送／取件时间(Scheduled delivery/pick-up time):
+                .col-sm-6
+                  .input-group.date
+                    input#scheduledTime.form-control(name="scheduledTime", type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+            .col-lg-6
+              .form-group
+                label.col-sm-6.control-label(for="actualTime") 实际派送／取件时间(Actual delivery/pick-up time):
+                .col-sm-6
+                  .input-group.date
+                    input#actualTime.form-control(name="actualTime", type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+          .row
+            .form-group
+              label.col-sm-3.control-label(for='problemStatement') 问题描述(Problem Statement):
+              .col-sm-8
+                textarea#problemStatement.form-control(name='problemStatement', can-value="problemStatement", rows="3", placeholder="请输入问题描述...")
+          // 16-6-20 隐藏情况反馈
+          //- .row
+          //-   .form-group
+          //-     label.col-sm-3.control-label(for='issueDescription') 情况反馈(Issue Description):
+          //-     .col-sm-8
+          //-       textarea#issueDescription.form-control(name='issueDescription', can-value="issueDescription", rows="3", placeholder="请输入情况反馈...")
+          .row
+            .form-group
+              label.col-sm-3.control-label(for='recoveryDescription') 补救方案描述(Recovery Description):
+              .col-sm-8
+                textarea#recoveryDescription.form-control(name='recoveryDescription', can-value="recoveryDescription", rows="3", placeholder="请输入补救方案描述...")
+          .row
+            .form-group
+              label.col-sm-3.control-label(for='rootCause') 问题根本原因(Root Cause):
+              .col-sm-8
+                textarea#rootCause.form-control(name='rootCause', can-value="rootCause", rows="3", placeholder="请输入问题根本原因...")
+          .row
+            .form-group
+              label.col-sm-3.control-label(for='correctiveAction') 改善方案(Corrective Action):
+              .col-sm-8
+                textarea#correctiveAction.form-control(name='correctiveAction', can-value="correctiveAction", rows="3", placeholder="请输入改善方案...")
+          .row
+            .form-group
+              label.col-sm-3.control-label(for='attachmentPath') 附件:
+              .col-sm-8
+                span.btn.btn-success.fileinput-button
+                  i.glyphicon.glyphicon-plus
+                  span Select files...
+                  input#filePicker.file-loading(type='file', name='Filedata')
+                input#attachmentPath(type="hidden", name='attachmentPath', can-value='attachmentPath')
+                a#attachment.btn.btn-primary.hide(href="#", target='_blank') 下载
+
+                .row#attachmentRow.hide
+                  table#attachmentList.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+                    thead
+                      tr
+                        th ID
+                        th 文件名
+                        th 上传时间
+                        th 大小
+                        th 拥有人
+                        th 操作
+
+
+
+
+
+
+          .row
+            .form-group
+              .col-sm-offset-6.col-sm-2
+                button#submitBtn.btn.btn-primary &nbsp;&nbsp;提交&nbsp;&nbsp;
+                button#resetBtn.hide.btn.btn-default &nbsp;&nbsp;清空&nbsp;&nbsp;
+
+                button#closeBtn.btn.btn-primary.hide &nbsp;&nbsp;关闭&nbsp;&nbsp;

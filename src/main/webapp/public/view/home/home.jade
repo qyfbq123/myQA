@@ -1,0 +1,104 @@
+#wrapper
+  //- Navigation
+  nav.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0')
+    .navbar-header
+      button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+
+      a(href="#!home")
+        img(src='public/static/DHL.jpg', style='height:50px;')
+
+    ul.nav.navbar-top-links.navbar-right
+      li.dropdown
+        a.dropdown-toggle(data-toggle="dropdown", href="#")
+          i.fa.fa-user.fa-fw
+          i.fa.fa-caret-down
+        ul.dropdown-menu.dropdown-user
+          li
+            a(href='#!home/userProfile')
+              i.fa.fa-user.fa-fw
+              |User Profile
+          li.divider
+          li
+            a.hide#loginBtn(href="javascript:void(0)")
+              i.fa.fa-sign-in.fa-fw
+              |Login
+          li
+            a#logoutBtn(href="#!logout")
+              i.fa.fa-sign-out.fa-fw
+              |Logout
+
+    .navbar-default.sidebar(role="navigation")
+      .sidebar-nav.navbar-collapse
+        ul#side-menu.nav
+          li
+            a(href="#!home/pmDashboardList")
+              i.fa.fa-dashboard.fa-fw
+              |&nbsp;概览
+          li
+            a(href="#!home/question/pmAdd")
+              i.fa.fa-edit.fa-fw
+              |&nbsp;事件管理
+          li
+            a(href="#!home/question/wmsAdd")
+              i.fa.fa-edit.fa-fw
+              |&nbsp;WMS管理
+          li
+            a(href="#!home/question/tmsAdd")
+              i.fa.fa-edit.fa-fw
+              |&nbsp;TMS管理
+          li
+            a(href="#!home/question/handle")
+              i.fa.fa-table.fa-fw
+              |&nbsp;案例处理
+          li
+            a(href="#!home/question/pmClose")
+              i.fa.fa-table.fa-fw
+              |&nbsp;事件关闭
+          li
+            a(href="#!home/question/wmsClose")
+              i.fa.fa-table.fa-fw
+              |&nbsp;WMS关闭
+          li
+            a(href="#!home/question/tmsClose")
+              i.fa.fa-table.fa-fw
+              |&nbsp;TMS关闭
+          li
+            a(href="#!home/question/pmView")
+              i.fa.fa-table.fa-fw
+              |&nbsp;事件历史解决查询
+          li
+            a(href="#!home/question/wmsView")
+              i.fa.fa-table.fa-fw
+              |&nbsp;WMS历史解决查询
+          li
+            a(href="#!home/question/tmsView")
+              i.fa.fa-table.fa-fw
+              |&nbsp;TMS历史解决查询
+          //- li
+          //-   a(href="#!home/messages")
+          //-     i.fa.fa-edit.fa-fw
+          //-     |&nbsp;意见建议
+          li
+            a(href="#")
+              i.fa.fa-wrench.fa-fw
+              |&nbsp;系统管理员
+              span.fa.arrow
+            ul.nav.nav-second-level
+              li
+                a(href="#!home/system/userView") 用户
+              li
+                a(href="#!home/system/roleView") 角色
+              li
+                a(href="#!home/system/groupView") 组
+              li
+                a(href="#!home/system/dictSetting") 系统字典
+              li
+                a(href="#!home/system/batchImport") 批量导入
+              li
+                a(href="#!home/system/other") 其他
+
+  #page-wrapper

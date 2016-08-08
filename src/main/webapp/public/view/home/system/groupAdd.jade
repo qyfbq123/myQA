@@ -1,0 +1,43 @@
+.row
+  .col-lg-12
+    h1.page-header 组 / {{pageType}}
+
+.row
+  .panel.panel-default
+      .panel-heading.clearfix
+        .panel-title.pull-left 组信息
+        #operates.btn-group.pull-right
+          button.btn.btn-default.btn-sm(type="button", data-action='save')
+            span.glyphicon.glyphicon-save(aria-hidden="true")
+            |保存
+          button.btn.btn-default.btn-sm(type="button", data-action='refresh')
+            span.glyphicon.glyphicon-repeat(aria-hidden="true")
+            |重置
+          button.btn.btn-default.btn-sm(type="button", data-action='cancel')
+            span.glyphicon.glyphicon-arrow-left(aria-hidden="true")
+            |取消
+
+      .panel-body
+        .row
+          .col-lg-6
+            form.form-horizontal(role='form')
+              input(type='hidden', name='id', can-value='id')
+              .form-group
+                label.col-sm-2.control-label(for="name") 名称
+                .col-sm-10
+                  input#name.form-control(type="text", name="name", can-value="name", placeholder="组名称")
+          .col-lg-6
+            form.form-horizontal(role='form')
+              .form-group
+                label.col-sm-2.control-label 用户列表
+                .col-sm-10
+                  table#userTable.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+                    thead
+                      tr
+                        th
+                          input(name="select_all", value="1",type="checkbox")
+                        th LoginID
+                        th 用户名
+                        // 16-6-22 显示地域
+                        th 城市
+

@@ -1,0 +1,59 @@
+.row
+  .col-lg-12
+    h1.page-header 案例处理
+
+.row
+  .col-lg-12.text-center(style="padding:0 0 10px; 0")
+    form#searchForm.form-inline(onSubmit="return false;")
+      input(type="hidden", can-value="closed", name="closed")
+      input(type="hidden", can-value="handlerId", name="handlerId")
+
+      .form-group
+        label(for="category") 种类:
+        select#category.form-control(name="category")
+      .form-group
+        label(for="number") 编号:
+        input#number.form-control(type="text", name="number", placeholder="编号")
+      .form-group
+        label(for="project") 项目:
+        select#project.form-control(name="project")
+      .form-group
+        label(for="type") 类型:
+        select#type.form-control(name="type")
+      .form-group
+        label(for="creatorId") 发起人:
+        select#creatorId.form-control(name="creatorId")
+      .form-group
+        label(for="number") 问题描述:
+        input#description.form-control(type="text", name="description", placeholder="描述")
+      .form-group
+        label(for="handleStatus") 处理状态:
+        select#handleStatus.form-control(name="handleStatus")
+      button.btn.btn-primary 查询
+
+#tempDialog.hide
+  .row
+    .col-md-12
+      form.form-horizontal(onSubmit="return false;")
+        .form-group
+          label.col-sm-4.control-label(for="") 处理状态
+          .col-sm-8
+            select.form-control(name="handleStatus")
+        .form-group.handlePromisedate.hide
+          label.col-sm-4.control-label(for="") 处理预计完成时间
+          .col-sm-8
+            .input-group.date
+              input.form-control(type="text", name="handlePromisedate")
+              span.input-group-addon
+                i.glyphicon.glyphicon-th
+        .form-group.handleResult.hide
+          label.col-sm-4.control-label(for="") 处理结果
+          .col-sm-8
+            textarea.form-control(name='handleResult', rows="3", placeholder="请输入处理结果...")
+table#tempAttachmentList.hide.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+    thead
+      tr
+        th 文件名
+        th 上传时间
+        th 大小
+        th 拥有人

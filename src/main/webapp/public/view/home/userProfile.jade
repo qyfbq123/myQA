@@ -1,0 +1,24 @@
+.row
+  .col-lg-12
+    h1.page-header 修改密码
+
+.row.col-lg-6.col-lg-offset-1
+  form.form-horizontal(role='form', onSubmit="return false;")
+    .form-group
+      label.col-sm-4.control-label LoginID
+      label.col-sm-8#loginid
+    .form-group
+      label.col-sm-4.control-label 用户名
+      label.col-sm-8#username 
+    .form-group
+      label.col-sm-4.control-label(for="newpwd") 新密码
+      .col-sm-8
+        input#newpwd.form-control(type="text", name="newpwd", placeholder="请输入新密码")
+    .form-group
+      label.col-sm-4.control-label(for="confirmNewpwd") 确认新密码
+      .col-sm-8
+        input#confirmNewpwd.form-control(type="text", name="confirmNewpwd", placeholder="确认新密码")
+    .form-group
+      .col-sm-offset-4.col-sm-8
+        button#submitBtn.btn.btn-primary &nbsp;&nbsp;保存&nbsp;&nbsp;
+

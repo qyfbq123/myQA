@@ -1,0 +1,33 @@
+.row
+  .col-lg-12
+    h1.page-header 角色 / {{pageType}}
+
+.row
+  .panel.panel-default
+      .panel-heading.clearfix
+        .panel-title.pull-left 角色信息
+        #operates.btn-group.pull-right
+          button.btn.btn-default.btn-sm(type="button", data-action='save')
+            span.glyphicon.glyphicon-save(aria-hidden="true")
+            |保存
+          button.btn.btn-default.btn-sm(type="button", data-action='refresh')
+            span.glyphicon.glyphicon-repeat(aria-hidden="true")
+            |重置
+          button.btn.btn-default.btn-sm(type="button", data-action='cancel')
+            span.glyphicon.glyphicon-arrow-left(aria-hidden="true")
+            |取消
+
+      .panel-body
+        .row
+          .col-lg-6
+            form.form-horizontal(role='form')
+              input(type='hidden', name='id', can-value='id')
+              .form-group
+                label.col-sm-2.control-label(for="name") 名称
+                .col-sm-10
+                  input#name.form-control(type="text", name="name", can-value="name", placeholder="角色名称")
+          .col-lg-6
+            form.form-horizontal(role='form')
+              .form-group
+                label.col-sm-2.control-label 菜单列表
+                #menuList.col-sm-10

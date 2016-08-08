@@ -1,0 +1,40 @@
+.row
+  .col-lg-12
+    h1.page-header 用户
+
+.row
+  .col-lg-12
+    .panel.panel-default
+      .panel-heading.clearfix
+        .panel-title.pull-left 用户列表
+        #operates.btn-group.pull-right
+          button.btn.btn-default.btn-sm(type="button", data-action='create')
+            span.glyphicon.glyphicon-plus(aria-hidden="true")
+            |新增
+          button.btn.btn-default.btn-sm(type="button", data-action='update', disabled)
+            span.glyphicon.glyphicon-wrench(aria-hidden="true")
+            |修改
+          button.btn.btn-default.btn-sm(type="button", data-action='delete', disabled)
+            span.glyphicon.glyphicon-minus(aria-hidden="true")
+            |删除
+          button.btn.btn-default.btn-sm(type="button", data-action='toggle', disabled)
+            span.glyphicon.glyphicon-play(aria-hidden="true")
+            font 启用
+
+            
+      .panel-body
+        .dataTable_wrapper
+          table#userTable.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+            thead
+              tr
+                th id
+                th LoginID
+                th Password
+                th 用户名
+                th Email
+                th 上级主管
+                th 角色
+                th 城市
+                th 状态
+
+            tfoot

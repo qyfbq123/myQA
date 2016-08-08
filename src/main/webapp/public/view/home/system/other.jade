@@ -1,0 +1,39 @@
+.row
+  .col-lg-12
+    h1.page-header 其他
+
+.row
+  .col-lg-2.col-lg-offset-3
+    select#section.form-control
+      option(value='day') 日报
+      option(value='week', selected) 周报
+      option(value='month') 月报
+      option(value='year') 年报
+  .row.col-lg-6
+    .row
+      .col-lg-4
+      .col-lg-8
+        a#downloadBtn.btn.btn-primary(href='#', target='_blank') 下载
+        button#pushBtn.btn.btn-primary 推送
+    //- .row
+    //-   hr
+    //- .row
+    //-   .col-lg-4
+    //-   .col-lg-8
+    //-     button#pushBtn.btn.btn-primary.btn-sm 生成 & 推送
+
+hr
+h2 高级导出
+.row
+  form.form-inline.col-lg-offset-1.col-lg-6
+    .form-group
+      label(for="year") 年：
+      select#year.form-control
+    .form-group
+      label(for='month') 月：
+      select#month.form-control
+    .form-group
+      label(for='date') 日：
+      select#date.form-control
+  a#richDownloadBtn.btn.btn-primary(href='#', target='_blank') 下载
+  button#richPushBtn.btn.btn-primary 推送
