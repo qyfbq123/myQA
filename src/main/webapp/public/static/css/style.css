@@ -405,3 +405,7 @@ body>.row {
     background-color: yellow;
     background: linear-gradient(to right, orange, yellow 80%, white);
 }
+
+#more {
+    padding-bottom: 30px;
+}

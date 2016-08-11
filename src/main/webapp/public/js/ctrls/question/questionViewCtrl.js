@@ -144,7 +144,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           $body.append($('<p/>').append($table));
         }
         $('.panel', $row).append($body);
-        return $('#page-wrapper').append($row);
+        return $row.insertBefore('#more');
       };
       reqwest(Auth.apiHost + "dict/projects?_=" + (Date.now())).then(function(data) {
         data = _.map(data, function(d) {
@@ -194,6 +194,11 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           url: Auth.apiHost + "question/page?_=" + (Date.now()),
           data: search
         }).then(function(data) {
+          if (data.length === 20) {
+            $('#more').removeClass('hide');
+          } else {
+            $('#more').addClass('hide');
+          }
           return _.each(data, function(question) {
             return generateRow(question);
           });
@@ -202,7 +207,28 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       if (data.number) {
         $('#number').val(data.number);
       }
-      return $('#searchForm button').trigger('click');
+      $('#searchForm button').trigger('click');
+      return $('#more button').click(function() {
+        var k, search, v;
+        search = $('#searchForm').serializeObject();
+        for (k in search) {
+          v = search[k];
+          if (!v || v === 'unselected') {
+            delete search[k];
+          }
+        }
+        return reqwest({
+          url: Auth.apiHost + "question/page?_=" + (Date.now()) + "&start=" + ($('.row.question').size()),
+          data: search
+        }).then(function(data) {
+          if (data.length < 20) {
+            $('#more').addClass('hide');
+          }
+          return _.each(data, function(question) {
+            return generateRow(question);
+          });
+        });
+      });
     }
   });
 });

@@ -119,7 +119,8 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           $body.append $('<p/>').append $table
         $('.panel', $row).append $body
 
-        $('#page-wrapper').append $row
+        # $('#page-wrapper').append $row
+        $row.insertBefore '#more'
 
       reqwest( "#{Auth.apiHost}dict/projects?_=#{Date.now()}" ).then (data)->
         data = _.map data, (d)->
@@ -160,8 +161,24 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           url: "#{Auth.apiHost}question/page?_=#{Date.now()}"
           data: search
         }).then (data)->
+          if(data.length == 20)
+            $('#more').removeClass 'hide'
+          else
+            $('#more').addClass 'hide'
           _.each data, (question)->
             generateRow question
 
       $('#number').val(data.number) if data.number
       $('#searchForm button').trigger 'click'
+
+      $('#more button').click ->
+        search = $('#searchForm').serializeObject()
+        for k, v of search
+          delete search[k] if !v || v == 'unselected'
+        reqwest( {
+          url: "#{Auth.apiHost}question/page?_=#{Date.now()}&start=#{$('.row.question').size()}"
+          data: search
+        }).then (data)->
+          $('#more').addClass 'hide' if data.length < 20
+          _.each data, (question)->
+            generateRow question
