@@ -5,7 +5,7 @@ define(['_', 'lscache'], function(un, lscache) {
       if (_.isObject(value)) {
         value = JSON.stringify(value);
       }
-      return lscache.set(key, value, 30);
+      return lscache.set(key, value, 120);
     },
     get: function(key) {
       var data, e, error;

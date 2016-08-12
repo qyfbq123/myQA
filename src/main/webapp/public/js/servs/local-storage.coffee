@@ -5,7 +5,7 @@ define ['_', 'lscache'], (un, lscache)->
       if _.isObject value
         value = JSON.stringify(value)
 
-      lscache.set key, value, 30
+      lscache.set key, value, 120
     get: (key)->
       data = lscache.get key
       try

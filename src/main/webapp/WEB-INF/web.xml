@@ -111,4 +111,7 @@
     <listener>
         <listener-class>com.github.miemiedev.mybatis.paginator.CleanupMybatisPaginatorListener</listener-class>
     </listener>
+    <session-config>
+　　     <session-timeout>120</session-timeout>
+　　 </session-config>
 </web-app>
