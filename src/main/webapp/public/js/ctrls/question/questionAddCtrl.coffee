@@ -4,7 +4,7 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
     init: (el, data)->
       questionInfo = new can.Map
         category: data.category
-        title: if data.id then "详情" else "#{data.category}管理 / 新增"
+        title: if data.id then "详情" else "系统管理 / 新增"
 
       this.element.html can.view('../public/view/home/question/questionAdd.html', questionInfo)
 

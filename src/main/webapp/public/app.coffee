@@ -2,7 +2,7 @@
  * 使用到的所有组件设定
 ###
 require.config
-  baseUrl: '../lib'
+  baseUrl: './lib'
   paths:
     ###*
      * 用到的第三方组件
@@ -188,10 +188,6 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
       require ['questionAddCtrl', 'base'], (questionAddCtrl, base)->
         new base('', data) if !can.base
         new questionAddCtrl('#page-wrapper', {category:'WMS'})
-    'home/question/tmsAdd route': (data)->
-      require ['questionAddCtrl', 'base'], (questionAddCtrl, base)->
-        new base('', data) if !can.base
-        new questionAddCtrl('#page-wrapper', {category:'TMS'})
 
     'home/question/allHandle route': (data)->
       require ['questionHandleCtrl', 'base'], (questionHandleCtrl, base)->
@@ -215,18 +211,10 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
       require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
         new base('', data) if !can.base
         new questionViewCtrl('#page-wrapper', {category:'WMS', closed: true})
-    'home/question/tmsView route': (data)->
-      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
-        new base('', data) if !can.base
-        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: true})
     'home/question/wmsView/:number route': (data)->
       require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
         new base('', data) if !can.base
         new questionViewCtrl('#page-wrapper', {category:'WMS', closed: true, number: data.number})
-    'home/question/tmsView/:number route': (data)->
-      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
-        new base('', data) if !can.base
-        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: true, number: data.number})
 
     ###*
      * 16-6-20 事件关闭单独处理
@@ -246,18 +234,10 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
       require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
         new base('', data) if !can.base
         new questionViewCtrl('#page-wrapper', {category:'WMS', closed: false})
-    'home/question/tmsClose route': (data)->
-      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
-        new base('', data) if !can.base
-        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: false})
     'home/question/wmsClose/:number route': (data)->
       require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
         new base('', data) if !can.base
         new questionViewCtrl('#page-wrapper', {category:'WMS', closed: false, number: data.number})
-    'home/question/tmsClose/:number route': (data)->
-      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
-        new base('', data) if !can.base
-        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: false, number: data.number})
 
     'home/system/userView route': (data)->
       require ['userViewCtrl', 'base'], (userViewCtrl, base)->
