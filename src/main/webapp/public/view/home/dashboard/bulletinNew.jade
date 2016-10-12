@@ -1,0 +1,49 @@
+.row
+  .col-lg-12
+    h1.page-header 发布公告
+
+.row
+  .col-lg-offset-2.col-lg-8
+    .panel.panel-default
+        .panel-heading.clearfix
+          .panel-title.pull-left 新建公告
+        .panel-body
+          form.form-horizontal(role='form', onSubmit="return false;")
+            .form-group
+              label.col-sm-3.control-label(for='function') 职能：
+              .col-sm-8
+                select#function.form-control(name="function", can-value='function', required)
+                  option
+                  option(value='项目经理') 项目经理
+                  option(value='WMS') WMS
+                  option(value='TMS') TMS 
+            .form-group
+              label.col-sm-3.control-label(for='elc') ELC：
+              .col-sm-8
+                select#elc.form-control(name='elc', can-value='elc', required)
+                  option
+                  option(value='上海ELC') 上海ELC
+                  option(value='北京ELC') 北京ELC
+            .form-group
+              label.col-sm-3.control-label(for='projectName') 项目：
+              .col-sm-8
+                select#projectName.form-control(name='projectName', can-value='projectName', required)
+                  option
+            .form-group
+              label.col-sm-3.control-label(for='workContent') 工作内容
+              .col-sm-8
+                textarea#workContent.form-control(name='workContent', can-value="workContent", rows="5", placeholder="请输入工作内容...", required)
+            .form-group
+              label.col-sm-3.control-label(for="date") 日期：
+              .col-sm-8
+                .input-group.date
+                  input#date.form-control(name='date', can-value='date', type="text", required)
+                  span.input-group-addon
+                    i.glyphicon.glyphicon-th
+            .form-group
+              label.col-sm-3.control-label(for="teammates") 接收人：
+              .col-sm-8
+                #teammates.checkbox
+            .form-group
+              .col-sm-offset-8.col-sm-2
+                button#submitBtn.btn.btn-primary &nbsp;&nbsp;发布&nbsp;&nbsp;

@@ -1,0 +1,23 @@
+ul.nav.nav-tabs
+  li.active(role="presentation")
+    a(href="#!home/msgDashboard") 公告栏
+  // 16-6-20 添加事件列表
+  li(role="presentation")
+    a(href="#!home/pmDashboardList") 事件列表
+  li(role="presentation")
+    a(href="#!home/dashboardList") 系统列表
+  li(role="presentation")
+    a(href="#!home/dashboard") 图表统计
+br
+
+.row
+  .col-lg-offset-1.col-lg-10 最新公告
+
+#noMsgShow.row.hide
+  .col-lg-offset-1.col-lg-10
+    .msgHeader
+    .msgBody
+      i 暂无任何公告信息!
+
+#more.row.text-center
+  button.btn.btn-default 更多

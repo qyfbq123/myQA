@@ -51,6 +51,8 @@ require.config
     userProfileCtrl: '../public/js/ctrls/userProfileCtrl'
 
     dashboardCtrl: '../public/js/ctrls/dashboard/dashboardCtrl'
+    msgDashboardCtrl: '../public/js/ctrls/dashboard/msgDashboardCtrl'
+    msgAddCtrl: '../public/js/ctrls/dashboard/msgAddCtrl'
 
     dashboardListCtrl: '../public/js/ctrls/dashboard/dashboardListCtrl'
     ###*
@@ -159,13 +161,21 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
         new base('', data) if !can.base
         new userProfileCtrl('#page-wrapper')
 
-    ###*
+    ###
      * 以下为具体路由设定，没什么特别好说的，请对照网站查看
     ###
     'home/dashboard route': (data)->
       require ['dashboardCtrl', 'base'], (dashboardCtrl, base)->
         new base('', data) if !can.base
         new dashboardCtrl('#page-wrapper', {id:'dashboard'})
+    'home/msgDashboard route': (data)->
+      require ['msgDashboardCtrl', 'base'], (msgDashboardCtrl, base)->
+        new base('', data) if !can.base
+        new msgDashboardCtrl('#page-wrapper', {id:'msgDashboard'})
+    'home/system/bulletin route': (data)->
+      require ['msgAddCtrl', 'base'], (msgAddCtrl, base)->
+        new base('', data) if !can.base
+        new msgAddCtrl('#page-wrapper', {id:'msgAdd'})
 
     'home/dashboardList route': (data)->
       require ['dashboardListCtrl', 'base'], (dashboardListCtrl, base)->

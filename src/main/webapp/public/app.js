@@ -53,6 +53,8 @@ require.config({
     loginCtrl: '../public/js/ctrls/loginCtrl',
     userProfileCtrl: '../public/js/ctrls/userProfileCtrl',
     dashboardCtrl: '../public/js/ctrls/dashboard/dashboardCtrl',
+    msgDashboardCtrl: '../public/js/ctrls/dashboard/msgDashboardCtrl',
+    msgAddCtrl: '../public/js/ctrls/dashboard/msgAddCtrl',
     dashboardListCtrl: '../public/js/ctrls/dashboard/dashboardListCtrl',
 
     /**
@@ -181,7 +183,7 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
       });
     },
 
-    /**
+    /*
      * 以下为具体路由设定，没什么特别好说的，请对照网站查看
      */
     'home/dashboard route': function(data) {
@@ -191,6 +193,26 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         }
         return new dashboardCtrl('#page-wrapper', {
           id: 'dashboard'
+        });
+      });
+    },
+    'home/msgDashboard route': function(data) {
+      return require(['msgDashboardCtrl', 'base'], function(msgDashboardCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new msgDashboardCtrl('#page-wrapper', {
+          id: 'msgDashboard'
+        });
+      });
+    },
+    'home/system/bulletin route': function(data) {
+      return require(['msgAddCtrl', 'base'], function(msgAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new msgAddCtrl('#page-wrapper', {
+          id: 'msgAdd'
         });
       });
     },

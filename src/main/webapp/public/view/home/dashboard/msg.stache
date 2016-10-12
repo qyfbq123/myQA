@@ -1,0 +1,7 @@
+<div class="row msgRow">
+  <div class="col-lg-offset-1 col-lg-10">
+    <div class="msgHeader">来自项目：{{projectName}}，日期:{{date}}</div>
+    <div class="msgBody">{{workContent}}</div>
+    <div class="msgFooter">职能：{{function}}，ELC：{{elc}}，发布于：{{created}}</div>
+  </div>
+</div>

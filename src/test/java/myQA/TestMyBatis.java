@@ -11,8 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSONArray;
-import com.cn.myQA.dao.UserMapper;
-import com.cn.myQA.pojo.User;
+import com.cn.myQA.dao.MessageMapper;
+import com.cn.myQA.pojo.Message;
+import com.cn.myQA.web.datatables.TableModel;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
@@ -20,12 +21,17 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 @ContextConfiguration(locations = {"classpath:spring-mybatis.xml"})
 public class TestMyBatis {
     @Resource
-    private UserMapper userMapper;
+    private MessageMapper msgMapper;
     
     @Test
     public void test1() {
-        PageList<User> userPage = userMapper.page(new PageBounds());
-        System.out.println(userPage.size());
+        TableModel model = new TableModel();
+        model.setStart(4);
+        model.setLength(10);
+        PageBounds pb = model.translateToPB();
+        pb.setPage(2);
+        PageList<Message> msgPage = msgMapper.page(pb, null);
+        System.out.println(msgPage.size());
     }
     
     public static void main(String[] args) {

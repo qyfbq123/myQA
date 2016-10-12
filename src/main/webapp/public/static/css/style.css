@@ -409,3 +409,21 @@ body>.row {
 #more {
     padding-bottom: 30px;
 }
+
+.msgHeader {
+    color: #999;
+    border-top: 1px solid #999;
+    margin: 10px 0 0 0;
+    padding: 10px 0 0 0;
+    font-size: 13px;
+}
+
+.msgBody {
+    color: : #222;
+    margin: 5px 0 5px 0;
+}
+
+.msgFooter {
+    color: #999;
+    font-size: 13px;
+}

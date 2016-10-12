@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.myQA.dao.MessageMapper" >
+    <resultMap type="com.cn.myQA.pojo.Message" id="BaseResultMap">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="created" property="created" jdbcType="TIMESTAMP"/>
+        <result column="function" property="function" jdbcType="VARCHAR"/>
+        <result column="work_content" property="workContent" jdbcType="VARCHAR"/>
+        <result column="elc" property="elc" jdbcType="VARCHAR"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="date" property="date" jdbcType="TIMESTAMP"/>
+        <result column="is_mail_push" property="isMailPush" jdbcType="BIT"/>
+        <result column="is_tel_push" property="isMailPush" jdbcType="BIT"/>
+        
+        <association property="creator" javaType="com.cn.myQA.pojo.User" column="creator_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
+        
+        <collection property="receivers" ofType="com.cn.myQA.pojo.User" column="id" select="fullReceivers"></collection>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, created, creator_id, [function], work_content, elc, project_name, [date], is_mail_push, is_tel_push
+    </sql>
+    
+    <select id="fullReceivers" resultMap="com.cn.myQA.dao.BaseMapper.BaseUserResultMap">
+        select
+            [user].id, [user].created, [user].modified, [user].locked, [user].loginid, [user].password, [user].username, [user].email, [user].leaderEmail, [user].city_id
+        from user_has_msg
+        inner join [user] on user_has_msg.user_id = [user].id
+        where user_has_msg.msg_id=#{id, jdbcType=INTEGER}
+    </select>
+    
+    <select id="page" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"></include>
+        from message
+        where 1=1
+        <if test="userId!=null and userId>0">
+            and (message.creator_id=#{userId, jdbcType=INTEGER} or
+                exists (select id from user_has_msg where user_id=#{userId, jdbcType=INTEGER} and msg_id=message.id))
+        </if>
+    </select>
+    
+    <select id="single" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"></include>
+        from message
+        where id=#{msgId, jdbcType=INTEGER}
+    </select>
+    
+    <insert id="insert" parameterType="com.cn.myQA.pojo.Message" useGeneratedKeys="true" keyProperty="id">
+        insert into message
+            (creator_id, [function], work_content, elc, project_name, [date], is_mail_push, is_tel_push)
+        values
+            (#{creator.id, jdbcType=INTEGER}, #{function, jdbcType=VARCHAR}, #{workContent, jdbcType=VARCHAR},
+             #{elc, jdbcType=VARCHAR}, #{projectName, jdbcType=VARCHAR}, #{date, jdbcType=TIMESTAMP}, #{isMailPush, jdbcType=BIT}, #{isTelPush, jdbcType=BIT})
+    </insert>
+    
+    <insert id="msgBindReceivers">
+        insert into user_has_msg
+            (user_id, msg_id)
+        values
+            <foreach collection="receivers" item="receiver" separator=",">(#{receiver.id, jdbcType=INTEGER}, #{msgId, jdbcType=INTEGER})</foreach>
+    </insert>
+</mapper>
