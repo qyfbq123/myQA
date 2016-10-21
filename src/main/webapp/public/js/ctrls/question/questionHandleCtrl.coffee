@@ -180,6 +180,18 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           data: data
         }
 
+      $('#category').select2 {
+          language: 'zh-CN'
+          theme: "bootstrap"
+          data: [
+            id: 'unselected', text: '不限'
+          ,
+            id: 'WMS', text: 'WMS'
+          ,
+            id: 'TMS', text: 'TMS'
+          ]
+        }
+
       $('#handleStatus').select2 {
           language: 'zh-CN'
           theme: "bootstrap"

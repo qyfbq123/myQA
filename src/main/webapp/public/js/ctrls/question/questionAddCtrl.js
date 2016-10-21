@@ -5,7 +5,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       var dialogLogin, questionInfo, ref, table;
       questionInfo = new can.Map({
         category: data.category,
-        title: data.id ? "详情" : "系统管理 / 新增"
+        title: data.id ? "详情" : data.category + "管理 / 新增"
       });
       this.element.html(can.view('../public/view/home/question/questionAdd.html', questionInfo));
       dialogLogin = function(done) {

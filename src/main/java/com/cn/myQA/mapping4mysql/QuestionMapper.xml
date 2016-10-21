@@ -131,7 +131,7 @@
     where 1=1
     <!-- 16-6-20 事件与WMSTMS完全区分开来 -->
     <choose>
-        <when test="search.category == 'PM'">
+        <when test="search.category!=null and search.category!=''">
             and category=#{search.category, jdbcType=VARCHAR}
         </when>
         <otherwise>

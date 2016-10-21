@@ -8,7 +8,7 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       questionInfo = new can.Map
         category: data.category
         closed: data.closed
-        pageinfo: "#{if data.category == 'PM' then '事件' else '系统'}#{if data.closed then '历史解决查询' else '关闭'}"
+        pageinfo: "#{if data.category == 'PM' then '事件' else data.category}#{if data.closed then '历史解决查询' else '关闭'}"
         handleStatus: 2
 
       this.element.html can.view('../public/view/home/question/questionView.html', questionInfo)

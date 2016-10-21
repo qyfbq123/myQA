@@ -9,7 +9,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       questionInfo = new can.Map({
         category: data.category,
         closed: data.closed,
-        pageinfo: "" + (data.category === 'PM' ? '事件' : '系统') + (data.closed ? '历史解决查询' : '关闭'),
+        pageinfo: "" + (data.category === 'PM' ? '事件' : data.category) + (data.closed ? '历史解决查询' : '关闭'),
         handleStatus: 2
       });
       this.element.html(can.view('../public/view/home/question/questionView.html', questionInfo));
