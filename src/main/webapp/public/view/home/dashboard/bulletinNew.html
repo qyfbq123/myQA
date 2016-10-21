@@ -42,9 +42,29 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="workContent" class="col-sm-3 control-label">工作内容</label>
+            <label for="type" class="col-sm-3 control-label">类型：</label>
+            <div class="col-sm-8">
+              <select id="type" name="type" can-value="type" required="required" class="form-control">
+                <option></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="workContent" class="col-sm-3 control-label">工作内容：</label>
             <div class="col-sm-8">
               <textarea id="workContent" name="workContent" can-value="workContent" rows="5" placeholder="请输入工作内容..." required="required" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="solution" class="col-sm-3 control-label">解决方案／措施：</label>
+            <div class="col-sm-8">
+              <textarea id="solution" name="solution" can-value="solution" rows="5" placeholder="请输入解决方案／措施..." class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="remark" class="col-sm-3 control-label">Remark：</label>
+            <div class="col-sm-8">
+              <textarea id="remark" name="remark" can-value="remark" rows="5" placeholder="请输入备注..." class="form-control"></textarea>
             </div>
           </div>
           <div class="form-group">

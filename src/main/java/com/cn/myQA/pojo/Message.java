@@ -13,6 +13,9 @@ public class Message {
     private Date date;
     private Boolean isMailPush;
     private Boolean isTelPush;
+    private String type;
+    private String solution;
+    private String remark;
     
     private User creator;
     private List<User> receivers;
@@ -83,5 +86,22 @@ public class Message {
     public void setReceivers(List<User> receivers) {
         this.receivers = receivers;
     }
-
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+    public String getSolution() {
+        return solution;
+    }
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 }

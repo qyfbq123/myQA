@@ -80,6 +80,11 @@ public class DictServiceImpl implements IDictService {
     }
     
     @Override
+    public List<Option> bulletinTypes() {
+        return transDict2Option( dictMapper.findByType(8) );
+    }
+    
+    @Override
     public List<SysDict> attriutes() {
         return dictMapper.findByType(0);
     }

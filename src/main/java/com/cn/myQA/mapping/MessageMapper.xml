@@ -11,6 +11,9 @@
         <result column="date" property="date" jdbcType="TIMESTAMP"/>
         <result column="is_mail_push" property="isMailPush" jdbcType="BIT"/>
         <result column="is_tel_push" property="isMailPush" jdbcType="BIT"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="solution" property="solution" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
         
         <association property="creator" javaType="com.cn.myQA.pojo.User" column="creator_id" select="com.cn.myQA.dao.BaseMapper.fullUser"></association>
         
@@ -18,7 +21,7 @@
     </resultMap>
     
     <sql id="Base_Column_List">
-        id, created, creator_id, [function], work_content, elc, project_name, [date], is_mail_push, is_tel_push
+        id, created, creator_id, [function], work_content, elc, project_name, [date], is_mail_push, is_tel_push, [type], solution, remark
     </sql>
     
     <select id="fullReceivers" resultMap="com.cn.myQA.dao.BaseMapper.BaseUserResultMap">
@@ -49,10 +52,11 @@
     
     <insert id="insert" parameterType="com.cn.myQA.pojo.Message" useGeneratedKeys="true" keyProperty="id">
         insert into message
-            (creator_id, [function], work_content, elc, project_name, [date], is_mail_push, is_tel_push)
+            (creator_id, [function], work_content, elc, project_name, [date], is_mail_push, is_tel_push, [type], solution, remark)
         values
             (#{creator.id, jdbcType=INTEGER}, #{function, jdbcType=VARCHAR}, #{workContent, jdbcType=VARCHAR},
-             #{elc, jdbcType=VARCHAR}, #{projectName, jdbcType=VARCHAR}, #{date, jdbcType=TIMESTAMP}, #{isMailPush, jdbcType=BIT}, #{isTelPush, jdbcType=BIT})
+             #{elc, jdbcType=VARCHAR}, #{projectName, jdbcType=VARCHAR}, #{date, jdbcType=TIMESTAMP}, #{isMailPush, jdbcType=BIT},
+             #{isTelPush, jdbcType=BIT}, #{type, jdbcType=VARCHAR}, #{solution, jdbcType=VARCHAR}, #{remark, jdbcType=VARCHAR})
     </insert>
     
     <insert id="msgBindReceivers">

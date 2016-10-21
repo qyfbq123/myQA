@@ -30,9 +30,22 @@
                 select#projectName.form-control(name='projectName', can-value='projectName', required)
                   option
             .form-group
-              label.col-sm-3.control-label(for='workContent') 工作内容
+              label.col-sm-3.control-label(for='type') 类型：
+              .col-sm-8
+                select#type.form-control(name='type', can-value='type', required)
+                  option
+            .form-group
+              label.col-sm-3.control-label(for='workContent') 工作内容：
               .col-sm-8
                 textarea#workContent.form-control(name='workContent', can-value="workContent", rows="5", placeholder="请输入工作内容...", required)
+            .form-group
+              label.col-sm-3.control-label(for='solution') 解决方案／措施：
+              .col-sm-8
+                textarea#solution.form-control(name='solution', can-value="solution", rows="5", placeholder="请输入解决方案／措施...")
+            .form-group
+              label.col-sm-3.control-label(for='remark') Remark：
+              .col-sm-8
+                textarea#remark.form-control(name='remark', can-value="remark", rows="5", placeholder="请输入备注...")
             .form-group
               label.col-sm-3.control-label(for="date") 日期：
               .col-sm-8

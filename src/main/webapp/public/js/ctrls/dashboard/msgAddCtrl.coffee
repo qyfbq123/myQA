@@ -34,6 +34,16 @@ define ['can/control', 'can', 'base', 'Auth', 'reqwest', 'bootbox', '_', 'select
           placeholder: 'Select a Project'
         }
 
+      reqwest( "#{Auth.apiHost}dict/bulletinTypes?_=#{Date.now()}" ).then (data)->
+        data = _.map data, (d)->
+          id: d.text, text: d.text
+        $('#type').select2 {
+          language: 'zh-CN'
+          theme: "bootstrap"
+          data: data
+          placeholder: 'Select a Type'
+        }
+
       ###*
        * 获取pm组事件参与人
       ###
@@ -44,11 +54,11 @@ define ['can/control', 'can', 'base', 'Auth', 'reqwest', 'bootbox', '_', 'select
         data = _.groupBy data, (u)->return u.city && u.city.name
 
         generateCityTeammates = (cityName, users)->
-          $("#teammates").append $('<div class="col-sm-2 text-right"/>').html "<input type='checkbox' checked/>#{cityName}:"
+          $("#teammates").append $('<div class="col-sm-2 text-right"/>').html "<input type='checkbox'/>#{cityName}:"
           $div = $('<div class="col-sm-10"/>')
           _.each users, (user)->
             $label = $('<label/>').text user.username
-            $input = $('<input type="checkbox" checked name="teammates"/>').val(user.id).prependTo $label
+            $input = $('<input type="checkbox" name="teammates"/>').val(user.id).prependTo $label
             $div.append $label
           $('#teammates').append $div
 

@@ -11,13 +11,18 @@ ul.nav.nav-tabs
 br
 
 .row
-  .col-lg-offset-1.col-lg-10 最新公告
-
-#noMsgShow.row.hide
-  .col-lg-offset-1.col-lg-10
-    .msgHeader
-    .msgBody
-      i 暂无任何公告信息!
-
-#more.row.text-center
-  button.btn.btn-default 更多
+  .col-lg-12.text-center(style="padding:0 0 10px; 0")
+.row
+  .col-lg-12
+    table#msgList.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+      thead
+        tr
+          th 项目
+          th PM/PSE
+          th ELC
+          th 类型
+          th On-Site 管理任务
+          th ELC On-Site 解决方案／措施
+          th Remark
+          th 时间
+      tfoot

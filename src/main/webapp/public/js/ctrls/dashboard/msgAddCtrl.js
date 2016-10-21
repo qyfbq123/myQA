@@ -35,6 +35,20 @@ define(['can/control', 'can', 'base', 'Auth', 'reqwest', 'bootbox', '_', 'select
           placeholder: 'Select a Project'
         });
       });
+      reqwest(Auth.apiHost + "dict/bulletinTypes?_=" + (Date.now())).then(function(data) {
+        data = _.map(data, function(d) {
+          return {
+            id: d.text,
+            text: d.text
+          };
+        });
+        return $('#type').select2({
+          language: 'zh-CN',
+          theme: "bootstrap",
+          data: data,
+          placeholder: 'Select a Type'
+        });
+      });
 
       /**
        * 获取pm组事件参与人
@@ -50,12 +64,12 @@ define(['can/control', 'can', 'base', 'Auth', 'reqwest', 'bootbox', '_', 'select
         });
         generateCityTeammates = function(cityName, users) {
           var $div;
-          $("#teammates").append($('<div class="col-sm-2 text-right"/>').html("<input type='checkbox' checked/>" + cityName + ":"));
+          $("#teammates").append($('<div class="col-sm-2 text-right"/>').html("<input type='checkbox'/>" + cityName + ":"));
           $div = $('<div class="col-sm-10"/>');
           _.each(users, function(user) {
             var $input, $label;
             $label = $('<label/>').text(user.username);
-            $input = $('<input type="checkbox" checked name="teammates"/>').val(user.id).prependTo($label);
+            $input = $('<input type="checkbox" name="teammates"/>').val(user.id).prependTo($label);
             return $div.append($label);
           });
           return $('#teammates').append($div);

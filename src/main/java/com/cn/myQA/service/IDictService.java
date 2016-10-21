@@ -49,6 +49,12 @@ public interface IDictService {
     public List<Option> suppliers();
     
     /**
+     * 公告类型
+     * @return 列表
+     */
+    public List<Option> bulletinTypes();
+    
+    /**
      * 可修改的字典
      * @return 字典列表
      */
