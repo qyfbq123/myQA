@@ -163,6 +163,26 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           data: data
         });
       });
+      reqwest(Auth.apiHost + "dict/beginStorehouses?_=" + (Date.now())).then(function(data) {
+        data = _.map(data, function(d) {
+          return {
+            id: d.text,
+            text: d.text
+          };
+        });
+        data.unshift({
+          id: 'unselected',
+          text: '请选择'
+        });
+        return $('#beginStorehouse').select2({
+          language: 'zh-CN',
+          theme: "bootstrap",
+          data: data
+        });
+      });
+      if (questionInfo.category !== 'PM') {
+        $('#beginStorehouse').closest('.form-group').addClass('hide');
+      }
       reqwest(Auth.apiHost + "user/all?_=" + (Date.now())).then(function(data) {
         data = _.map(data, function(d) {
           return {

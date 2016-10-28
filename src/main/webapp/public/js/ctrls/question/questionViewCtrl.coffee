@@ -132,6 +132,18 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           data: data
         }
 
+      reqwest( "#{Auth.apiHost}dict/beginStorehouses?_=#{Date.now()}" ).then (data)->
+        data = _.map data, (d)->
+          id: d.text, text: d.text
+        data.unshift id: 'unselected', text: '请选择'
+        $('#beginStorehouse').select2 {
+          language: 'zh-CN'
+          theme: "bootstrap"
+          data: data
+        }
+
+      $('#beginStorehouse').closest('.form-group').addClass('hide') if questionInfo.category != 'PM'
+
       # reqwest( "#{Auth.apiHost}dict/types?_=#{Date.now()}" ).then (data)->
       #   data = _.map data, (d)->
       #     id: d.text, text: d.text

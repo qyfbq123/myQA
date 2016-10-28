@@ -3,5 +3,6 @@ define ['can/control', 'can/view/mustache', 'base', 'Auth', '_', 'flot.excanvas'
 
   return Control.extend
     init: (el, data)->
+      pageData.attr 'userIsOnSite', Auth.userIsOnSite()
       this.element.html can.view('../public/view/home/dashboard/dashboard.html', pageData)
 

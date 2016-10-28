@@ -26,23 +26,23 @@ public class MainController {
     
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiOperation(value = "登陆", notes="用户登陆账号检查",httpMethod = "POST")
-    public ResponseEntity<String> login(@RequestBody LoginAccount account, HttpSession session) {
+    public ResponseEntity<User> login(@RequestBody LoginAccount account, HttpSession session) {
         User user = userService.findByLoginID(account.getLoginID());
-        if(user == null) return new ResponseEntity<String>("该用户名不存在", HttpStatus.BAD_REQUEST);
+        if(user == null) return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         else {
-            if(user.getLocked()) return new ResponseEntity<String>("该用户已被禁用", HttpStatus.BAD_REQUEST);
+            if(user.getLocked()) return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
             else if(userService.isVerifiedByLdap()) {
             	if(userService.verifiedByLdap(user.getLoginid(), account.getPassword())) {
             		session.setAttribute("user", user);
-                    return new ResponseEntity<String>(user.getUsername(), HttpStatus.OK);
+                    return new ResponseEntity<User>(user, HttpStatus.OK);
             	}
-            	else return new ResponseEntity<String>("用户名或密码错误", HttpStatus.BAD_REQUEST);
+            	else return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
             }
             else if(user.getPassword().equals(account.getPassword())) {
                 session.setAttribute("user", user);
-                return new ResponseEntity<String>(user.getUsername(), HttpStatus.OK);
+                return new ResponseEntity<User>(user, HttpStatus.OK);
             }
-            else return new ResponseEntity<String>("用户名或密码错误", HttpStatus.BAD_REQUEST);
+            else return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
     }
     

@@ -12,6 +12,20 @@ br
 
 .row
   .col-lg-12.text-center(style="padding:0 0 10px; 0")
+    form#searchForm.form-inline(onSubmit="return false;")
+      .form-group
+        label(for="start") 按发布时间起:
+        .input-group.date
+          input#start.form-control(name="start", type="text")
+          span.input-group-addon
+            i.glyphicon.glyphicon-th
+      .form-group
+        label(for="end") 止:
+        .input-group.date
+          input#end.form-control(name="end", type="text")
+          span.input-group-addon
+            i.glyphicon.glyphicon-th
+      button.btn.btn-primary 查询
 .row
   .col-lg-12
     table#msgList.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
@@ -24,5 +38,5 @@ br
           th On-Site 管理任务
           th ELC On-Site 解决方案／措施
           th Remark
-          th 时间
+          th 日期
       tfoot

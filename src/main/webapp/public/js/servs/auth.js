@@ -18,14 +18,14 @@ define(['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], function(lo
         url: apiHost + 'main/login',
         method: 'post',
         data: JSON.stringify(userinfo),
-        type: 'html',
+        type: 'json',
         contentType: 'application/json',
         crossOrigin: true
       }).then(function(data) {
         isLogining = false;
         $('html').loading('stop');
         localStorage.set('logined', true);
-        userinfo.username = data;
+        userinfo = _.extend(userinfo, data);
         localStorage.set('user', userinfo);
 
         /**
@@ -47,8 +47,15 @@ define(['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], function(lo
           return done(err);
         } else {
           window.location.hash = '!login';
-          if (err.responseText) {
-            return bootbox.alert(err.responseText);
+          switch (err.status) {
+            case 404:
+              return bootbox.alert('该用户名不存在');
+            case 403:
+              return bootbox.alert('该用户已被禁用');
+            case 400:
+              return bootbox.alert('用户名或密码错误');
+            default:
+              return bootbox.alert('登录失败');
           }
         }
       });
@@ -74,6 +81,17 @@ define(['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], function(lo
     },
     user: function() {
       return localStorage.get('user');
+    },
+    userIsOnSite: function() {
+      var user;
+      user = localStorage.get('user');
+      if (user && user.roleList) {
+        return user.roleList.map(function(e) {
+          return e.name;
+        }).indexOf('On-Site') !== -1;
+      } else {
+        return false;
+      }
     }
   };
 });

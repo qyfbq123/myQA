@@ -47,33 +47,30 @@ define ['can/control', 'can', 'base', 'Auth', 'reqwest', 'bootbox', '_', 'select
       ###*
        * 获取pm组事件参与人
       ###
-      reqwest( "#{Auth.apiHost}user/group/pm?_=#{Date.now()}" ).then (data)->
-        ###*
-         * 16-6-22 用户按地域区分显示
-        ###
-        data = _.groupBy data, (u)->return u.city && u.city.name
+      # reqwest( "#{Auth.apiHost}user/group/pm?_=#{Date.now()}" ).then (data)->
+      #   data = _.groupBy data, (u)->return u.city && u.city.name
 
-        generateCityTeammates = (cityName, users)->
-          $("#teammates").append $('<div class="col-sm-2 text-right"/>').html "<input type='checkbox'/>#{cityName}:"
-          $div = $('<div class="col-sm-10"/>')
-          _.each users, (user)->
-            $label = $('<label/>').text user.username
-            $input = $('<input type="checkbox" name="teammates"/>').val(user.id).prependTo $label
-            $div.append $label
-          $('#teammates').append $div
+      #   generateCityTeammates = (cityName, users)->
+      #     $("#teammates").append $('<div class="col-sm-2 text-right"/>').html "<input type='checkbox'/>#{cityName}:"
+      #     $div = $('<div class="col-sm-10"/>')
+      #     _.each users, (user)->
+      #       $label = $('<label/>').text user.username
+      #       $input = $('<input type="checkbox" name="teammates"/>').val(user.id).prependTo $label
+      #       $div.append $label
+      #     $('#teammates').append $div
 
-        reqwest("#{Auth.apiHost}dict/cities?_=#{Date.now()}").then (cities)->
-          _.each cities, (city)->
-            if data[city.text]
-              generateCityTeammates city.text, data[city.text]
-              delete data[city.text]
+      #   reqwest("#{Auth.apiHost}dict/cities?_=#{Date.now()}").then (cities)->
+      #     _.each cities, (city)->
+      #       if data[city.text]
+      #         generateCityTeammates city.text, data[city.text]
+      #         delete data[city.text]
 
-          for k,v of data
-            k = if k is 'null' then '其他' else k
-            generateCityTeammates k, v
+      #     for k,v of data
+      #       k = if k is 'null' then '其他' else k
+      #       generateCityTeammates k, v
 
-      $('#teammates').on 'change', '.col-sm-2 :checkbox', ->
-        $(':checkbox', $(this).parent().next('.col-sm-10')).prop 'checked', $(this).is(':checked')
+      # $('#teammates').on 'change', '.col-sm-2 :checkbox', ->
+      #   $(':checkbox', $(this).parent().next('.col-sm-10')).prop 'checked', $(this).is(':checked')
 
       $('#submitBtn').unbind('click').bind 'click', ->
         return if !$('form').valid()

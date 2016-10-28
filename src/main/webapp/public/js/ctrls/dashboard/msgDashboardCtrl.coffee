@@ -1,16 +1,26 @@
-define ['can/control', 'can', 'base', 'Auth', 'reqwest', '_', 'datatables.net', 'datatables.net-bs', 'datatables.net-responsive', 'datatables.net-responsive-bs'], (Control, can, base, Auth, reqwest)->
+define ['can/control', 'can', 'base', 'Auth', 'reqwest', '_', 'datatables.net', 'datatables.net-bs', 'datatables.net-responsive', 'datatables.net-responsive-bs', 'datepickercn'], (Control, can, base, Auth, reqwest)->
   pageData = new can.Map()
 
   return Control.extend
     init: (el, data)->
       this.element.html can.view('../public/view/home/dashboard/msgDashboard.html', pageData)
 
-      $('#msgList').DataTable {
+      $('.input-group.date input').datepicker {
+          language: 'zh-CN'
+          todayBtn: true
+          autoclose: true
+        }
+
+      table = $('#msgList').DataTable {
         paging: false
         ordering: false
         ajax: 
           url: "#{Auth.apiHost}msg/page?_=#{Date.now()}"
           dataSrc: (data)->
+            data
+          data: (data)->
+            data.startDate = $('#start').datepicker('getDate') || undefined
+            data.endDate = $('#end').datepicker('getDate') || undefined
             data
         columns: [
           data: 'projectName'
@@ -34,6 +44,9 @@ define ['can/control', 'can', 'base', 'Auth', 'reqwest', '_', 'datatables.net', 
             if data then new Date(data).toLocaleDateString() else ''
         ]
       }
+
+      $('#searchForm button').unbind('click').bind 'click', (e)->
+        table.ajax.reload()
 
       # queryMsgPage = (callback)->
       #   start = $('#page-wrapper .msgRow').length

@@ -10,6 +10,7 @@ public class QuestionSearch {
     private Boolean closed;
     private Integer handlerId;
     private Integer handleStatus;
+    private String beginStorehouse;
     
     public String getNumber() {
         return number;
@@ -64,6 +65,12 @@ public class QuestionSearch {
     }
     public void setHandlerId(Integer handlerId) {
         this.handlerId = handlerId;
+    }
+    public String getBeginStorehouse() {
+        return beginStorehouse;
+    }
+    public void setBeginStorehouse(String beginStorehouse) {
+        this.beginStorehouse = beginStorehouse;
     }
     
 }

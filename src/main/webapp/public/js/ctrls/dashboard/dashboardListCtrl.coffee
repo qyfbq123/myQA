@@ -3,6 +3,7 @@ define ['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
 
   return Control.extend
     init: (el, pdata)->
+      pageData.attr 'userIsOnSite', Auth.userIsOnSite()
       this.element.html can.view("../public/view/home/dashboard/dashboardList.html", pageData)
 
       ###*

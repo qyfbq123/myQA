@@ -165,6 +165,9 @@
     <if test="search.handleStatus!=null">
         and handle_status=#{search.handleStatus, jdbcType=INTEGER}
     </if>
+    <if test="search.beginStorehouse!=null and search.beginStorehouse!=''">
+        and begin_storehouse=#{search.beginStorehouse, jdbcType=VARCHAR}
+    </if>
   </select>
   
   <!-- 16-6-20 首页的事件处理列表查询 -->

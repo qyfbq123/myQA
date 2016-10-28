@@ -4,6 +4,7 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', '_', 'flot.excanvas'
   pageData = new can.Map();
   return Control.extend({
     init: function(el, data) {
+      pageData.attr('userIsOnSite', Auth.userIsOnSite());
       return this.element.html(can.view('../public/view/home/dashboard/dashboard.html', pageData));
     }
   });

@@ -169,6 +169,7 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
         new base('', data) if !can.base
         new dashboardCtrl('#page-wrapper', {id:'dashboard'})
     'home/msgDashboard route': (data)->
+      return location.hash = '#!home/pmDashboardList' if !Auth.userIsOnSite()
       require ['msgDashboardCtrl', 'base'], (msgDashboardCtrl, base)->
         new base('', data) if !can.base
         new msgDashboardCtrl('#page-wrapper', {id:'msgDashboard'})

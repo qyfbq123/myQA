@@ -197,6 +197,9 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
       });
     },
     'home/msgDashboard route': function(data) {
+      if (!Auth.userIsOnSite()) {
+        return location.hash = '#!home/pmDashboardList';
+      }
       return require(['msgDashboardCtrl', 'base'], function(msgDashboardCtrl, base) {
         if (!can.base) {
           new base('', data);

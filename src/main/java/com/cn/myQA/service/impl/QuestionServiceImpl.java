@@ -221,7 +221,11 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public List<Question> page(TableModel model, QuestionSearch search) {
         PageBounds pb = model.translateToPB();
-        pb.setOrders(Order.formString("to_top.desc,created.asc"));
+        if(search.getHandleStatus() != null && search.getHandleStatus() == 2
+                && search.getClosed()) {
+            pb.setOrders(Order.formString("to_top.desc,created.desc"));
+        } else
+            pb.setOrders(Order.formString("to_top.desc,created.asc"));
         PageList<Question> qList = questionMapper.page(pb, search);
         return qList.subList(0, qList.size());
     }
@@ -811,7 +815,6 @@ public class QuestionServiceImpl implements IQuestionService {
                 taskExecutor.execute(new Runnable(){    
                     public void run(){
                         mailService.sendmail(mailList.toArray(new String[mailList.size()]), "每"+ type + "总结", "附件为" + reportName + "。", filePath, reportName + ".xls");
-                        System.out.println("发送完毕");
                     }    
                  }); 
             }
@@ -835,7 +838,6 @@ public class QuestionServiceImpl implements IQuestionService {
                 taskExecutor.execute(new Runnable(){    
                     public void run(){
                         mailService.sendmail(mailList.toArray(new String[mailList.size()]), fileName + "问题汇总", "附件为" + fileName + "问题汇总报表。", filePath, fileName + "问题汇总报表.xls");
-                        System.out.println("发送完毕");
                     }    
                  }); 
             }

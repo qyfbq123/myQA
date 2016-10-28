@@ -1,7 +1,7 @@
 
 define ['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], (localStorage, loading, reqwest, bootbox, lscache)->
   # apiHost = 'http://192.168.1.4:8080/';
-  apiHost = 'http://localhost:8080/myQA/';
+  apiHost = '/myQA/';
   # apiHost = '/'
   isLogining = false
 
@@ -18,14 +18,14 @@ define ['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], (localStora
         url: apiHost + 'main/login',
         method: 'post',
         data: JSON.stringify(userinfo),
-        type: 'html',
+        type: 'json',
         contentType: 'application/json',
         crossOrigin: true
       }).then( (data)->
         isLogining = false
         $('html').loading('stop');
         localStorage.set('logined', true);
-        userinfo.username = data
+        userinfo = _.extend userinfo, data
         localStorage.set('user', userinfo);
 
         ###*
@@ -42,8 +42,13 @@ define ['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], (localStora
           done(err)
         else
           window.location.hash = '!login'
-          if err.responseText
-            bootbox.alert err.responseText
+          switch err.status
+            when 404 then bootbox.alert '该用户名不存在'
+            when 403 then bootbox.alert '该用户已被禁用'
+            when 400 then bootbox.alert '用户名或密码错误'
+            else bootbox.alert '登录失败'
+          # if err.responseText
+          #   bootbox.alert err.responseText
           # jAlert('http error:' + status + ' ' + data.statusText, '登录失败');
       )
 
@@ -66,4 +71,10 @@ define ['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], (localStora
       return Boolean(localStorage.get('logined'));
     user: ()->
       return localStorage.get('user');
+    userIsOnSite: ()->
+      user = localStorage.get('user')
+      if user and user.roleList
+        return user.roleList.map((e)-> e.name).indexOf('On-Site') != -1
+      else
+        false
   }

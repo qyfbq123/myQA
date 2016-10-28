@@ -3,6 +3,7 @@ package com.cn.myQA.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -33,10 +34,10 @@ public class MessageServiceImpl implements IMessageService {
     private TaskExecutor taskExecutor;
 
     @Override
-    public List<Message> page(TableModel model, Integer userId) {
+    public List<Message> page(TableModel model, Integer userId, Date start, Date end) {
         PageBounds pb = model.translateToPB();
         pb.setOrders(Order.formString("created.desc"));
-        PageList<Message> msgList = msgMapper.page(pb, userId);
+        PageList<Message> msgList = msgMapper.page(pb, userId, start, end);
         return msgList.subList(0, msgList.size());
     }
     

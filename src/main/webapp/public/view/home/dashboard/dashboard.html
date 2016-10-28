@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs">
-  <li role="presentation"><a href="#!home/msgDashboard">On-Site</a></li>
+  {{#if userIsOnSite}}<li role="presentation"><a href="#!home/msgDashboard">On-Site</a></li>{{/if}}
   <!-- 16-6-20 添加事件列表-->
   <li role="presentation"><a href="#!home/pmDashboardList">事件列表</a></li>
   <li role="presentation"><a href="#!home/dashboardList">系统列表</a></li>

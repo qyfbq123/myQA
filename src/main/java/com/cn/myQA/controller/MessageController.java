@@ -3,6 +3,7 @@ package com.cn.myQA.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -29,8 +30,7 @@ public class MessageController {
     
     @ApiOperation(value="公告分页查询", notes="分页查询公告", httpMethod="GET")
     @RequestMapping(value="/page", method=RequestMethod.GET)
-    public ResponseEntity<List<Message>> page(TableModel model, HttpSession session) {
-        System.out.println(model.getStart());
+    public ResponseEntity<List<Message>> page(TableModel model, Date startDate, Date endDate, HttpSession session) {
         Object userObj = session.getAttribute("user");
         User user;
         if(userObj == null) {
@@ -39,7 +39,7 @@ public class MessageController {
             user = (User) userObj;
         }
         
-        List<Message> msgList = msgService.page(model, user.getId());
+        List<Message> msgList = msgService.page(model, user.getId(), startDate, endDate);
         return new ResponseEntity<List<Message>>(msgList, HttpStatus.OK);
     }
     

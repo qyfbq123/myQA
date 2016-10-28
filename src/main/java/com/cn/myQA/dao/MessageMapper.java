@@ -1,5 +1,6 @@
 package com.cn.myQA.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -10,7 +11,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface MessageMapper {
-    PageList<Message> page(PageBounds pb, @Param("userId")Integer userId);
+    PageList<Message> page(PageBounds pb, @Param("userId")Integer userId, @Param("start")Date start, @Param("end") Date end);
     
     Message single(@Param("msgId")Integer msgId);
     

@@ -1,6 +1,8 @@
 ul.nav.nav-tabs
+  |{{#if userIsOnSite}}
   li(role="presentation")
     a(href="#!home/msgDashboard") On-Site
+  |{{/if}}
   // 16-6-20 添加事件列表
   li(role="presentation")
     a(href="#!home/pmDashboardList") 事件列表

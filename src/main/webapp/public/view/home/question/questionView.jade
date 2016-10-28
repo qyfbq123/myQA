@@ -23,6 +23,9 @@
       .form-group
         label(for="number") 问题描述:
         input#description.form-control(type="text", name="description", placeholder="描述")
+      .form-group
+        label(for="type") 始发地和涉及库房信息:
+        select#beginStorehouse.form-control(name="beginStorehouse")
       button.btn.btn-primary 查询
   table#tempAttachmentList.hide.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
     thead

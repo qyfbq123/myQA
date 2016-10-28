@@ -1,7 +1,7 @@
 
 <!-- 16-6-20 添加这个页面专门处理事件列表-->
-<ul class="nav nav-tabs">
-  <li role="presentation"><a href="#!home/msgDashboard">On-Site</a></li>
+<ul class="nav nav-tabs">{{#if userIsOnSite}}
+  <li role="presentation"><a href="#!home/msgDashboard">On-Site</a></li>{{/if}}
   <li role="presentation" class="active"><a href="#!home/pmDashboardList">事件列表</a></li>
   <li role="presentation"><a href="#!home/dashboardList">系统列表</a></li>
   <li role="presentation"><a href="#!home/dashboard">图表统计</a></li>

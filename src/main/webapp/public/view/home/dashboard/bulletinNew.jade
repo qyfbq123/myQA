@@ -1,12 +1,12 @@
 .row
   .col-lg-12
-    h1.page-header 发布公告
+    h1.page-header On-Site发布
 
 .row
   .col-lg-offset-2.col-lg-8
     .panel.panel-default
         .panel-heading.clearfix
-          .panel-title.pull-left 新建公告
+          .panel-title.pull-left On-Site信息
         .panel-body
           form.form-horizontal(role='form', onSubmit="return false;")
             .form-group
@@ -53,10 +53,10 @@
                   input#date.form-control(name='date', can-value='date', type="text", required)
                   span.input-group-addon
                     i.glyphicon.glyphicon-th
-            .form-group
-              label.col-sm-3.control-label(for="teammates") 接收人：
-              .col-sm-8
-                #teammates.checkbox
+            //- .form-group
+            //-   label.col-sm-3.control-label(for="teammates") 接收人：
+            //-   .col-sm-8
+            //-     #teammates.checkbox
             .form-group
               .col-sm-offset-8.col-sm-2
                 button#submitBtn.btn.btn-primary &nbsp;&nbsp;发布&nbsp;&nbsp;
