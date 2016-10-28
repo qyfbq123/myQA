@@ -30,7 +30,7 @@ public class TestMyBatis {
         model.setLength(10);
         PageBounds pb = model.translateToPB();
         pb.setPage(2);
-        PageList<Message> msgPage = msgMapper.page(pb, null);
+        PageList<Message> msgPage = msgMapper.page(pb, null, null, null);
         System.out.println(msgPage.size());
     }
     
