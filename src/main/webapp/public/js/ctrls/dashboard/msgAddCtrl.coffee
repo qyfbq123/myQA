@@ -19,7 +19,6 @@ define ['can/control', 'can', 'base', 'Auth', 'reqwest', 'bootbox', '_', 'select
 
       $('.input-group.date input').datepicker {
         language: 'zh-CN'
-        startDate: "0d"
         todayBtn: true
         autoclose: true
       }
