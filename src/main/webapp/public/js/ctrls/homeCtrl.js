@@ -66,11 +66,21 @@ define(['can/control', 'can/view/mustache', 'Auth', 'localStorage', 'reqwest', '
         if (window.location.hash === '#!home' && fa.size() > 0) {
           fa[0].click();
           if (fa[0].href.endsWith('#')) {
-            return setTimeout((function() {
+            setTimeout((function() {
               return $("#side-menu a:visible[href!='#']")[0].click();
             }), 100);
           }
         }
+        return reqwest({
+          url: Auth.apiHost + "customize/report/all?_=" + (Date.now()),
+          method: "get"
+        }).then(function(data) {
+          return _.each(data, function(e) {
+            return $("<li><a href='#!home/report/customizeReport/" + e.id + "'>" + e.name + "</a></li>").appendTo($('#customizeReport'));
+          });
+        }).fail(function(err) {
+          return bootbox.alert("获取自定义报表失败！" + err.responseText);
+        });
       };
       reqwest({
         url: Auth.apiHost + ("user/menu?_=" + (Date.now()))

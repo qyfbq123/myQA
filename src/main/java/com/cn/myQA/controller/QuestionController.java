@@ -432,7 +432,7 @@ public class QuestionController {
             section = "month";
             c.set(Calendar.MONTH, month -1);
         }
-        String result = questionService.richReportPush(Calendar.getInstance().getTime(), section, 0, fileName);
+        String result = questionService.richReportPush(c.getTime(), section, 0, fileName);
         return new ResponseEntity<String>(result, result.equals("ok") ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 }

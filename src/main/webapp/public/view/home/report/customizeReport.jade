@@ -1,0 +1,47 @@
+.row
+  .col-lg-12
+    h1.page-header 自定义报表 / {{name}}
+
+.well
+  form.form-horizontal(role='form', onSubmit="return false;")
+    #params.row
+      #temp.hide.col-lg-6
+        .form-group
+          label.col-sm-2.control-label temp
+          .col-sm-10
+            input.form-control(type="text", name="temp", placeholder="请输入...")
+      #tempNumber.hide.col-lg-6
+        .form-group
+          label.col-sm-2.control-label tempNumber
+          .col-sm-10
+            input.form-control(type="number", name="tempNumber", placeholder="请输入...")
+      #tempDate.hide.col-lg-6
+        .form-group
+          label.col-sm-2.control-label tempDate
+          .col-sm-10
+            .input-group.date
+              input.form-control(name="tempDate", type="text")
+              span.input-group-addon
+                i.glyphicon.glyphicon-th
+    .row#btnGroup
+      .form-group
+        .col-lg-offset-8.col-lg-4
+          button#setBtn.btn.btn-primary &nbsp;&nbsp;自定义列&nbsp;&nbsp;
+          button#selectBtn.btn.btn-primary &nbsp;&nbsp;查询&nbsp;&nbsp;
+          |&nbsp;
+          a#downloadBtn.btn.btn-primary(target='_blank') &nbsp;&nbsp;下载&nbsp;&nbsp;
+          button#mailBtn.btn.btn-primary &nbsp;&nbsp;推送&nbsp;&nbsp;
+
+#columns.row.hide
+  form.form-horizontal
+    .form-group
+      label.col-lg-2.control-label 自定义列：
+      #column.col-lg-9.checkbox
+
+.row
+  .dataTable_wrapper
+    table#reportTable.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+      thead
+        tr
+
+      tfoot

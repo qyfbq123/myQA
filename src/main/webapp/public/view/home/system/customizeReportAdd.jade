@@ -1,0 +1,89 @@
+.row
+  .col-lg-12
+    h1.page-header 自定义报表 / 新增
+
+.row
+  .panel.panel-default
+      .panel-heading.clearfix
+        .panel-title.pull-left  自定义报表信息
+        #operates.btn-group.pull-right
+          button.btn.btn-default.btn-sm(type="button", data-action='save')
+            span.glyphicon.glyphicon-save(aria-hidden="true")
+            |保存
+          button.btn.btn-default.btn-sm(type="button", data-action='refresh')
+            span.glyphicon.glyphicon-repeat(aria-hidden="true")
+            |重置
+          button.btn.btn-default.btn-sm(type="button", data-action='cancel')
+            span.glyphicon.glyphicon-arrow-left(aria-hidden="true")
+            |取消
+
+      .panel-body
+        .row
+          .col-lg-6
+            form.form-horizontal(role='form')
+              input(type='hidden', name='id', can-value='id')
+              .form-group
+                label.col-sm-2.control-label(for="name") 名称
+                .col-sm-10
+                  input#name.form-control(type="text", name="name", can-value="name", placeholder="名称", required)
+              .form-group
+                label.col-sm-2.control-label(for="value") 来源名称
+                .col-sm-10
+                  select#value.form-control(name="value", can-value="value", placeholder='来源名称', required)
+                    option
+          .col-lg-6
+            form.form-horizontal(role="form")
+              .form-group
+                label.col-sm-2.control-label(for="param1") 参数1
+                .col-sm-10
+                  input#param1.form-control(type="text", name="param1", can-value="param1", placeholder="参数1名称")
+              .form-group
+                label.col-sm-2.control-label(for="type1") 类型1
+                .col-sm-10
+                  select#type1.form-control(name="type1", can-value="type1", placeholder='参数1类型')
+                    option
+              .form-group
+                label.col-sm-2.control-label(for="param2") 参数2
+                .col-sm-10
+                  input#param2.form-control(type="text", name="param2", can-value="param2", placeholder="参数2名称")
+              .form-group
+                label.col-sm-2.control-label(for="type2") 类型2
+                .col-sm-10
+                  select#type2.form-control(name="type2", can-value="type2", placeholder='参数2类型')
+                    option
+              .form-group
+                label.col-sm-2.control-label(for="param3") 参数3
+                .col-sm-10
+                  input#param3.form-control(type="text", name="param3", can-value="param3", placeholder="参数3名称")
+              .form-group
+                label.col-sm-2.control-label(for="type3") 类型3
+                .col-sm-10
+                  select#type3.form-control(name="type3", can-value="type3", placeholder='参数3类型')
+                    option
+              .form-group
+                label.col-sm-2.control-label(for="param4") 参数4
+                .col-sm-10
+                  input#param4.form-control(type="text", name="param4", can-value="param4", placeholder="参数4名称")
+              .form-group
+                label.col-sm-2.control-label(for="type4") 类型4
+                .col-sm-10
+                  select#type4.form-control(name="type4", can-value="type4", placeholder='参数4类型')
+                    option
+              .form-group
+                label.col-sm-2.control-label(for="param5") 参数5
+                .col-sm-10
+                  input#param5.form-control(type="text", name="param5", can-value="param5", placeholder="参5名称")
+              .form-group
+                label.col-sm-2.control-label(for="type5") 类型5
+                .col-sm-10
+                  select#type5.form-control(name="type5", can-value="type5", placeholder='参数5类型')
+                    option
+              .form-group
+                label.col-sm-2.control-label(for="param6") 参数6
+                .col-sm-10
+                  input#param6.form-control(type="text", name="param6", can-value="param6", placeholder="参数6名称")
+              .form-group
+                label.col-sm-2.control-label(for="type6") 类型6
+                .col-sm-10
+                  select#type6.form-control(name="type6", can-value="type6", placeholder='参数6类型')
+                    option

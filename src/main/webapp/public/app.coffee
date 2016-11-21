@@ -79,6 +79,9 @@ require.config
     dictSettingCtrl: '../public/js/ctrls/system/dictSettingCtrl'
     batchImportCtrl: '../public/js/ctrls/system/batchImportCtrl'
     otherCtrl: '../public/js/ctrls/system/otherCtrl'
+    customizeReportViewCtrl: '../public/js/ctrls/system/customizeReportViewCtrl'
+    customizeReportAddCtrl: '../public/js/ctrls/system/customizeReportAddCtrl'
+    customizeReportCtrl: '../public/js/ctrls/report/customizeReportCtrl'
 
     ###*
      * 图表控件单独列出
@@ -303,6 +306,26 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
       require ['otherCtrl', 'base'], (otherCtrl, base)->
         new base('', data) if !can.base
         new otherCtrl('#page-wrapper', {id:'batchImport'})
+
+    'home/system/customizeReportView route': (data)->
+      require ['customizeReportViewCtrl', 'base'], (customizeReportViewCtrl, base)->
+        new base('', data) if !can.base
+        new customizeReportViewCtrl('#page-wrapper', {id:'customizeReportView'})
+
+    'home/system/customizeReportAdd route': (data)->
+      require ['customizeReportAddCtrl', 'base'], (customizeReportAddCtrl, base)->
+        new base('', data) if !can.base
+        new customizeReportAddCtrl('#page-wrapper', {id:'customizeReportAdd'})
+
+    'home/system/customizeReportAdd/:id route': (data)->
+      require ['customizeReportAddCtrl', 'base'], (customizeReportAddCtrl, base)->
+        new base('', data) if !can.base
+        new customizeReportAddCtrl('#page-wrapper', {id:'customizeReportAdd'})
+
+    'home/report/customizeReport/:id route': (data)->
+      require ['customizeReportCtrl', 'base'], (customizeReportCtrl, base)->
+        new base('', data) if !can.base
+        new customizeReportCtrl('#page-wrapper', data)
 
     'home/:id route': (data)->
       require ['base'], (base)->

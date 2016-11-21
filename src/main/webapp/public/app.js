@@ -79,6 +79,9 @@ require.config({
     dictSettingCtrl: '../public/js/ctrls/system/dictSettingCtrl',
     batchImportCtrl: '../public/js/ctrls/system/batchImportCtrl',
     otherCtrl: '../public/js/ctrls/system/otherCtrl',
+    customizeReportViewCtrl: '../public/js/ctrls/system/customizeReportViewCtrl',
+    customizeReportAddCtrl: '../public/js/ctrls/system/customizeReportAddCtrl',
+    customizeReportCtrl: '../public/js/ctrls/report/customizeReportCtrl',
 
     /**
      * 图表控件单独列出
@@ -495,6 +498,44 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         return new otherCtrl('#page-wrapper', {
           id: 'batchImport'
         });
+      });
+    },
+    'home/system/customizeReportView route': function(data) {
+      return require(['customizeReportViewCtrl', 'base'], function(customizeReportViewCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new customizeReportViewCtrl('#page-wrapper', {
+          id: 'customizeReportView'
+        });
+      });
+    },
+    'home/system/customizeReportAdd route': function(data) {
+      return require(['customizeReportAddCtrl', 'base'], function(customizeReportAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new customizeReportAddCtrl('#page-wrapper', {
+          id: 'customizeReportAdd'
+        });
+      });
+    },
+    'home/system/customizeReportAdd/:id route': function(data) {
+      return require(['customizeReportAddCtrl', 'base'], function(customizeReportAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new customizeReportAddCtrl('#page-wrapper', {
+          id: 'customizeReportAdd'
+        });
+      });
+    },
+    'home/report/customizeReport/:id route': function(data) {
+      return require(['customizeReportCtrl', 'base'], function(customizeReportCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new customizeReportCtrl('#page-wrapper', data);
       });
     },
     'home/:id route': function(data) {

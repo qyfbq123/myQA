@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.myQA.dao.CustomizeReportMapper">
+
+    <resultMap type="com.cn.myQA.pojo.CustomizeReport" id="BaseResultMap">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap type="com.cn.myQA.pojo.UserCrColumns" id="BaseUcrColumnsResultMap">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="cr_id" property="crId" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap type="com.cn.myQA.web.select2.Option" id="BaseOptionResultMap"></resultMap>
+    
+    <sql id="Base_Column_List">
+        id, created, modified, name, type, value, param1, type1, param2, type2, param3, type3, param4, type4, param5, type5, param6, type6
+    </sql>
+    
+    <sql id="Base_UcrColumns_Column_List">
+        id, user_id, cr_id, columns, created, modified
+    </sql>
+    
+    <select id="all" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from customize_report
+    </select>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from customize_report where id=#{id, jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from customize_report where id=#{id, jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="add" parameterType="com.cn.myQA.pojo.CustomizeReport">
+        insert into customize_report(name, type, value, param1, type1, param2, type2, param3, type3, param4, type4, param5, type5, param6, type6)
+        values (#{name, jdbcType=VARCHAR}, #{type, jdbcType=VARCHAR}, #{value, jdbcType=VARCHAR}, #{param1, jdbcType=VARCHAR}, #{type1, jdbcType=VARCHAR}, 
+            #{param2, jdbcType=VARCHAR}, #{type2, jdbcType=VARCHAR}, #{param3, jdbcType=VARCHAR}, #{type3, jdbcType=VARCHAR},
+            #{param4, jdbcType=VARCHAR}, #{type4, jdbcType=VARCHAR}, #{param5, jdbcType=VARCHAR}, #{type5, jdbcType=VARCHAR}, 
+            #{param6, jdbcType=VARCHAR}, #{type6, jdbcType=VARCHAR} )
+    </insert>
+    
+    <update id="update" parameterType="com.cn.myQA.pojo.CustomizeReport">
+        update customize_report
+        set name=#{name, jdbcType=VARCHAR}, type=#{type, jdbcType=VARCHAR}, value=#{value, jdbcType=VARCHAR}, param1=#{param1, jdbcType=VARCHAR}, type1=#{type1, jdbcType=VARCHAR},
+            param2=#{param2, jdbcType=VARCHAR}, type2=#{type2, jdbcType=VARCHAR}, param3=#{param3, jdbcType=VARCHAR}, type3=#{type3, jdbcType=VARCHAR},
+            param4=#{param4, jdbcType=VARCHAR}, type4=#{type4, jdbcType=VARCHAR}, param5=#{param5, jdbcType=VARCHAR}, type5=#{type5, jdbcType=VARCHAR},
+            param6=#{param6, jdbcType=VARCHAR}, type6=#{type6, jdbcType=VARCHAR}
+        where id=#{id, jdbcType=INTEGER}
+    </update>
+    
+    <select id="selectOneUcrColumns" resultMap="BaseUcrColumnsResultMap">
+        select <include refid="Base_UcrColumns_Column_List"/> from user_cr_columns
+        where user_id = #{userId, jdbcType=INTEGER} and cr_id=#{crId, jdbcType=INTEGER}
+        order by created desc limit 1 
+    </select>
+    
+    <insert id="addUcrColumns" parameterType="com.cn.myQA.pojo.UserCrColumns" useGeneratedKeys="true" keyProperty="id">
+        insert into user_cr_columns(user_id, cr_id, columns)
+        values(#{userId, jdbcType=INTEGER}, #{crId, jdbcType=INTEGER}, #{columns, jdbcType=VARCHAR})
+    </insert>
+    
+    <update id="updateUcrColumns" parameterType="com.cn.myQA.pojo.UserCrColumns">
+        update user_cr_columns set columns=#{columns, jdbcType=VARCHAR} where id=#{id, jdbcType=INTEGER}
+    </update>
+    
+    <delete id="deleteUcrColumnsByCrId" parameterType="java.lang.Integer">
+        delete from user_cr_columns where cr_id=#{id, jdbcType=INTEGER}
+    </delete>
+    
+    <select id="allViews" resultType="java.lang.String">
+        select TABLE_NAME
+		from information_schema.tables 
+	    where TABLE_SCHEMA='myqa' and TABLE_TYPE LIKE 'VIEW'
+    </select>
+    
+    <select id="allProcs" resultType="java.lang.String">
+        select `name` from mysql.proc where db='myqa'
+    </select>
+    
+    <select id="callProc" resultType="java.util.LinkedHashMap">
+        call ${procedure} (<foreach collection="paramList" item="param" separator=",">#{param}</foreach>)
+    </select>
+    
+    <select id="selectView" resultType="java.util.LinkedHashMap">
+        select * from ${view}
+    </select>
+</mapper>
