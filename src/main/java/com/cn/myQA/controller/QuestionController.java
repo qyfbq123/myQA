@@ -121,11 +121,11 @@ public class QuestionController {
 //    16-6-20
     @ApiOperation(value="事件列表查询", notes="事件列表查询", httpMethod="GET")
     @RequestMapping(value="/pmList", method=RequestMethod.GET)
-    public ResponseEntity<List<Question>> pmList(@ModelAttribute("user") User user) {
+    public ResponseEntity<Pagination<Question>> pmList(@ModelAttribute("user") User user, TableModel model) {
         if(user == null) {
             user = new User();
         }
-        return new ResponseEntity<List<Question>>(questionService.pmList(user.getId()), HttpStatus.OK);
+        return new ResponseEntity<Pagination<Question>>(questionService.pmList(user.getId(), model), HttpStatus.OK);
     }
     
     @ApiOperation(value="关闭问题", notes="关闭问题", httpMethod="PUT")

@@ -16,13 +16,13 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
        * 首页添加专门的事件列表标签页
        */
       table = $('#issueList').DataTable({
-        paging: false,
+        paging: true,
+        bFilter: false,
+        processing: true,
+        serverSide: true,
         ordering: false,
         ajax: {
-          url: Auth.apiHost + "question/pmList?_=" + (Date.now()),
-          dataSrc: function(data) {
-            return data;
-          }
+          url: Auth.apiHost + "question/pmList?_=" + (Date.now())
         },
         columns: [
           {

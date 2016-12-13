@@ -59,7 +59,7 @@ public interface IQuestionService {
      * @param associationId 关联者id
      * @return 问题列表
      */
-    public List<Question> pmList(Integer associationId);
+    public Pagination<Question> pmList(Integer associationId, TableModel model);
     
     /**
      * 关闭问题

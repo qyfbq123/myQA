@@ -281,6 +281,10 @@
     select <include refid="com.cn.myQA.dao.BaseMapper.Base_Group_Column_List"></include> from `group` limit 1
   </select>
   
+  <select id="findMailPushGroup" resultMap="com.cn.myQA.dao.BaseMapper.RichGroupResultMap">
+    select <include refid="com.cn.myQA.dao.BaseMapper.Base_Group_Column_List"></include> from `group` where name='邮件推送'
+  </select>
+  
   <select id="findHanlers" resultMap="com.cn.myQA.dao.BaseMapper.BaseUserResultMap">
     select `user`.id, `user`.created, `user`.modified, `user`.locked, `user`.loginid, `user`.username, `user`.email, `user`.leaderEmail, `user`.city_id from `user`
     inner join user_has_role on `user`.id = user_has_role.user_id

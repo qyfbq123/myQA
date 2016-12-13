@@ -245,8 +245,16 @@ public class QuestionServiceImpl implements IQuestionService {
     
 //    16-6-20 首页事件列表
     @Override
-    public List<Question> pmList(Integer associationId) {
-        return questionMapper.pmList(associationId);
+    public Pagination<Question> pmList(Integer associationId, TableModel model) {
+        PageBounds pb = model.translateToPB();
+        pb.setOrders(Order.formString("to_top.desc,created.asc"));
+        PageList<Question> qList =  questionMapper.pmList(pb, associationId);
+        Pagination<Question> page = new Pagination<Question>();
+        page.setDraw(model.getDraw());
+        page.setData(qList.subList(0, qList.size()));
+        page.setRecordsFiltered(qList.getPaginator().getTotalCount());
+        page.setRecordsTotal(qList.getPaginator().getTotalCount());
+        return page;
     }
 
     @Override
@@ -805,9 +813,12 @@ public class QuestionServiceImpl implements IQuestionService {
             String type = section.equals("day") ? "日" : section.equals("week") ? "周" : section.equals("month") ? "月" : section.equals("year") ? "年" : "";
             String reportName = type + "问题汇总报表";
                     
-            Group pm = userMapper.findPMGroup();
+            Group group = userMapper.findMailPushGroup();
+            if(group==null || group.getId()==null || group.getId()<=0) {
+                group = userMapper.findPMGroup();
+            }            
             List<String> mailList = new ArrayList<String>();
-            for(User u : pm.getUserList()) {
+            for(User u : group.getUserList()) {
                 if(!StringUtils.isEmpty(u.getEmail()))
                     mailList.add(u.getEmail());
             }
@@ -828,9 +839,12 @@ public class QuestionServiceImpl implements IQuestionService {
             logger.error("报表生成失败！");
             return "error";
         } else {
-            Group pm = userMapper.findPMGroup();
+            Group group = userMapper.findMailPushGroup();
+            if(group==null || group.getId()==null || group.getId()<=0) {
+                group = userMapper.findPMGroup();
+            }
             List<String> mailList = new ArrayList<String>();
-            for(User u : pm.getUserList()) {
+            for(User u : group.getUserList()) {
                 if(!StringUtils.isEmpty(u.getEmail()))
                     mailList.add(u.getEmail());
             }

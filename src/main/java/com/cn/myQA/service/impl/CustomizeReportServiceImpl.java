@@ -216,10 +216,12 @@ public class CustomizeReportServiceImpl implements ICustomizeReportService {
             logger.error("报表生成失败！");
             return "error";
         } else {
-                    
-            Group pm = userMapper.findPMGroup();
+            Group group = userMapper.findMailPushGroup();
+            if(group==null || group.getId()==null || group.getId()<=0) {
+                group = userMapper.findPMGroup();
+            }
             List<String> mailList = new ArrayList<String>();
-            for(User u : pm.getUserList()) {
+            for(User u : group.getUserList()) {
                 if(!StringUtils.isEmpty(u.getEmail()))
                     mailList.add(u.getEmail());
             }

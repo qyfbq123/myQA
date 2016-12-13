@@ -1,10 +1,6 @@
 package com.cn.myQA.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.cn.myQA.pojo.Message;
 import com.cn.myQA.pojo.User;
 import com.cn.myQA.service.IMessageService;
+import com.cn.myQA.web.datatables.Pagination;
 import com.cn.myQA.web.datatables.TableModel;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(value = "msg", description = "系统公告、短消息")
 @Controller
@@ -30,17 +30,17 @@ public class MessageController {
     
     @ApiOperation(value="公告分页查询", notes="分页查询公告", httpMethod="GET")
     @RequestMapping(value="/page", method=RequestMethod.GET)
-    public ResponseEntity<List<Message>> page(TableModel model, Date startDate, Date endDate, HttpSession session) {
+    public ResponseEntity<Pagination<Message>> page(TableModel model, Date startDate, Date endDate, HttpSession session) {
         Object userObj = session.getAttribute("user");
         User user;
         if(userObj == null) {
-            return new ResponseEntity<List<Message>>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<Pagination<Message>>(HttpStatus.UNAUTHORIZED);
         } else {
             user = (User) userObj;
         }
         
-        List<Message> msgList = msgService.page(model, user.getId(), startDate, endDate);
-        return new ResponseEntity<List<Message>>(msgList, HttpStatus.OK);
+        Pagination<Message> msgList = msgService.page(model, user.getId(), startDate, endDate);
+        return new ResponseEntity<Pagination<Message>>(msgList, HttpStatus.OK);
     }
     
     @ApiOperation(value="公告新增", notes="新增公告", httpMethod="POST")

@@ -194,6 +194,12 @@ public interface UserMapper {
     Group findPMGroup();
     
     /**
+     * 获取邮件推送组
+     * @return 邮件推送组
+     */
+    Group findMailPushGroup();
+    
+    /**
      * 按角色查找处理人
      * @return 处理人列表
      */

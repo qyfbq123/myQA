@@ -14,12 +14,13 @@ define ['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
       ###
 
       table = $('#issueList').DataTable {
-        paging: false
+        paging: true
+        bFilter:  false
+        processing: true
+        serverSide: true
         ordering: false
         ajax: 
           url: "#{Auth.apiHost}question/pmList?_=#{Date.now()}"
-          dataSrc: (data)->
-            data
         columns: [
           data: 'number'
         ,

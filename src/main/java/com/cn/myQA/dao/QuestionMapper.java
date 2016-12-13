@@ -44,7 +44,7 @@ public interface QuestionMapper {
      * @param associationId 关联id
      * @return 问题列表
      */
-    List<Question> pmList(@Param("associationId") Integer associationId);
+    PageList<Question> pmList(PageBounds pb, @Param("associationId") Integer associationId);
     
     /**
      * 关闭问题

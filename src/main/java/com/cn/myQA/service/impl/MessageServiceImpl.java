@@ -17,6 +17,7 @@ import com.cn.myQA.pojo.Message;
 import com.cn.myQA.pojo.User;
 import com.cn.myQA.service.IMailService;
 import com.cn.myQA.service.IMessageService;
+import com.cn.myQA.web.datatables.Pagination;
 import com.cn.myQA.web.datatables.TableModel;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
@@ -34,11 +35,17 @@ public class MessageServiceImpl implements IMessageService {
     private TaskExecutor taskExecutor;
 
     @Override
-    public List<Message> page(TableModel model, Integer userId, Date start, Date end) {
+    public Pagination<Message> page(TableModel model, Integer userId, Date start, Date end) {
         PageBounds pb = model.translateToPB();
         pb.setOrders(Order.formString("created.desc"));
         PageList<Message> msgList = msgMapper.page(pb, userId, start, end);
-        return msgList.subList(0, msgList.size());
+        
+        Pagination<Message> page = new Pagination<Message>();
+        page.setDraw(model.getDraw());
+        page.setData(msgList.subList(0, msgList.size()));
+        page.setRecordsFiltered(msgList.getPaginator().getTotalCount());
+        page.setRecordsTotal(msgList.getPaginator().getTotalCount());
+        return page;
     }
     
     @Override

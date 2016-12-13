@@ -12,13 +12,13 @@ define(['can/control', 'can', 'base', 'Auth', 'reqwest', '_', 'datatables.net', 
         autoclose: true
       });
       table = $('#msgList').DataTable({
-        paging: false,
+        paging: true,
+        bFilter: false,
+        processing: true,
+        serverSide: true,
         ordering: false,
         ajax: {
           url: Auth.apiHost + "msg/page?_=" + (Date.now()),
-          dataSrc: function(data) {
-            return data;
-          },
           data: function(data) {
             data.startDate = $('#start').datepicker('getDate') || void 0;
             data.endDate = $('#end').datepicker('getDate') || void 0;
