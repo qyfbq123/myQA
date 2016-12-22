@@ -380,6 +380,62 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         });
       });
     },
+    'home/question/tmsAdd route': function(data) {
+      return require(['questionAddCtrl', 'base'], function(questionAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionAddCtrl('#page-wrapper', {
+          category: 'TMS'
+        });
+      });
+    },
+    'home/question/tmsView route': function(data) {
+      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionViewCtrl('#page-wrapper', {
+          category: 'TMS',
+          closed: true
+        });
+      });
+    },
+    'home/question/tmsView/:number route': function(data) {
+      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionViewCtrl('#page-wrapper', {
+          category: 'TMS',
+          closed: true,
+          number: data.number
+        });
+      });
+    },
+    'home/question/tmsClose route': function(data) {
+      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionViewCtrl('#page-wrapper', {
+          category: 'TMS',
+          closed: false
+        });
+      });
+    },
+    'home/question/tmsClose/:number route': function(data) {
+      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new questionViewCtrl('#page-wrapper', {
+          category: 'TMS',
+          closed: false,
+          number: data.number
+        });
+      });
+    },
     'home/system/userView route': function(data) {
       return require(['userViewCtrl', 'base'], function(userViewCtrl, base) {
         if (!can.base) {
@@ -602,62 +658,6 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
           });
         });
       }
-    },
-    'home/question/tmsAdd route': function(data) {
-      return require(['questionAddCtrl', 'base'], function(questionAddCtrl, base) {
-        if (!can.base) {
-          new base('', data);
-        }
-        return new questionAddCtrl('#page-wrapper', {
-          category: 'TMS'
-        });
-      });
-    },
-    'home/question/tmsView route': function(data) {
-      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
-        if (!can.base) {
-          new base('', data);
-        }
-        return new questionViewCtrl('#page-wrapper', {
-          category: 'TMS',
-          closed: true
-        });
-      });
-    },
-    'home/question/tmsView/:number route': function(data) {
-      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
-        if (!can.base) {
-          new base('', data);
-        }
-        return new questionViewCtrl('#page-wrapper', {
-          category: 'TMS',
-          closed: true,
-          number: data.number
-        });
-      });
-    },
-    'home/question/tmsClose route': function(data) {
-      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
-        if (!can.base) {
-          new base('', data);
-        }
-        return new questionViewCtrl('#page-wrapper', {
-          category: 'TMS',
-          closed: false
-        });
-      });
-    },
-    'home/question/tmsClose/:number route': function(data) {
-      return require(['questionViewCtrl', 'base'], function(questionViewCtrl, base) {
-        if (!can.base) {
-          new base('', data);
-        }
-        return new questionViewCtrl('#page-wrapper', {
-          category: 'TMS',
-          closed: false,
-          number: data.number
-        });
-      });
     }
   });
   new Router(window);

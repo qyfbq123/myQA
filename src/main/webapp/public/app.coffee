@@ -253,6 +253,28 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
         new base('', data) if !can.base
         new questionViewCtrl('#page-wrapper', {category:'WMS', closed: false, number: data.number})
 
+
+    'home/question/tmsAdd route': (data)->
+      require ['questionAddCtrl', 'base'], (questionAddCtrl, base)->
+        new base('', data) if !can.base
+        new questionAddCtrl('#page-wrapper', {category:'TMS'})
+    'home/question/tmsView route': (data)->
+      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
+        new base('', data) if !can.base
+        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: true})
+    'home/question/tmsView/:number route': (data)->
+      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
+        new base('', data) if !can.base
+        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: true, number: data.number})
+    'home/question/tmsClose route': (data)->
+      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
+        new base('', data) if !can.base
+        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: false})
+    'home/question/tmsClose/:number route': (data)->
+      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
+        new base('', data) if !can.base
+        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: false, number: data.number})
+
     'home/system/userView route': (data)->
       require ['userViewCtrl', 'base'], (userViewCtrl, base)->
         new base('', data) if !can.base
@@ -360,26 +382,7 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
           new base('', data) if !can.base
           new questionAddCtrl('#page-wrapper', {id: data.id, category: data.category})
 
-    'home/question/tmsAdd route': (data)->
-      require ['questionAddCtrl', 'base'], (questionAddCtrl, base)->
-        new base('', data) if !can.base
-        new questionAddCtrl('#page-wrapper', {category:'TMS'})
-    'home/question/tmsView route': (data)->
-      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
-        new base('', data) if !can.base
-        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: true})
-    'home/question/tmsView/:number route': (data)->
-      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
-        new base('', data) if !can.base
-        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: true, number: data.number})
-    'home/question/tmsClose route': (data)->
-      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
-        new base('', data) if !can.base
-        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: false})
-    'home/question/tmsClose/:number route': (data)->
-      require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
-        new base('', data) if !can.base
-        new questionViewCtrl('#page-wrapper', {category:'TMS', closed: false, number: data.number})
+    
   })
 
   new Router(window)
