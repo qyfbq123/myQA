@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "customize", description = "自定义报表CRUD操作")
 @Controller
 @RequestMapping("/customize/report")
-public class CustomizeReportCotroller {
+public class CustomizeReportController {
     @Autowired
     ICustomizeReportService crService;
 

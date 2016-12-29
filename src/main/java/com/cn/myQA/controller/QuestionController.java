@@ -374,7 +374,8 @@ public class QuestionController {
     @ApiOperation(value="日、周、月、年报", notes="报表推送", httpMethod="GET")
     @RequestMapping(value="/report/{section}/push", method=RequestMethod.GET) 
     public ResponseEntity<String> reportPush(@PathVariable("section") String section, HttpSession session) {
-        String result = questionService.reportPush(Calendar.getInstance().getTime(), section, 0);
+        User user = (User)session.getAttribute("user");
+        String result = questionService.reportPush(Calendar.getInstance().getTime(), section, user==null?-1:user.getId());
         return new ResponseEntity<String>(result, result.equals("ok") ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
     
@@ -424,6 +425,7 @@ public class QuestionController {
     @ApiOperation(value="日、周、月、年报", notes="报表推送", httpMethod="GET")
     @RequestMapping(value="/report/push", method=RequestMethod.GET) 
     public ResponseEntity<String> richReportPush(Integer year, Integer month, Integer date, HttpSession session) {
+        User user = (User)session.getAttribute("user");
         String fileName = year.toString();
         String section = "year";
         Calendar c = Calendar.getInstance();
@@ -439,7 +441,7 @@ public class QuestionController {
             section = "month";
             c.set(Calendar.MONTH, month -1);
         }
-        String result = questionService.richReportPush(c.getTime(), section, 0, fileName);
+        String result = questionService.richReportPush(c.getTime(), section, user==null?-1:user.getId(), fileName);
         return new ResponseEntity<String>(result, result.equals("ok") ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 }

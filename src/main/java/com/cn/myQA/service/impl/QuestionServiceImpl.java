@@ -806,6 +806,7 @@ public class QuestionServiceImpl implements IQuestionService {
     
     public String reportPush(Date time, String section, Integer userId) {
         String filePath = this.reportByTime(time, section, userId);
+        User user = userMapper.selectByPrimaryKey(0);
         if(filePath == null) {
             logger.error("报表生成失败！");
             return "error";
@@ -813,15 +814,18 @@ public class QuestionServiceImpl implements IQuestionService {
             String type = section.equals("day") ? "日" : section.equals("week") ? "周" : section.equals("month") ? "月" : section.equals("year") ? "年" : "";
             String reportName = type + "问题汇总报表";
                     
-            Group group = userMapper.findMailPushGroup();
-            if(group==null || group.getId()==null || group.getId()<=0) {
-                group = userMapper.findPMGroup();
-            }            
+//            Group group = userMapper.findMailPushGroup();
+//            if(group==null || group.getId()==null || group.getId()<=0) {
+//                group = userMapper.findPMGroup();
+//            }            
+//            List<String> mailList = new ArrayList<String>();
+//            for(User u : group.getUserList()) {
+//                if(!StringUtils.isEmpty(u.getEmail()))
+//                    mailList.add(u.getEmail());
+//            }
             List<String> mailList = new ArrayList<String>();
-            for(User u : group.getUserList()) {
-                if(!StringUtils.isEmpty(u.getEmail()))
-                    mailList.add(u.getEmail());
-            }
+            if(user != null && !StringUtils.isEmpty(user.getEmail()))
+              mailList.add(user.getEmail());
             if(mailList.size() > 0) {
                 taskExecutor.execute(new Runnable(){    
                     public void run(){
@@ -835,19 +839,23 @@ public class QuestionServiceImpl implements IQuestionService {
     
     public String richReportPush(Date time, String section, Integer userId, String fileName) {
         String filePath = this.richReportByTime(time, section, userId);
+        User user = userMapper.selectByPrimaryKey(0);
         if(filePath == null) {
             logger.error("报表生成失败！");
             return "error";
         } else {
-            Group group = userMapper.findMailPushGroup();
-            if(group==null || group.getId()==null || group.getId()<=0) {
-                group = userMapper.findPMGroup();
-            }
+//            Group group = userMapper.findMailPushGroup();
+//            if(group==null || group.getId()==null || group.getId()<=0) {
+//                group = userMapper.findPMGroup();
+//            }
+//            List<String> mailList = new ArrayList<String>();
+//            for(User u : group.getUserList()) {
+//                if(!StringUtils.isEmpty(u.getEmail()))
+//                    mailList.add(u.getEmail());
+//            }
             List<String> mailList = new ArrayList<String>();
-            for(User u : group.getUserList()) {
-                if(!StringUtils.isEmpty(u.getEmail()))
-                    mailList.add(u.getEmail());
-            }
+            if(user != null && !StringUtils.isEmpty(user.getEmail()))
+              mailList.add(user.getEmail());
             if(mailList.size() > 0) {
                 taskExecutor.execute(new Runnable(){    
                     public void run(){

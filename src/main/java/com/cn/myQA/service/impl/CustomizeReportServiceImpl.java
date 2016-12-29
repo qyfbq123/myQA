@@ -28,7 +28,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cn.myQA.dao.CustomizeReportMapper;
 import com.cn.myQA.dao.UserMapper;
 import com.cn.myQA.pojo.CustomizeReport;
-import com.cn.myQA.pojo.Group;
 import com.cn.myQA.pojo.User;
 import com.cn.myQA.pojo.UserCrColumns;
 import com.cn.myQA.service.ICustomizeReportService;
@@ -235,20 +234,24 @@ public class CustomizeReportServiceImpl implements ICustomizeReportService {
     
     public String push(CustomizeReport customizeReport, Integer uid) {
         String filePath = this.report(customizeReport, uid);
+        User user = userMapper.selectByPrimaryKey(uid);
         
         if(filePath == null) {
             logger.error("报表生成失败！");
             return "error";
         } else {
-            Group group = userMapper.findMailPushGroup();
-            if(group==null || group.getId()==null || group.getId()<=0) {
-                group = userMapper.findPMGroup();
-            }
+//            Group group = userMapper.findMailPushGroup();
+//            if(group==null || group.getId()==null || group.getId()<=0) {
+//                group = userMapper.findPMGroup();
+//            }
+//            List<String> mailList = new ArrayList<String>();
+//            for(User u : group.getUserList()) {
+//                if(!StringUtils.isEmpty(u.getEmail()))
+//                    mailList.add(u.getEmail());
+//            }
             List<String> mailList = new ArrayList<String>();
-            for(User u : group.getUserList()) {
-                if(!StringUtils.isEmpty(u.getEmail()))
-                    mailList.add(u.getEmail());
-            }
+            if(user != null && !StringUtils.isEmpty(user.getEmail()))
+              mailList.add(user.getEmail());
             if(mailList.size() > 0) {
                 taskExecutor.execute(new Runnable(){    
                     public void run(){
