@@ -149,7 +149,7 @@ public class DocController {
             
             DocFile df = new DocFile();
             df.setFilename(fileName);
-            df.setPath(newFileName);
+            df.setPath("doc" + System.getProperty("file.separator") + newFileName);
             df.setSize(FileUtils.byteCountToDisplaySize(tempFile.length()));
             
             int result = docService.insertDocFile(df);
@@ -175,7 +175,7 @@ public class DocController {
         DocFile docFile = docService.singleDocFile(id);
         if( docFile != null && !StringUtils.isNullOrEmpty(docFile.getPath()) ) {
             try {
-                File file = new File(docService.getUploadPath() + System.getProperty("file.separator") + "doc" + System.getProperty("file.separator") + docFile.getPath());
+                File file = new File(docService.getUploadPath()  + System.getProperty("file.separator") + docFile.getPath());
                 FileInputStream in = new FileInputStream(file);
 
                 final HttpHeaders headers = new HttpHeaders();
@@ -196,7 +196,7 @@ public class DocController {
     public void download(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response) throws Exception{
         DocFile docFile = docService.singleDocFile(id);
         if( docFile != null && !StringUtils.isNullOrEmpty(docFile.getPath()) ) {
-            File file = new File(docService.getUploadPath() + System.getProperty("file.separator") + "doc" + System.getProperty("file.separator") + docFile.getPath());
+            File file = new File(docService.getUploadPath()  + System.getProperty("file.separator") + docFile.getPath());
             if(file.exists()) {
                 MultipartFileSender.fromFile(file).with(request).with(response).serveResource();
             } else {
