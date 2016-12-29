@@ -253,6 +253,13 @@ public class QuestionController {
         } else return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
     
+    @ApiOperation(value="附件删除", notes="附件删除", httpMethod="DELETE")
+    @RequestMapping(value="/attachment/{id}", method=RequestMethod.DELETE) 
+    public ResponseEntity<String> delete(@PathVariable("id") Integer id){
+        String result = questionService.delAttachment(id);
+        return new ResponseEntity<String>(result , "ok".equals(result) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
+    
     @SuppressWarnings({"rawtypes", "unchecked"})
     @ApiOperation(value="查看图片", notes="图片查看", httpMethod="GET")
     @RequestMapping(value="/photo", method=RequestMethod.GET)

@@ -1,6 +1,7 @@
 package com.cn.myQA.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -47,10 +49,18 @@ public class CustomizeReportServiceImpl implements ICustomizeReportService {
     
     @Autowired
     private TaskExecutor taskExecutor;
+    
+    @Value("${uploadPath}")
+    private String uploadPath;
 
     @Override
     public List<CustomizeReport> all() {
         return crMapper.all();
+    }
+    
+    @Override
+    public List<CustomizeReport> all(Integer uid) {
+        return crMapper.allByUser(uid);
     }
 
     @Override
@@ -86,6 +96,9 @@ public class CustomizeReportServiceImpl implements ICustomizeReportService {
         if (customizeReport.getId() == null || customizeReport.getId() <= 0) {
             int rows = crMapper.add(customizeReport);
             if (rows == 1) {
+                if(CollectionUtils.isNotEmpty(customizeReport.getGroupList())) {
+                    crMapper.putUseGroups(customizeReport.getId(), customizeReport.getGroupList());
+                }
                 return "ok";
             } else
                 return "error";
@@ -93,6 +106,10 @@ public class CustomizeReportServiceImpl implements ICustomizeReportService {
             crMapper.deleteUcrColumnsByCrId(customizeReport.getId());
             int rows = crMapper.update(customizeReport);
             if (rows == 1) {
+                crMapper.removeUseGroups(customizeReport.getId());
+                if(CollectionUtils.isNotEmpty(customizeReport.getGroupList())) {
+                    crMapper.putUseGroups(customizeReport.getId(), customizeReport.getGroupList());
+                }
                 return "ok";
             } else
                 return "error";
@@ -188,7 +205,10 @@ public class CustomizeReportServiceImpl implements ICustomizeReportService {
         List<LinkedHashMap<String, Object>> list = this.run(customizeReport);
         if (list.size() > 0) {
             File outFile;
-            try (InputStream is =
+            File tempFile = new File(uploadPath + System.getProperty("file.separator") + "template" + System.getProperty("file.separator")  + customizeReport.getName() +".xls");
+            System.out.println(uploadPath + System.getProperty("file.separator") + "template" + System.getProperty("file.separator")  + customizeReport.getName() +".xls");
+            System.out.println(tempFile.exists());
+            try (InputStream is = tempFile.exists() ?  new FileInputStream(tempFile):
                     this.getClass().getResourceAsStream("/template/customizeReportTemplate.xls")) {
                 outFile = File.createTempFile("temp-" + customizeReport.getName(), ".xls");
                 OutputStream os = new FileOutputStream(outFile);
@@ -197,10 +217,14 @@ public class CustomizeReportServiceImpl implements ICustomizeReportService {
                 if (CollectionUtils.isEmpty(headers)) {
                     headers = list.get(0).keySet();
                 }
-                context.putVar("headers", new ArrayList<String>(headers));
                 context.putVar("data", list);
-                JxlsHelper.getInstance().processGridTemplateAtCell(is, os, context,
-                        String.join(",", headers), "报表!A1");
+                if(!tempFile.exists()) {
+                    context.putVar("headers", new ArrayList<String>(headers));
+                    JxlsHelper.getInstance().processGridTemplateAtCell(is, os, context,
+                            String.join(",", headers), "报表!A1");
+                } else {
+                    JxlsHelper.getInstance().processTemplate(is, os, context);
+                }
                 return outFile.getAbsolutePath();
             } catch (IOException e) {
                 logger.error("自定义报表生成失败！", e);

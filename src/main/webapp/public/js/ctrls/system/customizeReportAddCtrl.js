@@ -81,6 +81,28 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       }).fail(function(err) {
         return bootbox.alert("视图列表获取失败！");
       });
+      reqwest(Auth.apiHost + "user/group/all?_=" + (Date.now())).then(function(data) {
+        var groupList, groups;
+        groupList = _.map(data, function(group) {
+          return {
+            id: group.id,
+            text: group.name
+          };
+        });
+        $('#groups').select2({
+          language: 'zh-CN',
+          theme: "bootstrap",
+          data: groupList,
+          multiple: true,
+          tokenSeparators: [',', ' ']
+        });
+        if (tmpCustomizeReport.groupList && tmpCustomizeReport.groupList.length > 0) {
+          groups = _.map(tmpCustomizeReport.groupList, function(e) {
+            return e.id;
+          });
+          return $('#groups').val(groups).change();
+        }
+      });
       $('#value').on('change', function(e) {
         switch ($(':selected', this).parent('optGroup').attr('label')) {
           case '视图':
@@ -106,6 +128,14 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             }
             report.type = $('#value :selected').parent('optGroup').attr('label') === '视图' ? 'view' : 'proc';
             report.id = Number(report.id);
+            report.groupList = null;
+            if ($('#groups').val()) {
+              report.groupList = _.map($('#groups').val(), function(e) {
+                return {
+                  id: e
+                };
+              });
+            }
             return reqwest({
               url: Auth.apiHost + "customize/report/save",
               method: "post",

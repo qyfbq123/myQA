@@ -1,0 +1,114 @@
+ul.nav.nav-tabs
+  |{{#if userIsOnSite}}
+  li(role="presentation")
+    a(href="#!home/msgDashboard") On-Site
+  |{{/if}}
+  // 16-6-20 添加事件列表
+  li(role="presentation")
+    a(href="#!home/pmDashboardList") 事件列表
+  li(role="presentation")
+    a(href="#!home/dashboardList") 系统列表
+  |{{#if userIsContract}}
+  li(role="presentation")
+    a(href="#!home/contractDashboard") 行政管理-合同
+  |{{/if}}
+  li.active(role="presentation")
+    a(href="#!home/otherDashboard") 行政管理-其他
+  li(role="presentation")
+    a(href="#!home/dashboard") 图表统计
+br
+
+.row
+  .col-lg-12.text-center(style="padding:0 0 10px; 0")
+    form#searchForm.form-inline(onSubmit="return false;")
+      .form-group
+        label(for="category") 类别:
+        select#category.form-control(name="category")
+          option
+          option(value='rule') 细则
+          option(value='doc') 文档
+      .form-group.hide
+        label(for="function") 发布职能:
+        select#function.form-control(name="function")
+          option
+      .form-group.hide
+        label(for="docType") 文档类型:
+        select#docType.form-control(name="docType")
+          option
+      .form-group.hide
+        label(for="docProperty") 文档属性:
+        select#docProperty.form-control(name="docProperty")
+          option
+          option(value="纸质") 纸质
+          option(value="视频") 视频
+      .form-group
+        label(for="content") 内容:
+        input#content.form-control(type="text", name="content", placeholder="内容")
+      .form-group
+        label(for="importance") 重要性:
+        input#importance.form-control(type="text", name="importance", placeholder="重要性")
+      .form-group
+        label(for="creator") 发布人:
+        input#creator.form-control(type="text", name="creator", placeholder="发布人")
+      .form-group
+        label(for="dateBegin") 按发布日期起:
+        .input-group.date
+          input#dateBegin.form-control(name="dateBegin", type="text")
+          span.input-group-addon
+            i.glyphicon.glyphicon-th
+      .form-group
+        label(for="dateEnd") 止:
+        .input-group.date
+          input#dateEnd.form-control(name="dateEnd", type="text")
+          span.input-group-addon
+            i.glyphicon.glyphicon-th
+      
+      button.btn.btn-primary 查询
+.row
+  .col-lg-12
+    table#otherList.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+      thead
+        tr
+          th 类别
+          th 发布职能
+          th 文档类型
+          th 文档属性
+          th 内容
+          th 重要性
+          th 发布人
+          th 发布日期
+          th
+          th
+      tfoot
+
+#largeModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel")
+  .modal-dialog.modal-lg(role='document')
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss='modal', aria-label="Close")
+          span(aria-hidden="true") &times;
+        h4#largeModalLabel.modal-title PDF文档
+      .modal-body(style='background-color: #404040; padding:15px 0px 15px 0px;')
+      .modal-footer
+        .incomplete-warn.pull-left.has-warning.hide(style="color: #8a6d3b")
+          i 预览 20 页，共
+          &nbsp;
+          i.pages-number
+          &nbsp;
+          i 页
+        button.btn.btn-default(data-dismiss="modal") Close
+        a.download-btn.btn.btn-primary(href="#") Download
+
+#normalModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="normalModalLabel")
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss='modal', aria-label="Close")
+          span(aria-hidden="true") &times;
+        h4#largeModalLabel.modal-title 视频
+      .modal-body(style='background-color: #404040; padding:0px;')
+        video.video-js.vjs-default-skin(controls, preload="none", width="598px", height="336px")
+          source(src="#", type="video/mp4")
+      .modal-footer
+        button.btn.btn-default(data-dismiss="modal") Close
+        a.download-btn.btn.btn-primary(href="#") Download

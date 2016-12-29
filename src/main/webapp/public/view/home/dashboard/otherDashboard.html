@@ -1,0 +1,122 @@
+
+<ul class="nav nav-tabs">{{#if userIsOnSite}}
+  <li role="presentation"><a href="#!home/msgDashboard">On-Site</a></li>{{/if}}
+  <!-- 16-6-20 添加事件列表-->
+  <li role="presentation"><a href="#!home/pmDashboardList">事件列表</a></li>
+  <li role="presentation"><a href="#!home/dashboardList">系统列表</a></li>{{#if userIsContract}}
+  <li role="presentation"><a href="#!home/contractDashboard">行政管理-合同</a></li>{{/if}}
+  <li role="presentation" class="active"><a href="#!home/otherDashboard">行政管理-其他</a></li>
+  <li role="presentation"><a href="#!home/dashboard">图表统计</a></li>
+</ul><br/>
+<div class="row">
+  <div style="padding:0 0 10px; 0" class="col-lg-12 text-center">
+    <form id="searchForm" onSubmit="return false;" class="form-inline">
+      <div class="form-group">
+        <label for="category">类别:</label>
+        <select id="category" name="category" class="form-control">
+          <option></option>
+          <option value="rule">细则</option>
+          <option value="doc">文档</option>
+        </select>
+      </div>
+      <div class="form-group hide">
+        <label for="function">发布职能:</label>
+        <select id="function" name="function" class="form-control">
+          <option></option>
+        </select>
+      </div>
+      <div class="form-group hide">
+        <label for="docType">文档类型:</label>
+        <select id="docType" name="docType" class="form-control">
+          <option></option>
+        </select>
+      </div>
+      <div class="form-group hide">
+        <label for="docProperty">文档属性:</label>
+        <select id="docProperty" name="docProperty" class="form-control">
+          <option></option>
+          <option value="纸质">纸质</option>
+          <option value="视频">视频</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="content">内容:</label>
+        <input id="content" type="text" name="content" placeholder="内容" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label for="importance">重要性:</label>
+        <input id="importance" type="text" name="importance" placeholder="重要性" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label for="creator">发布人:</label>
+        <input id="creator" type="text" name="creator" placeholder="发布人" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label for="dateBegin">按发布日期起:</label>
+        <div class="input-group date">
+          <input id="dateBegin" name="dateBegin" type="text" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateEnd">止:</label>
+        <div class="input-group date">
+          <input id="dateEnd" name="dateEnd" type="text" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>
+      </div>
+      <button class="btn btn-primary">查询</button>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <table id="otherList" cellspacing="0" width="100%" class="table table-striped table-bordered table-hover dt-responsive nowrap">
+      <thead>
+        <tr>
+          <th>类别</th>
+          <th>发布职能</th>
+          <th>文档类型</th>
+          <th>文档属性</th>
+          <th>内容</th>
+          <th>重要性</th>
+          <th>发布人</th>
+          <th>发布日期</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tfoot></tfoot>
+    </table>
+  </div>
+</div>
+<div id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" class="modal fade">
+  <div role="document" class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">&times;</span></button>
+        <h4 id="largeModalLabel" class="modal-title">PDF文档</h4>
+      </div>
+      <div style="background-color: #404040; padding:15px 0px 15px 0px;" class="modal-body"></div>
+      <div class="modal-footer">
+        <div style="color: #8a6d3b" class="incomplete-warn pull-left has-warning hide"><i>预览 20 页，共</i>&nbsp;<i class="pages-number"></i>&nbsp;<i>页</i></div>
+        <button data-dismiss="modal" class="btn btn-default">Close</button><a href="#" class="download-btn btn btn-primary">Download</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="normalModal" tabindex="-1" role="dialog" aria-labelledby="normalModalLabel" class="modal fade">
+  <div role="document" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">&times;</span></button>
+        <h4 id="largeModalLabel" class="modal-title">视频</h4>
+      </div>
+      <div style="background-color: #404040; padding:0px;" class="modal-body">
+        <video controls="controls" preload="none" width="598px" height="336px" class="video-js vjs-default-skin">
+        </video>
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-default">Close</button><a href="#" class="download-btn btn btn-primary">Download</a>
+      </div>
+    </div>
+  </div>
+</div>

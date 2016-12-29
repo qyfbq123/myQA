@@ -3,6 +3,7 @@ define ['can/control', 'can', 'base', 'Auth', 'reqwest', '_', 'datatables.net', 
 
   return Control.extend
     init: (el, data)->
+      pageData.attr 'userIsContract', Auth.userIsContract()
       this.element.html can.view('../public/view/home/dashboard/msgDashboard.html', pageData)
 
       $('.input-group.date input').datepicker {

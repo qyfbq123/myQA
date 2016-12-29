@@ -72,7 +72,7 @@ define(['can/control', 'can/view/mustache', 'Auth', 'localStorage', 'reqwest', '
           }
         }
         return reqwest({
-          url: Auth.apiHost + "customize/report/all?_=" + (Date.now()),
+          url: Auth.apiHost + "customize/report/allByUser?_=" + (Date.now()),
           method: "get"
         }).then(function(data) {
           return _.each(data, function(e) {

@@ -1,0 +1,234 @@
+
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">合同管理／{{#if id}}修改{{/if}}{{#else}}新增{{/else}}</div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <h2 class="text-center">相关</h2>
+          <form role="form" class="form-horizontal">
+            <div class="form-group">
+              <label for="vendorName" class="col-sm-3 control-label">供应商名称</label>
+              <div class="col-sm-9">
+                <input id="vendorName" type="text" name="vendorName" can-value="vendorName" placeholder="供应商名称" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="vendorCode" class="col-sm-3 control-label">Vendor Code</label>
+              <div class="col-sm-9">
+                <input id="vendorCode" type="text" name="vendorCode" can-value="vendorCode" placeholder="Vendor Code" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="involvedELC" class="col-sm-3 control-label">所涉ELC</label>
+              <div class="col-sm-9">
+                <input id="involvedELC" type="text" name="involvedELC" can-value="involvedELC" placeholder="所涉ELC" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="vendorType" class="col-sm-3 control-label">供应商类别</label>
+              <div class="col-sm-9">
+                <input id="vendorType" type="text" name="vendorType" can-value="vendorType" placeholder="供应商类别" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="purchaseKeeper" class="col-sm-3 control-label">采购管理方</label>
+              <div class="col-sm-9">
+                <select id="purchaseKeeper" name="purchaseKeeper" can-value="purchaseKeeper" placeholder="采购管理方" class="form-control">
+                  <option></option>
+                  <option value="ELC总部">ELC总部</option>
+                  <option value="ELC">ELC</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="seal" class="col-sm-3 control-label">DHL用印情况</label>
+              <div class="col-sm-9">
+                <input id="seal" type="text" name="seal" can-value="seal" placeholder="DHL用印情况" class="form-control"/>
+              </div>
+            </div>
+          </form>
+          <h2 class="text-center">基本</h2>
+          <form role="form" class="form-horizontal">
+            <div class="form-group">
+              <label for="contractName" class="col-sm-3 control-label">合同名称</label>
+              <div class="col-sm-9">
+                <input id="contractName" type="text" name="contractName" can-value="contractName" placeholder="合同名称" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="contractNumber" class="col-sm-3 control-label">协议或合同编号</label>
+              <div class="col-sm-9">
+                <input id="contractNumber" type="text" name="contractNumber" can-value="contractNumber" placeholder="合同编号" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="contractAmount" class="col-sm-3 control-label">合同金额</label>
+              <div class="col-sm-9">
+                <input id="contractAmount" type="text" name="contractAmount" can-value="contractAmount" placeholder="合同金额" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="contractText" class="col-sm-3 control-label">合同文本</label>
+              <div class="col-sm-9">
+                <input id="contractText" type="text" name="contractText" can-value="contractText" placeholder="合同文本" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="suitProject" class="col-sm-3 control-label">适用项目</label>
+              <div class="col-sm-9">
+                <input id="suitProject" type="text" name="suitProject" can-value="suitProject" placeholder="适用项目" class="form-control"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6">
+          <h2 class="text-center">期限</h2>
+          <form role="form" class="form-horizontal">
+            <div class="form-group">
+              <label for="signDate" class="col-sm-3 control-label">文本签署日期</label>
+              <div class="col-sm-8">
+                <div class="input-group date">
+                  <input id="signDate" name="signDate" type="text" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="startDate" class="col-sm-3 control-label">有效起始日</label>
+              <div class="col-sm-8">
+                <div class="input-group date">
+                  <input id="startDate" name="startDate" type="text" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="endDate" class="col-sm-3 control-label">有效截止日</label>
+              <div class="col-sm-8">
+                <div class="input-group date">
+                  <input id="endDate" name="endDate" type="text" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="validPeriod" class="col-sm-3 control-label">有效期（年）</label>
+              <div class="col-sm-9">
+                <input id="validPeriod" type="text" name="validPeriod" can-value="validPeriod" placeholder="有效期（年）" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="extendEnd" class="col-sm-3 control-label">延展截止</label>
+              <div class="col-sm-8">
+                <div class="input-group date">
+                  <input id="extendEnd" name="extendEnd" type="text" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+              </div>
+            </div>
+          </form>
+          <h2 class="text-center">其他</h2>
+          <form role="form" class="form-horizontal">
+            <div class="form-group">
+              <label for="currentStatus" class="col-sm-3 control-label">当前状态</label>
+              <div class="col-sm-9">
+                <select id="currentStatus" name="currentStatus" can-value="currentStatus" placeholder="当前状态" class="form-control">
+                  <option></option>
+                  <option value="生效">生效</option>
+                  <option value="无效">无效</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="billPeriod" class="col-sm-3 control-label">合同账期</label>
+              <div class="col-sm-9">
+                <input id="billPeriod" type="text" name="billPeriod" can-value="billPeriod" placeholder="合同账期" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="yearReviewRequire" class="col-sm-3 control-label">年度Review要求</label>
+              <div class="col-sm-9">
+                <input id="yearReviewRequire" type="text" name="yearReviewRequire" can-value="yearReviewRequire" placeholder="年度Review要求" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="yearReviewResult" class="col-sm-3 control-label">年度Review结果</label>
+              <div class="col-sm-9">
+                <input id="yearReviewResult" type="text" name="yearReviewResult" can-value="yearReviewResult" placeholder="年度Review结果" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="checkbox col-sm-offset-3 col-sm-9">
+                <label>
+                  <input id="isHighRisk" name="isHighRisk" can-value="isHighRisk" type="checkbox"/>是否高风险
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="checkbox col-sm-offset-3 col-sm-9">
+                <label>
+                  <input id="isFramework" name="isFramework" can-value="isFramework" type="checkbox"/>是否是框架协议
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="checkbox col-sm-offset-3 col-sm-9">
+                <label>
+                  <input id="isVendorPromise" name="isVendorPromise" can-value="isVendorPromise" type="checkbox"/>是否有供应商承诺函
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="checkbox col-sm-offset-3 col-sm-9">
+                <label>
+                  <input id="isVendorFilter" name="isVendorFilter" can-value="isVendorFilter" type="checkbox"/>是否有供应商筛选表
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="checkbox col-sm-offset-3 col-sm-9">
+                <label>
+                  <input id="isIshareScreenshots" name="isIshareScreenshots" can-value="isIshareScreenshots" type="checkbox"/>是否有Ishare截屏
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="checkbox col-sm-offset-3 col-sm-9">
+                <label>
+                  <input id="isThreeParity" name="isThreeParity" can-value="isThreeParity" type="checkbox"/>是否有三方比价支持（不强制）
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <form role="form" onSubmit="return false;" class="form-horizontal">
+            <hr/>
+            <div class="form-group">
+              <label for="filePicker" class="col-sm-3 control-label">合同:</label>
+              <div class="col-sm-7"><span class="btn btn-success fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Select files...</span>
+                  <input id="filePicker" type="file" name="Filedata" class="file-loading"/></span>
+                <div id="fileRow" class="row hide">
+                  <table id="fileList" cellspacing="0" width="100%" class="table table-striped table-bordered table-hover dt-responsive nowrap">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-8 col-sm-2">
+                <button id="saveBtn" class="btn btn-primary">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

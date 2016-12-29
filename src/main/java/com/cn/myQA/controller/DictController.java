@@ -77,6 +77,18 @@ class DictController {
         return new ResponseEntity<List<Option>>(dictService.bulletinTypes(), HttpStatus.OK);
     }
     
+    @ApiOperation(value="发布职能", notes="发布职能", httpMethod="GET")
+    @RequestMapping(value="/functions", method=RequestMethod.GET)
+    public ResponseEntity<List<Option>> functions() {
+        return new ResponseEntity<List<Option>>(dictService.functions(), HttpStatus.OK);
+    }
+    
+    @ApiOperation(value="文档类型", notes="文档类型", httpMethod="GET")
+    @RequestMapping(value="/docTypes", method=RequestMethod.GET)
+    public ResponseEntity<List<Option>> docTypes() {
+        return new ResponseEntity<List<Option>>(dictService.docTypes(), HttpStatus.OK);
+    }
+    
     @ApiOperation(value="可维护字典", notes="获取所有可维护字典", httpMethod="GET")
     @RequestMapping(value="/attributes", method=RequestMethod.GET)
     public ResponseEntity<List<SysDict>> attributes() {

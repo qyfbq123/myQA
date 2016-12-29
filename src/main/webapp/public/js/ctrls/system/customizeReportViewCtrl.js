@@ -26,6 +26,15 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'localStorage', 'bootbo
           }, {
             data: 'value'
           }, {
+            data: 'groupList',
+            render: function(data) {
+              var groups;
+              groups = _.map(data, function(group) {
+                return "" + group.name;
+              });
+              return groups.splice(0, 3).join(', ') + (groups.length ? '...' : '');
+            }
+          }, {
             data: 'created',
             render: function(data) {
               if (data) {

@@ -83,6 +83,13 @@ require.config
     customizeReportAddCtrl: '../public/js/ctrls/system/customizeReportAddCtrl'
     customizeReportCtrl: '../public/js/ctrls/report/customizeReportCtrl'
 
+    contractDashboardCtrl: '../public/js/ctrls/dashboard/contractDashboardCtrl'
+    otherDashboardCtrl: '../public/js/ctrls/dashboard/otherDashboardCtrl'
+
+    contractAddCtrl: '../public/js/ctrls/administration/contractAddCtrl'
+    ruleAddCtrl: '../public/js/ctrls/administration/ruleAddCtrl'
+    docAddCtrl: '../public/js/ctrls/administration/docAddCtrl'
+
     ###*
      * 图表控件单独列出
     ###
@@ -92,6 +99,12 @@ require.config
     'flot.resize': 'Flot/jquery.flot.resize'
     'flot.time': 'Flot/jquery.flot.time'
     'flot.tooltip': 'flot.tooltip/js/jquery.flot.tooltip.min'
+
+    ###*
+     * pdf video
+    ###
+    PDFJS: 'pdfjs-dist/build/pdf.min'
+    videojs: 'video.js/dist/video.min'
 
 
   shim:
@@ -185,6 +198,14 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
       require ['dashboardListCtrl', 'base'], (dashboardListCtrl, base)->
         new base('', data) if !can.base
         new dashboardListCtrl('#page-wrapper', {id:'dashboardList'})
+    'home/contractDashboard route': (data)->
+      require ['contractDashboardCtrl', 'base'], (contractDashboardCtrl, base)->
+        new base('', data) if !can.base
+        new contractDashboardCtrl('#page-wrapper', {id:'contractDashboard'})
+    'home/otherDashboard route': (data)->
+      require ['otherDashboardCtrl', 'base'], (otherDashboardCtrl, base)->
+        new base('', data) if !can.base
+        new otherDashboardCtrl('#page-wrapper', {id:'otherDashboard'})
 
     ###*
      * 16-6-20 事件列表
@@ -274,6 +295,31 @@ require ['can', 'Auth', 'localStorage'], (can, Auth, localStorage)->
       require ['questionViewCtrl', 'base'], (questionViewCtrl, base)->
         new base('', data) if !can.base
         new questionViewCtrl('#page-wrapper', {category:'TMS', closed: false, number: data.number})
+
+    'home/administration/contractAdd route': (data)->
+      require ['contractAddCtrl', 'base'], (contractAddCtrl, base)->
+        new base('', data) if !can.base
+        new contractAddCtrl('#page-wrapper', {})
+    'home/administration/ruleAdd route': (data)->
+      require ['ruleAddCtrl', 'base'], (ruleAddCtrl, base)->
+        new base('', data) if !can.base
+        new ruleAddCtrl('#page-wrapper', {})
+    'home/administration/docAdd route': (data)->
+      require ['docAddCtrl', 'base'], (docAddCtrl, base)->
+        new base('', data) if !can.base
+        new docAddCtrl('#page-wrapper', {})
+    'home/administration/contract/:id route': (data)->
+      require ['contractAddCtrl', 'base'], (contractAddCtrl, base)->
+        new base('', data) if !can.base
+        new contractAddCtrl('#page-wrapper', {id: data.id})
+    'home/administration/doc/:id route': (data)->
+      require ['docAddCtrl', 'base'], (docAddCtrl, base)->
+        new base('', data) if !can.base
+        new docAddCtrl('#page-wrapper', {id: data.id})
+    'home/administration/rule/:id route': (data)->
+      require ['ruleAddCtrl', 'base'], (ruleAddCtrl, base)->
+        new base('', data) if !can.base
+        new ruleAddCtrl('#page-wrapper', {id: data.id})
 
     'home/system/userView route': (data)->
       require ['userViewCtrl', 'base'], (userViewCtrl, base)->

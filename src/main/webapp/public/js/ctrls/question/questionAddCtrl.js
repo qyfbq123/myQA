@@ -367,10 +367,10 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             }
           }, {
             data: 'uploader',
-            render: function(data) {
+            render: function(data, d, row) {
               var ref1;
               if (((ref1 = Auth.user()) != null ? ref1.loginID : void 0) === data.loginid) {
-                return $('<button/>').addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML;
+                return $("<button data-id='" + row.id + "'/>").addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML;
               } else {
                 return '无';
               }
@@ -381,8 +381,13 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       return $('#attachmentList tbody').on('click', 'button.btn-danger', function() {
         table.row($(this).parents('tr')).remove().draw();
         if (table.rows().data().length <= 0) {
-          return $('#attachmentRow').addClass('hide');
+          $('#attachmentRow').addClass('hide');
         }
+        return reqwest({
+          url: Auth.apiHost + "question/attachment/" + ($(this).data('id')),
+          method: 'delete',
+          type: 'html'
+        }).then(function() {});
       });
     }
   });

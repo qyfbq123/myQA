@@ -6,6 +6,7 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'dat
     init: function(el, pdata) {
       var table;
       pageData.attr('userIsOnSite', Auth.userIsOnSite());
+      pageData.attr('userIsContract', Auth.userIsContract());
       this.element.html(can.view("../public/view/home/dashboard/dashboardList.html", pageData));
 
       /**

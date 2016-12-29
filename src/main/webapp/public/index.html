@@ -14,10 +14,8 @@
     <link rel="stylesheet" href="lib/select2-bootstrap-theme/dist/select2-bootstrap.css">
     <link rel="stylesheet" href="lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="lib/blueimp-file-upload/css/jquery.fileupload.css">
+    <link rel="stylesheet" href="lib/video.js/dist/video-js.css">
     <link rel="stylesheet" href="public/static/css/style.css">
-    <!--[if lt IE 9]>
-    <script src="public/static/plugins/html5shiv-printshiv.js"></script>
-    <script src="public/static/plugins/respond.min.js"></script><![endif]-->
     <script data-main="./public/app.js" src="./lib/requirejs/require.js"></script>
   </head>
   <body></body>

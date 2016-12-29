@@ -121,9 +121,16 @@ public interface QuestionMapper {
     int bindQuestionAndAttachment(Question question);
     
     /**
-     * 删除附件
+     * 删除问题附件
      * @param question 问题
      * @return 结果
      */
     int removeAttachment(Question question);
+    
+    /**
+     * 按id删除附件
+     * @param id 附件id
+     * @return 结果
+     */
+    int delAttachment(Integer id);
 }

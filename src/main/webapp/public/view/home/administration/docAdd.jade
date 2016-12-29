@@ -1,0 +1,88 @@
+.row
+    .panel.panel-default
+      .panel-heading 文档管理／{{#if id}}修改{{/if}}{{#else}}新增{{/else}}
+      .panel-body
+        .row
+          .col-lg-offset-2.col-lg-8
+            form.form-horizontal(role='form', onSubmit="return false;")
+              .form-group
+                label.col-sm-3.control-label(for="docType") 文档类型
+                .col-sm-9
+                  select#docType.form-control(name="docType", can-value="docType", placeholder='文档类型')
+                    option
+              .form-group
+                label.col-sm-3.control-label(for="docProperty") 文档属性
+                .col-sm-9
+                  select#docProperty.form-control(name="docProperty", can-value="docProperty", placeholder='文档属性')
+                    option
+                    option(value='纸质') 纸质
+                    option(value='视频') 视频
+              .form-group
+                label.col-sm-3.control-label(for="content") 内容
+                .col-sm-9
+                  input#content.form-control(type="text", name="content", can-value="content", placeholder="内容")
+              .form-group
+                label.col-sm-3.control-label(for="importance") 重要性
+                .col-sm-9
+                  input#importance.form-control(type="text", name="importance", can-value="importance", placeholder="重要性")
+              .form-group
+                label.col-sm-3.control-label(for="creator") 发布人
+                .col-sm-9
+                  input#creator.form-control(type="text", name="creator", can-value="creator", placeholder="发布人")
+              .form-group
+                label.col-sm-3.control-label(for="date") 发布日期
+                .col-sm-9
+                  .input-group.date
+                    input#date.form-control(name='date', type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+              hr
+              .form-group
+                label.col-sm-3.control-label(for='filePicker') 文档:
+                .col-sm-7
+                  span.btn.btn-success.fileinput-button
+                    i.glyphicon.glyphicon-plus
+                    span Select files...
+                    input#filePicker.file-loading(type='file', name='Filedata')
+                  .row#fileRow.hide
+                    table#fileList.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+                      thead
+                        tr
+                          th ID
+                          th 文件名
+                          th 大小
+                          th 操作
+              .form-group
+                .col-sm-offset-8.col-sm-2
+                  button#saveBtn.btn.btn-primary &nbsp;&nbsp;保存&nbsp;&nbsp;
+
+#largeModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel")
+  .modal-dialog.modal-lg(role='document')
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss='modal', aria-label="Close")
+          span(aria-hidden="true") &times;
+        h4#largeModalLabel.modal-title PDF文档
+      .modal-body(style='background-color: #404040; padding:15px 0px 15px 0px;')
+      .modal-footer
+        .incomplete-warn.pull-left.has-warning.hide(style="color: #8a6d3b")
+          i 预览 20 页，共
+          &nbsp;
+          i.pages-number
+          &nbsp;
+          i 页
+        button.btn.btn-default(data-dismiss="modal") Close
+        a.download-btn.btn.btn-primary(href="#") Download
+
+#normalModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="normalModalLabel")
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss='modal', aria-label="Close")
+          span(aria-hidden="true") &times;
+        h4#largeModalLabel.modal-title 视频
+      .modal-body(style='background-color: #404040; padding:0px;')
+        video.video-js.vjs-default-skin(controls, preload="none", width="598px", height="336px")
+      .modal-footer
+        button.btn.btn-default(data-dismiss="modal") Close
+        a.download-btn.btn.btn-primary(href="#") Download

@@ -77,4 +77,10 @@ define ['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], (localStora
         return user.roleList.map((e)-> e.name).indexOf('On-Site') != -1
       else
         false
+    userIsContract: ()->
+      user = localStorage.get('user')
+      if user and user.groupList
+        return user.groupList.map((e)-> e.name).indexOf('合同') != -1
+      else
+        false
   }

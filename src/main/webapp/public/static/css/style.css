@@ -427,3 +427,9 @@ body>.row {
     color: #999;
     font-size: 13px;
 }
+
+.pageContainer {
+    border: 1px solid #000;
+    margin: 5px auto;
+    background-color: #FFF;
+}

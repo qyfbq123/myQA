@@ -866,4 +866,14 @@ public class QuestionServiceImpl implements IQuestionService {
     public QuestionAttachment singleAttachment(Integer aid) {
         return questionMapper.singleAttachment(aid);
     }
+    
+    public String delAttachment(Integer aid) {
+        QuestionAttachment qa = questionMapper.singleAttachment(aid);
+        File file = new File(uploadPath + System.getProperty("file.separator") + qa.getPath());
+        if(file.exists()) {
+            file.delete();
+        }
+        int result = questionMapper.delAttachment(aid);
+        return result == 1 ? "ok" : "error";
+    }
 }

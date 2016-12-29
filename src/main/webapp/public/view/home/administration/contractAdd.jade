@@ -1,0 +1,166 @@
+.row
+    .panel.panel-default
+      .panel-heading 合同管理／{{#if id}}修改{{/if}}{{#else}}新增{{/else}}
+      .panel-body
+        .row
+          .col-lg-6
+            h2.text-center 相关
+    
+            form.form-horizontal(role='form')
+              .form-group
+                label.col-sm-3.control-label(for="vendorName") 供应商名称
+                .col-sm-9
+                  input#vendorName.form-control(type="text", name="vendorName", can-value="vendorName", placeholder="供应商名称")
+              .form-group
+                label.col-sm-3.control-label(for="vendorCode") Vendor Code
+                .col-sm-9
+                  input#vendorCode.form-control(type="text", name="vendorCode", can-value="vendorCode", placeholder="Vendor Code")
+              .form-group
+                label.col-sm-3.control-label(for="involvedELC") 所涉ELC
+                .col-sm-9
+                  input#involvedELC.form-control(type="text", name="involvedELC", can-value="involvedELC", placeholder="所涉ELC")
+              .form-group
+                label.col-sm-3.control-label(for="vendorType") 供应商类别
+                .col-sm-9
+                  input#vendorType.form-control(type="text", name="vendorType", can-value="vendorType", placeholder="供应商类别")
+              .form-group
+                label.col-sm-3.control-label(for="purchaseKeeper") 采购管理方
+                .col-sm-9
+                  select#purchaseKeeper.form-control(name="purchaseKeeper", can-value="purchaseKeeper", placeholder='采购管理方')
+                    option
+                    option(value="ELC总部") ELC总部
+                    option(value="ELC") ELC
+              .form-group
+                label.col-sm-3.control-label(for="seal") DHL用印情况
+                .col-sm-9
+                  input#seal.form-control(type="text", name="seal", can-value="seal", placeholder="DHL用印情况")
+            h2.text-center 基本
+            form.form-horizontal(role='form')
+              .form-group
+                label.col-sm-3.control-label(for="contractName") 合同名称
+                .col-sm-9
+                  input#contractName.form-control(type="text", name="contractName", can-value="contractName", placeholder="合同名称")
+              .form-group
+                label.col-sm-3.control-label(for="contractNumber") 协议或合同编号
+                .col-sm-9
+                  input#contractNumber.form-control(type="text", name="contractNumber", can-value="contractNumber", placeholder="合同编号")
+              .form-group
+                label.col-sm-3.control-label(for="contractAmount") 合同金额
+                .col-sm-9
+                  input#contractAmount.form-control(type="text", name="contractAmount", can-value="contractAmount", placeholder="合同金额")
+              .form-group
+                label.col-sm-3.control-label(for="contractText") 合同文本
+                .col-sm-9
+                  input#contractText.form-control(type="text", name="contractText", can-value="contractText", placeholder="合同文本")
+              .form-group
+                label.col-sm-3.control-label(for="suitProject") 适用项目
+                .col-sm-9
+                  input#suitProject.form-control(type="text", name="suitProject", can-value="suitProject", placeholder="适用项目")
+          .col-lg-6
+            h2.text-center 期限
+            form.form-horizontal(role='form')
+              .form-group
+                label.col-sm-3.control-label(for="signDate") 文本签署日期
+                .col-sm-8
+                  .input-group.date
+                    input#signDate.form-control(name='signDate', type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+              .form-group
+                label.col-sm-3.control-label(for="startDate") 有效起始日
+                .col-sm-8
+                  .input-group.date
+                    input#startDate.form-control(name='startDate', type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+              .form-group
+                label.col-sm-3.control-label(for="endDate") 有效截止日
+                .col-sm-8
+                  .input-group.date
+                    input#endDate.form-control(name='endDate', type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+              .form-group
+                label.col-sm-3.control-label(for="validPeriod") 有效期（年）
+                .col-sm-9
+                  input#validPeriod.form-control(type="text", name="validPeriod", can-value="validPeriod", placeholder="有效期（年）")
+              .form-group
+                label.col-sm-3.control-label(for="extendEnd") 延展截止
+                .col-sm-8
+                  .input-group.date
+                    input#extendEnd.form-control(name='extendEnd', type="text")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-th
+            h2.text-center 其他
+            form.form-horizontal(role='form')
+              .form-group
+                label.col-sm-3.control-label(for="currentStatus") 当前状态
+                .col-sm-9
+                  select#currentStatus.form-control(name="currentStatus", can-value="currentStatus", placeholder='当前状态')
+                    option
+                    option(value="生效") 生效
+                    option(value="无效") 无效
+              .form-group
+                label.col-sm-3.control-label(for="billPeriod") 合同账期
+                .col-sm-9
+                  input#billPeriod.form-control(type="text", name="billPeriod", can-value="billPeriod", placeholder="合同账期")
+              .form-group
+                label.col-sm-3.control-label(for="yearReviewRequire") 年度Review要求
+                .col-sm-9
+                  input#yearReviewRequire.form-control(type="text", name="yearReviewRequire", can-value="yearReviewRequire", placeholder="年度Review要求")
+              .form-group
+                label.col-sm-3.control-label(for="yearReviewResult") 年度Review结果
+                .col-sm-9
+                  input#yearReviewResult.form-control(type="text", name="yearReviewResult", can-value="yearReviewResult", placeholder="年度Review结果")
+              .form-group
+                .checkbox.col-sm-offset-3.col-sm-9
+                  label
+                    input#isHighRisk(name="isHighRisk", can-value="isHighRisk", type="checkbox")
+                    |是否高风险
+              .form-group
+                .checkbox.col-sm-offset-3.col-sm-9
+                  label
+                    input#isFramework(name="isFramework", can-value="isFramework", type="checkbox")
+                    |是否是框架协议
+              .form-group
+                .checkbox.col-sm-offset-3.col-sm-9
+                  label
+                    input#isVendorPromise(name="isVendorPromise", can-value="isVendorPromise", type="checkbox")
+                    |是否有供应商承诺函
+              .form-group
+                .checkbox.col-sm-offset-3.col-sm-9
+                  label
+                    input#isVendorFilter(name="isVendorFilter", can-value="isVendorFilter", type="checkbox")
+                    |是否有供应商筛选表
+              .form-group
+                .checkbox.col-sm-offset-3.col-sm-9
+                  label
+                    input#isIshareScreenshots(name="isIshareScreenshots", can-value="isIshareScreenshots", type="checkbox")
+                    |是否有Ishare截屏
+              .form-group
+                .checkbox.col-sm-offset-3.col-sm-9
+                  label
+                    input#isThreeParity(name="isThreeParity", can-value="isThreeParity", type="checkbox")
+                    |是否有三方比价支持（不强制）
+        .row
+          .col-lg-12
+            form.form-horizontal(role="form", onSubmit="return false;")
+              hr
+              .form-group
+                label.col-sm-3.control-label(for='filePicker') 合同:
+                .col-sm-7
+                  span.btn.btn-success.fileinput-button
+                    i.glyphicon.glyphicon-plus
+                    span Select files...
+                    input#filePicker.file-loading(type='file', name='Filedata')
+                  .row#fileRow.hide
+                    table#fileList.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+                      thead
+                        tr
+                          th ID
+                          th 文件名
+                          th 大小
+                          th 操作
+              .form-group
+                .col-sm-offset-8.col-sm-2
+                  button#saveBtn.btn.btn-primary &nbsp;&nbsp;保存&nbsp;&nbsp;

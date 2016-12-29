@@ -1,6 +1,7 @@
 package com.cn.myQA.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class CustomizeReport {
     private Integer id;
@@ -9,6 +10,7 @@ public class CustomizeReport {
     private String name;
     private String type;
     private String value;
+    private List<Group> groupList;
     private String param1;
     private String type1;
     private String param2;
@@ -130,5 +132,10 @@ public class CustomizeReport {
     public void setName(String name) {
         this.name = name;
     }
-    
+    public List<Group> getGroupList() {
+        return groupList;
+    }
+    public void setGroupList(List<Group> groupList) {
+        this.groupList = groupList;
+    }
 }

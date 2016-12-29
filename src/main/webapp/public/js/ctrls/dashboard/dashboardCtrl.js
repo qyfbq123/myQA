@@ -5,6 +5,7 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', '_', 'flot.excanvas'
   return Control.extend({
     init: function(el, data) {
       pageData.attr('userIsOnSite', Auth.userIsOnSite());
+      pageData.attr('userIsContract', Auth.userIsContract());
       return this.element.html(can.view('../public/view/home/dashboard/dashboard.html', pageData));
     }
   });

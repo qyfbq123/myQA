@@ -55,6 +55,18 @@ public interface IDictService {
     public List<Option> bulletinTypes();
     
     /**
+     * 发布职能
+     * @return 列表
+     */
+    public List<Option> functions();
+    
+    /**
+     * 文档类型
+     * @return 列表
+     */
+    public List<Option> docTypes();
+    
+    /**
      * 可修改的字典
      * @return 字典列表
      */

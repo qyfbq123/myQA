@@ -10,6 +10,8 @@ import com.cn.myQA.web.select2.Option;
 public interface ICustomizeReportService {
     public List<CustomizeReport> all();
     
+    public List<CustomizeReport> all(Integer uid);
+    
     public List<Option> allViews();
     
     public List<Option> allProcs();

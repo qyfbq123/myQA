@@ -85,6 +85,16 @@ public class DictServiceImpl implements IDictService {
     }
     
     @Override
+    public List<Option> functions() {
+        return transDict2Option( dictMapper.findByType(9) );
+    }
+    
+    @Override
+    public List<Option> docTypes() {
+        return transDict2Option( dictMapper.findByType(10) );
+    }
+    
+    @Override
     public List<SysDict> attriutes() {
         return dictMapper.findByType(0);
     }

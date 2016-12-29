@@ -22,6 +22,12 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'localStorage', 'bootbo
           ,
             data: 'value'
           ,
+            data: 'groupList'
+            render:(data)->
+              groups = _.map data, (group)->
+                "#{group.name}"
+              groups.splice(0,3).join(', ') + if groups.length then '...' else ''
+          ,
             data: 'created'
             render: (data)->
               if data then new Date(data).toLocaleString() else ''

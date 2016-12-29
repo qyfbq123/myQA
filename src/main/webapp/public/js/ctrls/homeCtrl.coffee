@@ -69,7 +69,7 @@ define ['can/control', 'can/view/mustache', 'Auth', 'localStorage', 'reqwest', '
             setTimeout (->$("#side-menu a:visible[href!='#']")[0].click()), 100
 
         reqwest({
-          url: "#{Auth.apiHost}customize/report/all?_=#{Date.now()}"
+          url: "#{Auth.apiHost}customize/report/allByUser?_=#{Date.now()}"
           method: "get"
         }).then( (data)->
           _.each data, (e)->

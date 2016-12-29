@@ -427,4 +427,8 @@
         and id not in <foreach collection="attachmentList" item="attachment" open="(" close=")" separator=",">#{attachment.id, jdbcType=INTEGER}</foreach>
     </if>
   </delete>
+  
+  <delete id="delAttachment" parameterType="java.lang.Integer">
+    delete from question_attachment where id=#{id, jdbcType=INTEGER}
+  </delete>
 </mapper>

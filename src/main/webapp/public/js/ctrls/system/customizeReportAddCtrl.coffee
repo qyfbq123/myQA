@@ -55,6 +55,25 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       ).fail (err)->
         bootbox.alert "视图列表获取失败！"
 
+      reqwest("#{Auth.apiHost}user/group/all?_=#{Date.now()}").then((data)->
+
+          groupList = _.map data, (group)->
+            id: group.id, text: group.name
+
+          $('#groups').select2 {
+            language: 'zh-CN'
+            theme: "bootstrap"
+            data: groupList
+            multiple: true
+            tokenSeparators: [',', ' ']
+          }
+
+          if tmpCustomizeReport.groupList and tmpCustomizeReport.groupList.length > 0
+            groups = _.map tmpCustomizeReport.groupList, (e)->
+              e.id
+            $('#groups').val(groups).change()
+      )
+
       $('#value').on 'change', (e)->
         switch $(':selected', this).parent('optGroup').attr 'label'
           when '视图'
@@ -75,6 +94,10 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
 
             report.type = if $('#value :selected').parent('optGroup').attr('label') is '视图' then 'view' else 'proc'
             report.id = Number report.id
+
+            report.groupList = null
+            if $('#groups').val()
+              report.groupList = _.map $('#groups').val(), (e)-> id:e
 
             reqwest({
               url: "#{Auth.apiHost}customize/report/save"

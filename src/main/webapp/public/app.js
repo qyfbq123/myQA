@@ -82,6 +82,11 @@ require.config({
     customizeReportViewCtrl: '../public/js/ctrls/system/customizeReportViewCtrl',
     customizeReportAddCtrl: '../public/js/ctrls/system/customizeReportAddCtrl',
     customizeReportCtrl: '../public/js/ctrls/report/customizeReportCtrl',
+    contractDashboardCtrl: '../public/js/ctrls/dashboard/contractDashboardCtrl',
+    otherDashboardCtrl: '../public/js/ctrls/dashboard/otherDashboardCtrl',
+    contractAddCtrl: '../public/js/ctrls/administration/contractAddCtrl',
+    ruleAddCtrl: '../public/js/ctrls/administration/ruleAddCtrl',
+    docAddCtrl: '../public/js/ctrls/administration/docAddCtrl',
 
     /**
      * 图表控件单独列出
@@ -91,7 +96,13 @@ require.config({
     'flot.pie': 'Flot/jquery.flot.pie',
     'flot.resize': 'Flot/jquery.flot.resize',
     'flot.time': 'Flot/jquery.flot.time',
-    'flot.tooltip': 'flot.tooltip/js/jquery.flot.tooltip.min'
+    'flot.tooltip': 'flot.tooltip/js/jquery.flot.tooltip.min',
+
+    /**
+     * pdf video
+     */
+    PDFJS: 'pdfjs-dist/build/pdf.min',
+    videojs: 'video.js/dist/video.min'
   },
   shim: {
     can: ['$', 'jqueryEx'],
@@ -229,6 +240,26 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
         }
         return new dashboardListCtrl('#page-wrapper', {
           id: 'dashboardList'
+        });
+      });
+    },
+    'home/contractDashboard route': function(data) {
+      return require(['contractDashboardCtrl', 'base'], function(contractDashboardCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new contractDashboardCtrl('#page-wrapper', {
+          id: 'contractDashboard'
+        });
+      });
+    },
+    'home/otherDashboard route': function(data) {
+      return require(['otherDashboardCtrl', 'base'], function(otherDashboardCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new otherDashboardCtrl('#page-wrapper', {
+          id: 'otherDashboard'
         });
       });
     },
@@ -433,6 +464,60 @@ require(['can', 'Auth', 'localStorage'], function(can, Auth, localStorage) {
           category: 'TMS',
           closed: false,
           number: data.number
+        });
+      });
+    },
+    'home/administration/contractAdd route': function(data) {
+      return require(['contractAddCtrl', 'base'], function(contractAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new contractAddCtrl('#page-wrapper', {});
+      });
+    },
+    'home/administration/ruleAdd route': function(data) {
+      return require(['ruleAddCtrl', 'base'], function(ruleAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new ruleAddCtrl('#page-wrapper', {});
+      });
+    },
+    'home/administration/docAdd route': function(data) {
+      return require(['docAddCtrl', 'base'], function(docAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new docAddCtrl('#page-wrapper', {});
+      });
+    },
+    'home/administration/contract/:id route': function(data) {
+      return require(['contractAddCtrl', 'base'], function(contractAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new contractAddCtrl('#page-wrapper', {
+          id: data.id
+        });
+      });
+    },
+    'home/administration/doc/:id route': function(data) {
+      return require(['docAddCtrl', 'base'], function(docAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new docAddCtrl('#page-wrapper', {
+          id: data.id
+        });
+      });
+    },
+    'home/administration/rule/:id route': function(data) {
+      return require(['ruleAddCtrl', 'base'], function(ruleAddCtrl, base) {
+        if (!can.base) {
+          new base('', data);
+        }
+        return new ruleAddCtrl('#page-wrapper', {
+          id: data.id
         });
       });
     },

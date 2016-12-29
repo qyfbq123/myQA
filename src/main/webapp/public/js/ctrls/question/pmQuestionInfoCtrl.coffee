@@ -225,14 +225,19 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             data?.username || data?.email || ''
         ,
           data: 'question_id'
-          render: (data)->
-            $('<button/>').addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML
+          render: (data, d, row)->
+            $("<button data-id='#{row.id}'/>").addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML
         ]
       }
 
       $('#attachmentList tbody').on 'click', 'button.btn-danger', ->
         table.row($(this).parents('tr')).remove().draw()
         $('#attachmentRow').addClass('hide') if table.rows().data().length <= 0
+        reqwest( {
+          url: "#{Auth.apiHost}question/attachment/#{$(this).data 'id'}"
+          method: 'delete'
+          type: 'html'
+        }).then ->
 
       ###*
        * 保存问题

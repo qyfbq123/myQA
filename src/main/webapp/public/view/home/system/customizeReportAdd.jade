@@ -1,6 +1,6 @@
 .row
   .col-lg-12
-    h1.page-header 自定义报表 / 新增
+    h1.page-header 自定义报表 / {{pageType}}
 
 .row
   .panel.panel-default
@@ -31,6 +31,10 @@
                 .col-sm-10
                   select#value.form-control(name="value", can-value="value", placeholder='来源名称', required)
                     option
+              .form-group
+                label.col-sm-2.control-label(for="groups") 使用组
+                .col-sm-10
+                  select#groups.form-control(name="groups", placeholder='使用组')
           .col-lg-6
             form.form-horizontal(role="form")
               .form-group

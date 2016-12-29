@@ -42,6 +42,17 @@ public class CustomizeReportCotroller {
     public List<CustomizeReport> all() {
         return crService.all();
     }
+    
+    @ApiOperation(value = "用户可使用的自定义报表", notes = "获取用户的所有自定义报表", httpMethod = "GET")
+    @RequestMapping(value = "/allByUser", method = RequestMethod.GET)
+    @ResponseBody
+    public List<CustomizeReport> allByUser(HttpSession session) {
+        Object userObj = session.getAttribute("user");
+        if(userObj == null) {
+            return null;
+        }
+        return crService.all( ((User)userObj).getId() );
+    }
 
     @ApiOperation(value = "所有视图", notes = "获取所有视图", httpMethod = "GET")
     @RequestMapping(value = "/allViews", method = RequestMethod.GET)

@@ -150,4 +150,11 @@ public interface IQuestionService {
      * @return 附件信息
      */
     public QuestionAttachment singleAttachment(Integer aid);
+    
+    /**
+     * 删除附件
+     * @param aid 附件id
+     * @return 结果
+     */
+    public String delAttachment(Integer aid);
 }

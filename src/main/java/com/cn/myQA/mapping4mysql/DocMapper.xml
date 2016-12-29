@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.myQA.dao.DocMapper" >
+    <resultMap type="com.cn.myQA.pojo.DocContract" id="contractResultMap">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="creator_id" property="creatorId" jdbcType="INTEGER"/>
+        <result column="modifier_id" property="modifierId" jdbcType="INTEGER"/>
+        <result column="vendor_name" property="vendorName" jdbcType="VARCHAR"/>
+        <result column="vendor_code" property="vendorCode" jdbcType="VARCHAR"/>
+        <result column="involved_ELC" property="involvedELC" jdbcType="VARCHAR"/>
+        <result column="vendor_type" property="vendorType" jdbcType="VARCHAR"/>
+        <result column="purchase_keeper" property="purchaseKeeper" jdbcType="VARCHAR"/>
+        <result column="contract_name" property="contractName" jdbcType="VARCHAR"/>
+        <result column="contract_number" property="contractNumber" jdbcType="VARCHAR"/>
+        <result column="contract_amount" property="contractAmount" jdbcType="VARCHAR"/>
+        <result column="contract_text" property="contractText" jdbcType="VARCHAR"/>
+        <result column="suit_project" property="suitProject" jdbcType="VARCHAR"/>
+        <result column="sign_date" property="signDate" jdbcType="TIMESTAMP"/>
+        <result column="start_date" property="startDate" jdbcType="TIMESTAMP"/>
+        <result column="end_date" property="endDate" jdbcType="TIMESTAMP"/>
+        <result column="valid_period" property="validPeriod" jdbcType="VARCHAR"/>
+        <result column="extend_end" property="extendEnd" jdbcType="TIMESTAMP"/>
+        <result column="current_status" property="currentStatus" jdbcType="VARCHAR"/>
+        <result column="bill_period" property="billPeriod" jdbcType="VARCHAR"/>
+        <result column="year_review_require" property="yearReviewRequire" jdbcType="VARCHAR"/>
+        <result column="year_review_result" property="yearReviewResult" jdbcType="VARCHAR"/>
+        <result column="is_high_risk" property="isHighRisk" jdbcType="BIT"/>
+        <result column="is_framework" property="isFramework" jdbcType="BIT"/>
+        <result column="is_vendor_promise" property="isVendorPromise" jdbcType="BIT"/>
+        <result column="is_vendor_filter" property="isVendorFilter" jdbcType="BIT"/>
+        <result column="is_ishare_screenshots" property="isIshareScreenshots" jdbcType="BIT"/>
+        <result column="is_three_parity" property="isThreeParity" jdbcType="BIT"/>
+        
+        <association property="file" column="file_id" select="fullFile"/>
+    </resultMap>
+    
+    <sql id="contractColumnList">
+        id, created, modified, creator_id, modifier_id, vendor_name, vendor_code, involved_ELC, vendor_type, purchase_keeper,
+        seal, contract_name, contract_number, contract_amount, contract_text, suit_project, sign_date, start_date, end_date, 
+        valid_period, extend_end, current_status, bill_period, year_review_require, year_review_result, is_high_risk, is_framework,
+        is_vendor_promise, is_vendor_filter, is_ishare_screenshots, is_three_parity, file_id
+    </sql>
+    
+    <resultMap type="com.cn.myQA.pojo.DocOther" id="otherResultMap">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="creator_id" property="creatorId" jdbcType="INTEGER"/>
+        <result column="modifier_id" property="modifierId" jdbcType="INTEGER"/>
+        <result column="doc_type" property="docType" jdbcType="VARCHAR"/>
+        <result column="doc_property" property="docProperty" jdbcType="VARCHAR"/>
+        
+        <association property="file" column="file_id" select="fullFile"/>
+    </resultMap>
+    
+    <sql id="otherColumnList">
+        id, created, modified, creator_id, modifier_id, category, function, doc_type, doc_property, content, importance, creator, `date`, file_id
+    </sql>
+    
+    <select id="fullFile" parameterType="java.lang.Integer" resultType="com.cn.myQA.pojo.DocFile">
+        select id, filename, size, path from doc_file where id=#{id, jdbcType=INTEGER}
+    </select>
+    
+    <select id="contractPage" resultMap="contractResultMap">
+        select <include refid="contractColumnList"></include> from doc_contract
+        where 1=1
+        <if test="search.vendorCode!=null and search.vendorCode!=''"> and vendor_code like "%"#{search.vendorCode, jdbcType=VARCHAR}"%"</if>
+        <if test="search.vendorType!=null and search.vendorType!=''"> and vendor_type like "%"#{search.vendorType}"%"</if>
+        <if test="search.contractName!=null and search.contractName!=''"> and contract_name like "%"#{search.contractName}"%"</if>
+        <if test="search.signDateBegin!=null">
+            and sign_date &gt; #{search.signDateBegin, jdbcType=TIMESTAMP}
+        </if>
+        <if test="search.signDateEnd!=null">
+            and sign_date &lt; #{search.signDateEnd, jdbcType=TIMESTAMP}
+        </if>
+        <if test="search.currentStatus!=null and search.currentStatus!=''"> and current_status=#{search.currentStatus}</if>
+    </select>
+    
+    <select id="otherPage" resultMap="otherResultMap">
+        select <include refid="otherColumnList"></include> from doc_other
+        where 1=1
+        <if test="search.category != null and search.category != ''">and category=#{search.category}</if>
+        <if test="search.function != null and search.function != ''">and function=#{search.function}</if>
+        <if test="search.docType != null and search.docType != ''">and doc_type like "%"#{search.docType}"%"</if>
+        <if test="search.content != null and search.content != ''">and content like "%"#{search.content}"%"</if>
+        <if test="search.importance != null and search.importance != ''">and importance like "%"#{search.importance}"%"</if>
+        <if test="search.creator != null and search.creator != ''">and creator like "%"#{search.creator}"%"</if>
+        <if test="search.dateBegin!=null">
+            and `date` &gt; #{search.dateBegin, jdbcType=TIMESTAMP}
+        </if>
+        <if test="search.dateEnd!=null">
+            and `date` &lt; #{search.dateEnd, jdbcType=TIMESTAMP}
+        </if>
+    </select>
+    
+    <select id="singleContract" parameterType="java.lang.Integer" resultMap="contractResultMap">
+        select <include refid="contractColumnList"></include> from doc_contract
+        where id=#{id}
+    </select>
+    
+    <select id="singleOther" parameterType="java.lang.Integer" resultMap="otherResultMap">
+        select <include refid="otherColumnList"></include> from doc_other
+        where id=#{id}
+    </select>
+    
+    <insert id="insertContract" parameterType="com.cn.myQA.pojo.DocContract">
+        insert into doc_contract(creator_id, vendor_name, vendor_code, involved_ELC, vendor_type, purchase_keeper,
+        seal, contract_name, contract_number, contract_amount, contract_text, suit_project, sign_date, start_date,
+        end_date, valid_period, extend_end, current_status, bill_period, year_review_require, year_review_result,
+        is_high_risk, is_framework, is_vendor_promise, is_vendor_filter, is_ishare_screenshots, is_three_parity, file_id)
+        values (#{creatorId, jdbcType=INTEGER}, #{vendorName, jdbcType=VARCHAR}, #{vendorCode, jdbcType=VARCHAR},
+        #{involvedELC, jdbcType=VARCHAR}, #{vendorType, jdbcType=VARCHAR}, #{purchaseKeeper, jdbcType=VARCHAR},
+        #{seal, jdbcType=VARCHAR}, #{contractName, jdbcType=VARCHAR}, #{contractNumber, jdbcType=VARCHAR},
+        #{contractAmount, jdbcType=VARCHAR}, #{contractText, jdbcType=VARCHAR}, #{suitProject, jdbcType=VARCHAR},
+        #{signDate, jdbcType=TIMESTAMP}, #{startDate, jdbcType=TIMESTAMP}, #{endDate, jdbcType=TIMESTAMP},
+        #{validPeriod, jdbcType=VARCHAR}, #{extendEnd, jdbcType=TIMESTAMP}, #{currentStatus, jdbcType=VARCHAR},
+        #{billPeriod, jdbcType=VARCHAR}, #{yearReviewRequire, jdbcType=VARCHAR}, #{yearReviewRequire, jdbcType=VARCHAR},
+        #{isHighRisk, jdbcType=BIT}, #{isFramework, jdbcType=BIT}, #{isVendorPromise, jdbcType=BIT},#{isVendorFilter, jdbcType=BIT},
+        #{isIshareScreenshots, jdbcType=BIT}, #{isThreeParity, jdbcType=BIT}, #{file.id, jdbcType=VARCHAR})
+    </insert>
+    
+    <update id="updateContract" parameterType="com.cn.myQA.pojo.DocContract">
+        update doc_contract
+        set modifier_id=#{modifierId},vendor_name=#{vendorName}, vendor_code=#{vendorCode}, involved_ELC=#{involvedELC},
+	        vendor_type=#{vendorType},purchase_keeper=#{purchaseKeeper}, seal=#{seal}, contract_name=#{contractName},
+	        contract_number=#{contractNumber}, contract_amount=#{contractAmount}, contract_text=#{contractText},
+	        suit_project=#{suitProject}, sign_date=#{signDate}, start_date=#{startDate}, end_date=#{endDate},
+	        valid_period=#{validPeriod}, extend_end=#{extendEnd}, current_status=#{currentStatus}, bill_period=#{billPeriod},
+	        year_review_require=#{yearReviewRequire},year_review_result=#{yearReviewResult},is_high_risk=#{isHighRisk},
+	        is_framework=#{isFramework}, is_vendor_promise=#{isVendorPromise},is_vendor_filter=#{isVendorFilter},
+	        is_ishare_screenshots=#{isIshareScreenshots}, is_three_parity=#{isThreeParity}
+        where id=#{id}
+    </update>
+    
+    <insert id="insertOther" parameterType="com.cn.myQA.pojo.DocOther">
+        insert into doc_other(creator_id, category, function, doc_type, doc_property, content, importance, creator, `date`, file_id)
+        values(#{creatorId, jdbcType=INTEGER}, #{category}, #{function, jdbcType=VARCHAR}, #{docType, jdbcType=VARCHAR}, #{docProperty}, #{content, jdbcType=VARCHAR},
+        #{importance}, #{creator}, #{date, jdbcType=TIMESTAMP}, #{file.id})
+    </insert>
+    
+    <update id="updateOther" parameterType="com.cn.myQA.pojo.DocOther">
+        update doc_other
+        set modifier_id=#{modifierId},
+	        function=#{function}, doc_type=#{docType}, doc_property=#{docProperty}, content=#{content}, importance=#{importance}, creator=#{creator},
+	        `date`=#{date}
+        where id=#{id}
+    </update>
+    
+    <insert id="insertDocFile" parameterType="com.cn.myQA.pojo.DocFile" useGeneratedKeys="true" keyProperty="id">
+        insert into doc_file(filename, size ,path)
+        values(#{filename}, #{size}, #{path})
+    </insert>
+    
+    <select id="singleDocFile" parameterType="java.lang.Integer" resultType="com.cn.myQA.pojo.DocFile">
+        select id, filename, size, path from doc_file where id=#{id}
+    </select>
+    
+    <delete id="delDocFile" parameterType="java.lang.Integer">
+        delete from doc_file where id=#{id}
+    </delete>
+</mapper>

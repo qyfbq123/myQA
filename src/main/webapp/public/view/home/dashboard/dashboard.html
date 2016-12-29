@@ -1,8 +1,12 @@
 <ul class="nav nav-tabs">
-  {{#if userIsOnSite}}<li role="presentation"><a href="#!home/msgDashboard">On-Site</a></li>{{/if}}
+  {{#if userIsOnSite}}
+  <li role="presentation"><a href="#!home/msgDashboard">On-Site</a></li>
+  {{/if}}
   <!-- 16-6-20 添加事件列表-->
   <li role="presentation"><a href="#!home/pmDashboardList">事件列表</a></li>
-  <li role="presentation"><a href="#!home/dashboardList">系统列表</a></li>
+  <li role="presentation"><a href="#!home/dashboardList">系统列表</a></li>{{#if userIsContract}}
+  <li role="presentation"><a href="#!home/contractDashboard">行政管理-合同</a></li>{{/if}}
+  <li role="presentation"><a href="#!home/otherDashboard">行政管理-其他</a></li>
   <li role="presentation"  class="active"><a href="#!home/dashboard">图表统计</a></li>
 </ul><br/>
 <div class="row">
@@ -72,4 +76,4 @@
                 </div>
                 <!-- /.col-lg-6 -->
             </div>
-<script src="/myQA/public/js/flot-data.js"></script>
+<script src="/public/js/flot-data.js"></script>

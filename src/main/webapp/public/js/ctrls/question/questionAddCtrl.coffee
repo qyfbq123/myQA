@@ -296,9 +296,9 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             data?.username || data?.email || ''
         ,
           data: 'uploader'
-          render: (data)->
+          render: (data, d, row)->
             if Auth.user()?.loginID is data.loginid
-              $('<button/>').addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML
+              $("<button data-id='#{row.id}'/>").addClass('btn btn-sm btn-danger').text('删除')[0].outerHTML
             else
               '无'
         ]
@@ -307,3 +307,8 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
       $('#attachmentList tbody').on 'click', 'button.btn-danger', ->
         table.row($(this).parents('tr')).remove().draw()
         $('#attachmentRow').addClass('hide') if table.rows().data().length <= 0
+        reqwest( {
+          url: "#{Auth.apiHost}question/attachment/#{$(this).data 'id'}"
+          method: 'delete'
+          type: 'html'
+        }).then ->

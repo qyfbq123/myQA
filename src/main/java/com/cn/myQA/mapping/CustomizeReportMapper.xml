@@ -4,6 +4,8 @@
 
     <resultMap type="com.cn.myQA.pojo.CustomizeReport" id="BaseResultMap">
         <id column="id" property="id" jdbcType="INTEGER"/>
+        
+        <collection property="groupList" select="fullGroup" column="id"></collection>
     </resultMap>
     
     <resultMap type="com.cn.myQA.pojo.UserCrColumns" id="BaseUcrColumnsResultMap">
@@ -22,8 +24,23 @@
         id, user_id, cr_id, columns, created, modified
     </sql>
     
+    <select id="fullGroup" parameterType="java.lang.Integer" resultMap="com.cn.myQA.dao.BaseMapper.BaseGroupResultMap">
+        select [group].id, [group].created, [group].modified, [group].name from [group]
+        inner join group_has_cr on [group].id=group_has_cr.group_id
+        where group_has_cr.cr_id=#{id}
+    </select>
+    
     <select id="all" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from customize_report
+    </select>
+    
+    <select id="allByUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select customize_report.*
+        from [user] 
+        inner join user_has_group on [user].id = user_has_group.user_id
+        inner join group_has_cr on user_has_group.group_id=group_has_cr.group_id
+        inner join customize_report on group_has_cr.cr_id=customize_report.id
+        where [user].id=#{id}
     </select>
     
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -34,7 +51,7 @@
         delete from customize_report where id=#{id, jdbcType=INTEGER}
     </delete>
     
-    <insert id="add" parameterType="com.cn.myQA.pojo.CustomizeReport">
+    <insert id="add" parameterType="com.cn.myQA.pojo.CustomizeReport" useGeneratedKeys="true" keyProperty="id">
         insert into customize_report(name, type, value, param1, type1, param2, type2, param3, type3, param4, type4, param5, type5, param6, type6)
         values (#{name, jdbcType=VARCHAR}, #{type, jdbcType=VARCHAR}, #{value, jdbcType=VARCHAR}, #{param1, jdbcType=VARCHAR}, #{type1, jdbcType=VARCHAR}, 
             #{param2, jdbcType=VARCHAR}, #{type2, jdbcType=VARCHAR}, #{param3, jdbcType=VARCHAR}, #{type3, jdbcType=VARCHAR},
@@ -85,4 +102,16 @@
     <select id="selectView" resultType="java.util.LinkedHashMap">
         select * from ${view}
     </select>
+    
+    <insert id="putUseGroups">
+        insert into group_has_cr(group_id, cr_id)
+	    values
+	    <foreach collection="groupList" item="group" separator=",">
+	        (#{group.id, jdbcType=INTEGER}, #{id, jdbcType=INTEGER})
+	    </foreach>
+    </insert>
+    
+    <delete id="removeUseGroups" parameterType="java.lang.Integer">
+        delete from group_has_cr where cr_id=#{id}
+    </delete>
 </mapper>

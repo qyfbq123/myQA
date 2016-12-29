@@ -1,0 +1,100 @@
+ul.nav.nav-tabs
+  |{{#if userIsOnSite}}
+  li(role="presentation")
+    a(href="#!home/msgDashboard") On-Site
+  |{{/if}}
+  // 16-6-20 添加事件列表
+  li(role="presentation")
+    a(href="#!home/pmDashboardList") 事件列表
+  li(role="presentation")
+    a(href="#!home/dashboardList") 系统列表
+  |{{#if userIsContract}}
+  li.active(role="presentation")
+    a(href="#!home/contractDashboard") 行政管理-合同
+  |{{/if}}
+  li(role="presentation")
+    a(href="#!home/otherDashboard") 行政管理-其他
+  li(role="presentation")
+    a(href="#!home/dashboard") 图表统计
+br
+
+.row
+  .col-lg-12.text-center(style="padding:0 0 10px; 0")
+    form#searchForm.form-inline(onSubmit="return false;")
+      .form-group
+        label(for="vendorCode") Vendor Code:
+        input#vendorCode.form-control(type="text", name="vendorCode", placeholder="Vendor Code")
+      .form-group
+        label(for="vendorType") 供应商类别:
+        input#vendorType.form-control(type="text", name="vendorType", placeholder="供应商类别")
+      .form-group
+        label(for="contractName") 合同名称:
+        input#contractName.form-control(type="text", name="contractName", placeholder="合同名称")
+      .form-group
+        label(for="signDateBegin") 按签署日期起:
+        .input-group.date
+          input#signDateBegin.form-control(name="signDateBegin", type="text")
+          span.input-group-addon
+            i.glyphicon.glyphicon-th
+      .form-group
+        label(for="signDateEnd") 止:
+        .input-group.date
+          input#signDateEnd.form-control(name="signDateEnd", type="text")
+          span.input-group-addon
+            i.glyphicon.glyphicon-th
+      .form-group
+        label(for="currentStatus") 当前状态:
+        select#currentStatus.form-control(name="currentStatus")
+          option
+          option(value='生效') 生效
+          option(value='无效') 无效
+      
+      button.btn.btn-primary 查询
+.row
+  .col-lg-12
+    table#contractList.table.table-striped.table-bordered.table-hover.dt-responsive.nowrap(cellspacing="0", width="100%")
+      thead
+        tr
+          th 供应商名称
+          th Vendor Code
+          th 所涉ELC
+          th 供应商类别
+          th 采购管理方
+          th 合同名称
+          th 合同文本
+          th 文本签署日期
+          th 当前状态
+          th
+          th
+      tfoot
+
+#largeModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel")
+  .modal-dialog.modal-lg(role='document')
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss='modal', aria-label="Close")
+          span(aria-hidden="true") &times;
+        h4#largeModalLabel.modal-title PDF文档
+      .modal-body(style='background-color: #404040; padding:15px 0px 15px 0px;')
+      .modal-footer
+        .incomplete-warn.pull-left.has-warning.hide(style="color: #8a6d3b")
+          i 预览 20 页，共
+          &nbsp;
+          i.pages-number
+          &nbsp;
+          i 页
+        button.btn.btn-default(data-dismiss="modal") Close
+        a.download-btn.btn.btn-primary(href="#") Download
+
+#normalModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="normalModalLabel")
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss='modal', aria-label="Close")
+          span(aria-hidden="true") &times;
+        h4#largeModalLabel.modal-title 视频
+      .modal-body(style='background-color: #404040; padding:0px;')
+        video.video-js.vjs-default-skin(controls, preload="none", width="598px", height="336px")
+      .modal-footer
+        button.btn.btn-default(data-dismiss="modal") Close
+        a.download-btn.btn.btn-primary(href="#") Download

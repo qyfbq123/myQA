@@ -92,6 +92,17 @@ define(['localStorage', 'loading', 'reqwest', 'bootbox', 'lscache'], function(lo
       } else {
         return false;
       }
+    },
+    userIsContract: function() {
+      var user;
+      user = localStorage.get('user');
+      if (user && user.groupList) {
+        return user.groupList.map(function(e) {
+          return e.name;
+        }).indexOf('合同') !== -1;
+      } else {
+        return false;
+      }
     }
   };
 });

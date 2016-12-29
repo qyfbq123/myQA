@@ -8,6 +8,12 @@ ul.nav.nav-tabs
     a(href="#!home/pmDashboardList") 事件列表
   li.active(role="presentation")
     a(href="#!home/dashboardList") 系统列表
+  |{{#if userIsContract}}
+  li(role="presentation")
+    a(href="#!home/contractDashboard") 行政管理-合同
+  |{{/if}}
+  li(role="presentation")
+    a(href="#!home/otherDashboard") 行政管理-其他
   li(role="presentation")
     a(href="#!home/dashboard") 图表统计
 br
