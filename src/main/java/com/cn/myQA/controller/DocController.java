@@ -179,8 +179,8 @@ public class DocController {
                 FileInputStream in = new FileInputStream(file);
 
                 final HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-                headers.setContentDispositionFormData("doc", new String(docFile.getFilename().getBytes("gb2312"),"iso-8859-1"));
+                headers.setContentType(MediaType.parseMediaType("application/force-download"));
+                headers.setContentDispositionFormData("attachment", new String(docFile.getFilename().getBytes("gb2312"),"iso-8859-1"));
         
                 return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
             } catch (FileNotFoundException e) {

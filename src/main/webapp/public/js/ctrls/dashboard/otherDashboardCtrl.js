@@ -156,7 +156,7 @@ define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', 'pdfjs-di
                 } else if (/\.avi|\.rmvb|\.rm|\.asf|\.divx|\.mpg|\.mpeg|\.wmv|\.mp4|\.mkv/.test(data.filename)) {
                   $href = $("<a href='#' data-src='" + Auth.apiHost + "doc/video/" + data.id + "/" + (encodeURIComponent(data.filename)) + "' data-downloadurl='" + Auth.apiHost + "doc/file/" + data.id + "/" + (encodeURIComponent(data.filename)) + "' data-toggle='modal' data-target='#normalModal'/>").text("" + data.filename);
                 } else {
-                  $href = $("<a href='" + Auth.apiHost + "doc/file/" + data.id + "/" + (encodeURIComponent(data.filename)) + "'").text("" + data.filename);
+                  $href = $("<a href='" + Auth.apiHost + "doc/file/" + data.id + "/" + (encodeURIComponent(data.filename)) + "'/>").text("" + data.filename);
                 }
                 return $href[0].outerHTML;
               }

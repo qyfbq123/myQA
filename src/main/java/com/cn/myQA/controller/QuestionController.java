@@ -1,14 +1,12 @@
 package com.cn.myQA.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -50,6 +49,9 @@ import com.cn.myQA.web.QuestionVO2;
 import com.cn.myQA.web.datatables.Pagination;
 import com.cn.myQA.web.datatables.TableModel;
 import com.mysql.jdbc.StringUtils;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(value="question", description="问题CRUD操作")
 @Controller
@@ -346,28 +348,43 @@ public class QuestionController {
     @SuppressWarnings({"rawtypes", "unchecked"})
     @ApiOperation(value="日、周、月、年报", notes="报表下载", httpMethod="GET")
     @RequestMapping(value="/report/{section}/download", method=RequestMethod.GET)
-    public ResponseEntity<byte[]> reportDownload(@PathVariable("section") String section, HttpSession session) {
+    public void reportDownload(@PathVariable("section") String section, HttpSession session, HttpServletResponse response) {
 //        默认周报
         User user = (User)session.getAttribute("user");
         String fileName = (section.equals("day") ? "日" : section.equals("week") ? "周" : section.equals("month") ? "月" : section.equals("year") ? "年" : "") + "问题汇总报表.xls";
 
         try {
-            final HttpHeaders headers = new HttpHeaders();
-//          headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentType(new MediaType("application", "vnd.ms-excel"));
-            headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("gb2312"),"iso-8859-1"));
+//            final HttpHeaders headers = new HttpHeaders();
+////          headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//            headers.setContentType(new MediaType("application", "vnd.ms-excel"));
+//            headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("gb2312"),"iso-8859-1"));
             String filePath = questionService.reportByTime(Calendar.getInstance().getTime(), section, user==null?-1:user.getId());
             
             if(filePath == null) {
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+//                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                response.setStatus(404);
+                return;
             }
+            
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition","attachment; filename=" + new String(fileName.getBytes("gb2312"),"iso-8859-1"));
             
             File file = new File(filePath);
             FileInputStream in = new FileInputStream(file);
     
-            return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+            OutputStream out = response.getOutputStream();
+
+            byte[] buffer= new byte[8192]; // use bigger if you want
+            int length = 0;
+
+            while ((length = in.read(buffer)) > 0){
+                 out.write(buffer, 0, length);
+            }
+            in.close();
+            out.close();
         } catch (IOException e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+//            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            response.setStatus(500);
         }
     }
     
