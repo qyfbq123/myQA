@@ -32,4 +32,8 @@ public interface IDocService {
     public int insertDocFile(DocFile file);
     
     public String delDocFile(Integer id);
+    
+    public String delContract(Integer id);
+    
+    public String delOther(Integer id);
 }

@@ -188,7 +188,7 @@ public class CustomizeReportServiceImpl implements ICustomizeReportService {
         Set<String> headers = null;
         if (customizeReport.getId() != null && uid != null) {
             UserCrColumns ucrColumns = crMapper.selectOneUcrColumns(uid, customizeReport.getId());
-            if (!StringUtils.isEmpty(ucrColumns.getColumns())) {
+            if (ucrColumns!=null && !StringUtils.isEmpty(ucrColumns.getColumns())) {
                 headers = new LinkedHashSet<String>();
                 JSONArray arr = JSONArray.parseArray(ucrColumns.getColumns());
                 for(int i = 0; i < arr.size(); i++) {
@@ -205,8 +205,6 @@ public class CustomizeReportServiceImpl implements ICustomizeReportService {
         if (list.size() > 0) {
             File outFile;
             File tempFile = new File(uploadPath + System.getProperty("file.separator") + "template" + System.getProperty("file.separator")  + customizeReport.getName() +".xls");
-            System.out.println(uploadPath + System.getProperty("file.separator") + "template" + System.getProperty("file.separator")  + customizeReport.getName() +".xls");
-            System.out.println(tempFile.exists());
             try (InputStream is = tempFile.exists() ?  new FileInputStream(tempFile):
                     this.getClass().getResourceAsStream("/template/customizeReportTemplate.xls")) {
                 outFile = File.createTempFile("temp-" + customizeReport.getName(), ".xls");

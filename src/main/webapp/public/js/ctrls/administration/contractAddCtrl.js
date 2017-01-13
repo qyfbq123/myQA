@@ -51,7 +51,7 @@ define(['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
           }, {
             data: 'filename',
             render: function(data, d, row) {
-              return "<a href='" + Auth.apiHost + "doc/file/" + row.id + "/download'>" + data + "</a>";
+              return "<a href='" + Auth.apiHost + "doc/file/" + row.id + "/" + (encodeURIComponent(data)) + "'>" + data + "</a>";
             }
           }, {
             data: 'size'

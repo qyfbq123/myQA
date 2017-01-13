@@ -1,4 +1,4 @@
-define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorage', 'pdfjs-dist/build/pdf', 'videojs', 'select2cn', 'datepickercn', 'datatables.net', 'datatables.net-bs', 'es6shim', 'jqueryFileupload'], (Ctrl, can, Auth, base, reqwest, bootbox, localStorage, pdfDist, videojs)->
+define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorage', 'pdfjs-dist/web/pdf_viewer', 'videojs', 'select2cn', 'datepickercn', 'datatables.net', 'datatables.net-bs', 'es6shim', 'jqueryFileupload'], (Ctrl, can, Auth, base, reqwest, bootbox, localStorage, pdfDist, videojs)->
 
   return Ctrl.extend
     init: (el, data)->
@@ -156,32 +156,10 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
             table.column(3).visible( false )
             $('#fileRow').removeClass('hide')
 
-      DEFAULT_SCALE = 1.5
-      renderPdf = (pdf, svgLib, modalBody)->
-        modalFooter = $(modalBody).next '.modal-footer'
-        $('.incomplete-warn', modalFooter).addClass 'hide'
-        promise = $.Deferred().resolve()
-        sumPages = pdf.numPages
-        if sumPages> 20
-          sumPages = 20
-          $('.incomplete-warn', modalFooter).removeClass 'hide'
-          $('.pages-number', modalFooter).text pdf.numPages
-        
-        _.each [1..sumPages], (e)->
-          promise = promise.then ((pageNum)->
-            return pdf.getPage(pageNum).then (page)->
-              viewport = page.getViewport DEFAULT_SCALE
-              container = document.createElement('div')
-              container.id = 'pageContainer' + pageNum
-              container.className = 'pageContainer'
-              container.style.width = viewport.width + 'px'
-              container.style.height = viewport.height + 'px'
-              modalBody.appendChild(container)
-              return page.getOperatorList().then (opList)->
-                svgGfx = new svgLib.SVGGraphics  page.commonObjs, page.objs
-                return svgGfx.getSVG(opList, viewport).then (svg)->
-                  container.appendChild(svg)
-          ).bind null, e
+      container = document.getElementById('viewerContainer')
+      pdfViewer = new PDFJS.PDFViewer container: container
+      container.addEventListener 'pagesinit', ->
+        pdfViewer.currentScaleValue = 'page-width'
 
       videoPlayer = videojs $('video', $('#normalModal'))[0], {}
 
@@ -190,15 +168,14 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         url = $ahref.data 'src'
 
         if url isnt $('.download-btn', modal).attr 'href'
-          $('#largeModal .pageContainer').remove()
 
           modal = $ $ahref.data 'target' 
           $('.modal-title', modal).text $ahref.text()
           $('.download-btn', modal).attr 'href', $ahref.data('downloadurl') || url
 
           if $ahref.text().endsWith '.pdf'
-            PDFJS.getDocument(url).then (doc)->
-              renderPdf doc, PDFJS, $('.modal-body', modal)[0]
+            PDFJS.getDocument(url).then (pdfDocument)->
+              pdfViewer.setDocument(pdfDocument)
           else
             if url isnt videoPlayer.currentSrc()
               videoPlayer.src url

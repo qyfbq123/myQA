@@ -3,7 +3,7 @@
 /**
  * 16-6-20 添加事件列表
  */
-define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'datatables.net', 'datatables.net-bs', 'datatables.net-responsive', 'datatables.net-responsive-bs', 'select2cn'], function(Control, can, base, Auth, reqwest) {
+define(['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', 'bootbox', '_', 'datatables.net', 'datatables.net-bs', 'datatables.net-responsive', 'datatables.net-responsive-bs', 'select2cn'], function(Control, can, base, Auth, reqwest, bootbox) {
   var pageData;
   pageData = new can.Map();
   return Control.extend({

@@ -33,4 +33,8 @@ public interface DocMapper {
     DocFile singleDocFile(Integer id);
     
     int delDocFile(Integer id);
+    
+    int delContract(Integer id);
+    
+    int delOther(Integer id);
 }

@@ -100,13 +100,32 @@ public class DocServiceImpl implements IDocService {
     public String delDocFile(Integer id) {
         DocFile qa = docMapper.singleDocFile(id);
         if(qa != null) {
-            File file = new File(uploadPath + System.getProperty("file.separator") + "doc"
-                    + System.getProperty("file.separator") + qa.getPath());
+            File file = new File(uploadPath + System.getProperty("file.separator") + qa.getPath());
             if (file.exists()) {
                 file.delete();
             }
         }
         int result = docMapper.delDocFile(id);
+        return result == 1 ? "ok" : "error";
+    }
+    
+    @Override
+    public String delContract(Integer id) {
+        DocContract contract = docMapper.singleContract(id);
+        if(contract != null && contract.getFile() != null && contract.getFile().getId() != null ) {
+            this.delDocFile(contract.getFile().getId());
+        }
+        int result = docMapper.delContract(id);
+        return result == 1 ? "ok" : "error";
+    }
+    
+    @Override
+    public String delOther(Integer id) {
+        DocOther other = docMapper.singleOther(id);
+        if(other != null && other.getFile() != null && other.getFile().getId()!=null) {
+            this.delDocFile(other.getFile().getId());
+        }
+        int result = docMapper.delOther(id);
         return result == 1 ? "ok" : "error";
     }
 }

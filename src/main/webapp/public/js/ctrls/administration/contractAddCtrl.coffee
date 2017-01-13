@@ -48,7 +48,7 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'bootbox', 'localStorag
         ,
           data: 'filename'
           render: (data, d, row)->
-            "<a href='#{Auth.apiHost}doc/file/#{row.id}/download'>#{data}</a>"
+            "<a href='#{Auth.apiHost}doc/file/#{row.id}/#{encodeURIComponent data}'>#{data}</a>"
         ,
           data: 'size'
         ,

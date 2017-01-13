@@ -1,4 +1,4 @@
-define ['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', '_', 'datatables.net', 'datatables.net-bs', 'datatables.net-responsive', 'datatables.net-responsive-bs', 'select2cn'], (Control, can, base, Auth, reqwest)->
+define ['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', 'bootbox', '_', 'datatables.net', 'datatables.net-bs', 'datatables.net-responsive', 'datatables.net-responsive-bs', 'select2cn'], (Control, can, base, Auth, reqwest, bootbox)->
   pageData = new can.Map()
 
   return Control.extend

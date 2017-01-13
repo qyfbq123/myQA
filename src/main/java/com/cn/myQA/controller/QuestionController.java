@@ -232,6 +232,7 @@ public class QuestionController {
         } else return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
     
+    @Deprecated
     @SuppressWarnings({"unchecked", "rawtypes"})
     @ApiOperation(value="附件下载", notes="附件下载", httpMethod="GET")
     @RequestMapping(value="/{id}/attachment/download", method=RequestMethod.GET) 
@@ -262,6 +263,7 @@ public class QuestionController {
         return new ResponseEntity<String>(result , "ok".equals(result) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
     
+    @Deprecated
     @SuppressWarnings({"rawtypes", "unchecked"})
     @ApiOperation(value="查看图片", notes="图片查看", httpMethod="GET")
     @RequestMapping(value="/photo", method=RequestMethod.GET)
@@ -345,7 +347,6 @@ public class QuestionController {
         return new ResponseEntity<String>("ok", HttpStatus.OK);
     }
     
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @ApiOperation(value="日、周、月、年报", notes="报表下载", httpMethod="GET")
     @RequestMapping(value="/report/{section}/download", method=RequestMethod.GET)
     public void reportDownload(@PathVariable("section") String section, HttpSession session, HttpServletResponse response) {
@@ -354,14 +355,9 @@ public class QuestionController {
         String fileName = (section.equals("day") ? "日" : section.equals("week") ? "周" : section.equals("month") ? "月" : section.equals("year") ? "年" : "") + "问题汇总报表.xls";
 
         try {
-//            final HttpHeaders headers = new HttpHeaders();
-////          headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-//            headers.setContentType(new MediaType("application", "vnd.ms-excel"));
-//            headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("gb2312"),"iso-8859-1"));
             String filePath = questionService.reportByTime(Calendar.getInstance().getTime(), section, user==null?-1:user.getId());
             
             if(filePath == null) {
-//                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
                 response.setStatus(404);
                 return;
             }
@@ -383,7 +379,7 @@ public class QuestionController {
             in.close();
             out.close();
         } catch (IOException e) {
-//            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
             response.setStatus(500);
         }
     }
@@ -396,10 +392,9 @@ public class QuestionController {
         return new ResponseEntity<String>(result, result.equals("ok") ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
     
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @ApiOperation(value="日、周、月、年报", notes="报表下载", httpMethod="GET")
     @RequestMapping(value="/report/download", method=RequestMethod.GET)
-    public ResponseEntity<byte[]> richReportDownload(Integer year, Integer month, Integer date, HttpSession session) {
+    public void richReportDownload(Integer year, Integer month, Integer date, HttpSession session, HttpServletResponse response) {
         User user = (User)session.getAttribute("user");
         String fileName = year.toString();
         String section = "year";
@@ -419,23 +414,32 @@ public class QuestionController {
         fileName += "问题汇总报表.xls";
 
         try {
-            final HttpHeaders headers = new HttpHeaders();
-//          headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentType(new MediaType("application", "vnd.ms-excel"));
-            headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("gb2312"),"iso-8859-1"));
-            
             String filePath = questionService.richReportByTime(c.getTime(), section, user==null?-1:user.getId());
             
             if(filePath == null) {
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                response.setStatus(404);
+                return;
             }
+            
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition","attachment; filename=" + new String(fileName.getBytes("gb2312"),"iso-8859-1"));
             
             File file = new File(filePath);
             FileInputStream in = new FileInputStream(file);
-    
-            return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+            
+            OutputStream out = response.getOutputStream();
+
+            byte[] buffer= new byte[8192]; // use bigger if you want
+            int length = 0;
+
+            while ((length = in.read(buffer)) > 0){
+                 out.write(buffer, 0, length);
+            }
+            in.close();
+            out.close();
         } catch (IOException e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            response.setStatus(500);
         }
     }
     

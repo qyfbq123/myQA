@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="lib/blueimp-file-upload/css/jquery.fileupload.css">
     <link rel="stylesheet" href="lib/video.js/dist/video-js.css">
+    <link rel="stylesheet" href="lib/pdfjs-dist/web/pdf_viewer.css">
     <link rel="stylesheet" href="public/static/css/style.css">
     <script data-main="./public/app.js" src="./lib/requirejs/require.js"></script>
   </head>

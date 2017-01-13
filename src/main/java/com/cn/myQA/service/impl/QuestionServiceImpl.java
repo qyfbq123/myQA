@@ -806,7 +806,7 @@ public class QuestionServiceImpl implements IQuestionService {
     
     public String reportPush(Date time, String section, Integer userId) {
         String filePath = this.reportByTime(time, section, userId);
-        User user = userMapper.selectByPrimaryKey(0);
+        User user = userMapper.selectByPrimaryKey(userId);
         if(filePath == null) {
             logger.error("报表生成失败！");
             return "error";
@@ -839,7 +839,7 @@ public class QuestionServiceImpl implements IQuestionService {
     
     public String richReportPush(Date time, String section, Integer userId, String fileName) {
         String filePath = this.richReportByTime(time, section, userId);
-        User user = userMapper.selectByPrimaryKey(0);
+        User user = userMapper.selectByPrimaryKey(userId);
         if(filePath == null) {
             logger.error("报表生成失败！");
             return "error";

@@ -156,4 +156,12 @@
     <delete id="delDocFile" parameterType="java.lang.Integer">
         delete from doc_file where id=#{id}
     </delete>
+    
+    <delete id="delContract" parameterType="java.lang.Integer">
+        delete from doc_contract where id=#{id}
+    </delete>
+    
+    <delete id="delOther" parameterType="java.lang.Integer">
+        delete from doc_other where id=#{id}
+    </delete>
 </mapper>

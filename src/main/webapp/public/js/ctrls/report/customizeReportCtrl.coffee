@@ -95,6 +95,7 @@ define ['can/control', 'can', 'Auth', 'base', 'reqwest', 'localStorage', 'bootbo
         report = $.extend {}, pageData.attr(), $('form').serializeObject()
         delete report['created']
         delete report['modified']
+        delete report['groupList']
         $('.input-group.date input').each (i, e)->
           report[$(this).attr 'name'] = String Number $(this).datepicker('getDate')
 

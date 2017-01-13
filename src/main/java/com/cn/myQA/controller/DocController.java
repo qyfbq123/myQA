@@ -4,17 +4,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -168,27 +166,37 @@ public class DocController {
         return new ResponseEntity<String>(result , "ok".equals(result) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
     
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @ApiOperation(value="文档下载", notes="文档下载", httpMethod="GET")
     @RequestMapping(value="/file/{id}/{filename}", method=RequestMethod.GET) 
-    public ResponseEntity<byte[]> download(@PathVariable("id") Integer id){
+    public void download(@PathVariable("id") Integer id, HttpServletResponse response){
         DocFile docFile = docService.singleDocFile(id);
         if( docFile != null && !StringUtils.isNullOrEmpty(docFile.getPath()) ) {
             try {
                 File file = new File(docService.getUploadPath()  + System.getProperty("file.separator") + docFile.getPath());
+                
                 FileInputStream in = new FileInputStream(file);
 
-                final HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.parseMediaType("application/force-download"));
-                headers.setContentDispositionFormData("attachment", new String(docFile.getFilename().getBytes("gb2312"),"iso-8859-1"));
+                response.setContentType("application/vnd.ms-excel");
+                response.setHeader("Content-Disposition","attachment; filename=" + new String(docFile.getFilename().getBytes("gb2312"),"iso-8859-1"));
         
-                return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+                OutputStream out = response.getOutputStream();
+
+                byte[] buffer= new byte[8192]; // use bigger if you want
+                int length = 0;
+
+                while ((length = in.read(buffer)) > 0){
+                     out.write(buffer, 0, length);
+                }
+                in.close();
+                out.close();
             } catch (FileNotFoundException e) {
-                return new ResponseEntity(HttpStatus.NOT_FOUND);
+                e.printStackTrace();
+                response.setStatus(404);
             } catch (IOException e) {
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                e.printStackTrace();
+                response.setStatus(404);
             }
-        } else return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else response.setStatus(404);
     }
     
     @ApiOperation(value="视频下载", notes="视频下载", httpMethod="GET")
@@ -203,5 +211,19 @@ public class DocController {
                 response.setStatus(404);
             }
         } 
+    }
+    
+    @ApiOperation(value="删除合同详情", notes="删除合同信息", httpMethod="DELETE")
+    @RequestMapping(value="/contract/{id}", method=RequestMethod.DELETE)
+    public ResponseEntity<String> delContract(@PathVariable("id") Integer id) {
+        String result = docService.delContract(id);
+        return new ResponseEntity<String>(result, "ok".equals(result)? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @ApiOperation(value="删除其他文档", notes="删除其他文档", httpMethod="DELETE")
+    @RequestMapping(value="/other/{id}", method=RequestMethod.DELETE)
+    public ResponseEntity<String> delOther(@PathVariable("id") Integer id) {
+        String result = docService.delOther(id);
+        return new ResponseEntity<String>(result, "ok".equals(result)? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

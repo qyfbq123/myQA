@@ -104,6 +104,7 @@ require.config
      * pdf video
     ###
     PDFJS: 'pdfjs-dist/build/pdf.min'
+    pdfViewer: 'pdfjs-dist/web/pdf_viewer'
     videojs: 'video.js/dist/video.min'
 
 

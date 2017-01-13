@@ -1,4 +1,4 @@
-define ['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', 'pdfjs-dist/build/pdf', 'videojs', '_', 'datatables.net', 'datatables.net-bs', 'datatables.net-responsive', 'datatables.net-responsive-bs', 'select2cn', 'datepickercn', 'es6shim'], (Control, can, base, Auth, reqwest, pdfDist, videojs)->
+define ['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', 'bootbox', 'pdfjs-dist/web/pdf_viewer', 'videojs', '_', 'datatables.net', 'datatables.net-bs', 'datatables.net-responsive', 'datatables.net-responsive-bs', 'select2cn', 'datepickercn', 'es6shim'], (Control, can, base, Auth, reqwest, bootbox, pdfDist, videojs)->
   pageData = new can.Map()
 
   PDFJS = pdfDist.PDFJS
@@ -112,6 +112,12 @@ define ['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', 'pdfjs-di
             $btn = $("<a href='#!home/administration/#{row.category}/#{data}' class='btn btn-danger btn-xs' type='button'/>").text '详情'
             $btn[0].outerHTML
         ,
+          data: 'id'
+          responsivePriority: 2
+          render: (data, d, row)->
+            $btn = $("<button class='btn btn-danger btn-xs' type='button'/>").text '删除'
+            $btn[0].outerHTML
+        ,
           data: 'file'
           responsivePriority: 2
           render: (data,d,row)->
@@ -127,52 +133,41 @@ define ['can/control', 'can/view/mustache', 'base', 'Auth', 'reqwest', 'pdfjs-di
         ]
       }
 
+      $('#otherList tbody').on 'click', 'button', (e)->
+        $row = $(this).closest('tr')
+        doc = table.row($row).data()
+        reqwest({
+            url: "#{Auth.apiHost}doc/other/#{doc.id}",
+            method: "delete",
+            type: 'html'
+          }).then(->
+            table.ajax.reload()
+          ).fail ->
+            bootbox.alert '删除失败！'
+
       $('#searchForm button').unbind('click').bind 'click', (e)->
         table.ajax.reload()
 
-      DEFAULT_SCALE = 1.5
-      renderPdf = (pdf, svgLib, modalBody)->
-        modalFooter = $(modalBody).next '.modal-footer'
-        $('.incomplete-warn', modalFooter).addClass 'hide'
-        promise = $.Deferred().resolve()
-        sumPages = pdf.numPages
-        if sumPages> 20
-          sumPages = 20
-          $('.incomplete-warn', modalFooter).removeClass 'hide'
-          $('.pages-number', modalFooter).text pdf.numPages
-        
-        _.each [1..sumPages], (e)->
-          promise = promise.then ((pageNum)->
-            return pdf.getPage(pageNum).then (page)->
-              viewport = page.getViewport DEFAULT_SCALE
-              container = document.createElement('div')
-              container.id = 'pageContainer' + pageNum
-              container.className = 'pageContainer'
-              container.style.width = viewport.width + 'px'
-              container.style.height = viewport.height + 'px'
-              modalBody.appendChild(container)
-              return page.getOperatorList().then (opList)->
-                svgGfx = new svgLib.SVGGraphics  page.commonObjs, page.objs
-                return svgGfx.getSVG(opList, viewport).then (svg)->
-                  container.appendChild(svg)
-          ).bind null, e
-
       videoPlayer = videojs $('video', $('#normalModal'))[0], {}
+
+      container = document.getElementById('viewerContainer')
+      pdfViewer = new PDFJS.PDFViewer container: container
+      container.addEventListener 'pagesinit', ->
+        pdfViewer.currentScaleValue = 'page-width'
 
       $('.modal').on 'show.bs.modal', (event)->
         $ahref = $ event.relatedTarget
         url = $ahref.data 'src'
 
         if url isnt $('.download-btn', modal).attr 'href'
-          $('#largeModal .pageContainer').remove()
 
           modal = $ $ahref.data 'target' 
           $('.modal-title', modal).text $ahref.text()
           $('.download-btn', modal).attr 'href', $ahref.data('downloadurl') || url
 
           if $ahref.text().endsWith '.pdf'
-            PDFJS.getDocument(url).then (doc)->
-              renderPdf doc, PDFJS, $('.modal-body', modal)[0]
+            PDFJS.getDocument(url).then (pdfDocument)->
+              pdfViewer.setDocument(pdfDocument)
           else
             if url isnt videoPlayer.currentSrc()
               videoPlayer.src url

@@ -3,15 +3,14 @@ package com.cn.myQA.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -137,6 +136,7 @@ public class CustomizeReportController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @ApiOperation(value = "自定义报表运行", notes = "自定义报表运行", httpMethod = "GET")
     @RequestMapping(value = "/run", method = RequestMethod.GET)
     @ResponseBody
@@ -147,29 +147,37 @@ public class CustomizeReportController {
     @ApiOperation(value = "自定义报表下载", notes = "自定义报表下载", httpMethod = "GET")
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<byte[]> download(CustomizeReport customizeReport, HttpSession session) {
+    public void download(CustomizeReport customizeReport, HttpSession session, HttpServletResponse response) {
         User user = (User) session.getAttribute("user");
 
         String fileName = customizeReport.getName() + ".xls";
         try {
-            final HttpHeaders headers = new HttpHeaders();
-            // headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentType(new MediaType("application", "vnd.ms-excel"));
-            headers.setContentDispositionFormData("attachment",
-                    new String(fileName.getBytes("gb2312"), "iso-8859-1"));
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition","attachment; filename=" + new String(fileName.getBytes("gb2312"),"iso-8859-1"));
 
             String filePath = crService.report(customizeReport, user == null ? null : user.getId());
 
             if (filePath == null) {
-                return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+                response.setStatus(500);
+                return;
             }
 
             File file = new File(filePath);
             FileInputStream in = new FileInputStream(file);
 
-            return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+            OutputStream out = response.getOutputStream();
+
+            byte[] buffer= new byte[8192]; // use bigger if you want
+            int length = 0;
+
+            while ((length = in.read(buffer)) > 0){
+                 out.write(buffer, 0, length);
+            }
+            in.close();
+            out.close();
         } catch (IOException e) {
-            return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            response.setStatus(500);
         }
     }
 

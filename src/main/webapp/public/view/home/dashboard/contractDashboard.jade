@@ -66,6 +66,7 @@ br
           th 当前状态
           th
           th
+          th
       tfoot
 
 #largeModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel")
@@ -76,6 +77,8 @@ br
           span(aria-hidden="true") &times;
         h4#largeModalLabel.modal-title PDF文档
       .modal-body(style='background-color: #404040; padding:15px 0px 15px 0px;')
+        #viewerContainer
+          #viewer.pdfViewer
       .modal-footer
         .incomplete-warn.pull-left.has-warning.hide(style="color: #8a6d3b")
           i 预览 20 页，共
