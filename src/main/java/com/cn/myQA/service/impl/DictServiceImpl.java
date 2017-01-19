@@ -9,7 +9,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cn.myQA.dao.CityMapper;
 import com.cn.myQA.dao.SysDictMapper;
+import com.cn.myQA.pojo.City;
 import com.cn.myQA.pojo.SysDict;
 import com.cn.myQA.service.IDictService;
 import com.cn.myQA.web.select2.Option;
@@ -19,6 +21,8 @@ public class DictServiceImpl implements IDictService {
     
     @Autowired
     private SysDictMapper dictMapper;
+    @Autowired
+    private CityMapper cityMapper;
     
     private List<Option> transDict2Option(List<SysDict> dictList){
         List<Option> optionList = new ArrayList<Option>();
@@ -31,7 +35,17 @@ public class DictServiceImpl implements IDictService {
 
     @Override
     public List<Option> cities() {
-        return transDict2Option( dictMapper.findByType(1) );
+        List<Option> cities = new ArrayList<Option>();
+        
+        List<City> allCities = cityMapper.all();
+        
+        for(City c : allCities) {
+            Option o = new Option();
+            o.setId(c.getId());
+            o.setText(c.getName());
+            cities.add(o);
+        }
+        return cities;
     }
 
     @Override

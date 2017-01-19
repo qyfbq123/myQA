@@ -6,11 +6,11 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
   </resultMap>
   <insert id="insert" parameterType="com.cn.myQA.pojo.City" >
-    insert into city (id, name)
+    insert into sys_city (id, name)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cn.myQA.pojo.City" >
-    insert into city
+    insert into sys_city
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -28,4 +28,8 @@
       </if>
     </trim>
   </insert>
+  
+  <select id="all" resultMap="BaseResultMap">
+    select id, name from sys_city
+  </select>
 </mapper>

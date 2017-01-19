@@ -52,7 +52,7 @@
         email,
       </if>
       <if test="city != null" >
-        city.id,
+        city_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
