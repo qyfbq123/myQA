@@ -112,6 +112,16 @@
 		<collection property="userList" ofType="com.cn.myQA.pojo.User" column="id" select="fullUserList"></collection>
 	</resultMap>
 	
+	<resultMap id="RichPMGroupResultMap" type="com.cn.myQA.pojo.Group">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="created" property="created" jdbcType="TIMESTAMP" />
+        <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+        <result column="locked" property="locked" jdbcType="BIT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        
+        <collection property="userList" ofType="com.cn.myQA.pojo.User" column="id" select="fullPMUserList"></collection>
+    </resultMap>
+	
 	<resultMap id="BaseMenuResultMap" type="com.cn.myQA.pojo.SysMenu" >
 	    <id column="id" property="id" jdbcType="INTEGER" />
 	    <result column="name" property="name" jdbcType="VARCHAR" />
@@ -156,6 +166,14 @@
 	   from user_has_group
 	   inner join [user] on user_has_group.user_id = [user].id
 	   where user_has_group.group_id=#{id, jdbcType=INTEGER}
+	</select>
+	
+	<select id="fullPMUserList" resultMap="BaseUserResultMap">
+	   select
+	       [user].id, [user].created, [user].modified, [user].locked, [user].loginid, [user].password, [user].username, [user].email, [user].leaderEmail, [user].city_id
+	   from user_has_group
+	   inner join [user] on user_has_group.user_id = [user].id
+	   where user_has_group.group_id=#{id, jdbcType=INTEGER} and [user].locked=0
 	</select>
 	
 	<select id="fullGroup" resultMap="BaseGroupResultMap">

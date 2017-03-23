@@ -278,7 +278,7 @@
     where group_id=#{id, jdbcType=INTEGER};
   </delete>
   
-  <select id="findPMGroup" resultMap="com.cn.myQA.dao.BaseMapper.RichGroupResultMap">
+  <select id="findPMGroup" resultMap="com.cn.myQA.dao.BaseMapper.RichPMGroupResultMap">
     select top 1 <include refid="com.cn.myQA.dao.BaseMapper.Base_Group_Column_List"></include> from [group]
   </select>
   

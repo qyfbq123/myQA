@@ -232,7 +232,7 @@
     from sys_menu
   </select>
   
-  <select id="findAllGroups" resultMap="com.cn.myQA.dao.BaseMapper.RichGroupResultMap">
+  <select id="findAllGroups" resultMap="com.cn.myQA.dao.BaseMapper.RichPMGroupResultMap">
     select
     <include refid="com.cn.myQA.dao.BaseMapper.Base_Group_Column_List"></include>
     from `group`
